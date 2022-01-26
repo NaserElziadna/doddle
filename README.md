@@ -83,5 +83,5 @@ Amazing magical doodle game provide a creative doodle world for you!
   - [ ] share a saved work 
 - [ ] Playback the painting process as a cartoon video clip
 
-# My Goal App 
+# My Goal App
 # <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/myGoalApp.jpeg" alt="drawing" style="width:100%;"/>    
