@@ -1,4 +1,4 @@
-# <img src="https://github.com/NaserElziadna/doddle/blob/main/assets/logo.jfif" alt="drawing" style="width:30%;"/> doddle - (still under development)
+# <img src="https://github.com/NaserElziadna/doddle/blob/main/assets/logo.jfif" alt="drawing" style="width: 10%;max-width: 30%;border-radius: 17px;display: block;"/> doddle - (still under development)
 
 Amazing magical doodle game provide a creative doodle world for you!
 
