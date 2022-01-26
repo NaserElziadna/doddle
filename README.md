@@ -1,16 +1,14 @@
-# doddle
+# doddle - (still under development)
 
-drawing app for creating symmetricall  canves and other cool feature
+drawing app for creating symmetricall , canves and other cool feature
 
-## Getting Started
+# here is some screenshot of the app
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![ScreenShot 1](https://github.com/NaserElziadna/doddle/blob/main/screen_shots/Screenshot_2022-01-25-16-57-17-023_com.nmmsoft.doddle.jpg)
+![ScreenShot 1](https://github.com/NaserElziadna/doddle/blob/main/screen_shots/Screenshot_2022-01-25-16-57-17-023_com.nmmsoft.doddle.jpg)
+![ScreenShot 1](https://github.com/NaserElziadna/doddle/blob/main/screen_shots/Screenshot_2022-01-25-16-57-17-023_com.nmmsoft.doddle.jpg)
+![ScreenShot 1](https://github.com/NaserElziadna/doddle/blob/main/screen_shots/Screenshot_2022-01-25-16-57-17-023_com.nmmsoft.doddle.jpg)
+![ScreenShot 1](https://github.com/NaserElziadna/doddle/blob/main/screen_shots/Screenshot_2022-01-25-16-57-17-023_com.nmmsoft.doddle.jpg)
+![ScreenShot 1](https://github.com/NaserElziadna/doddle/blob/main/screen_shots/Screenshot_2022-01-25-16-57-17-023_com.nmmsoft.doddle.jpg)
+![ScreenShot 1](https://github.com/NaserElziadna/doddle/blob/main/screen_shots/Screenshot_2022-01-25-16-57-17-023_com.nmmsoft.doddle.jpg)
+![ScreenShot 1](https://github.com/NaserElziadna/doddle/blob/main/screen_shots/Screenshot_2022-01-25-16-57-17-023_com.nmmsoft.doddle.jpg)
