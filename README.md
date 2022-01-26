@@ -75,7 +75,6 @@ Amazing magical doodle game provide a creative doodle world for you!
   - [ ] method
       - [ ] save image to gallery
       - [ ] take stamp of the canvas 
-      - [ ]  
 - [ ] add gallery page
   - [ ] all saved work
   - [ ] edit a saved work
