@@ -8,7 +8,7 @@ Amazing magical doodle game provide a creative doodle world for you!
 💛Simplest doodle way : Create glow mandala and magical kaleidoscope patterns.🌸
 💚Playback the painting process as a cartoon video clip. 📽🎞
 
-# My Goal
+# Some of the app ScreenShot
 
 <table style="width:75%;height:75%;">
   <tr>
