@@ -35,6 +35,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   bloc: ^7.1.0
   flutter_bloc: ^7.1.0
+  flutter_colorpicker: ^1.0.3
+  image_gallery_saver: ^1.7.1
+  # permission_handler: ^8.3.0
 
 dev_dependencies:
   flutter_test:
@@ -46,8 +49,6 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
-  # image_gallery_saver: ^1.7.1
-  # permission_handler: ^8.3.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

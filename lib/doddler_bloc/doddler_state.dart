@@ -1,10 +1,12 @@
-import '../dot.dart';
+import 'package:doddle/draw_controller.dart';
+
+import '../point.dart';
 
 abstract class DoddlerState {}
 
 class InitDoddlerState extends DoddlerState {}
 
-class PagePointsState extends DoddlerState {
-  List<Dot?>? points = [];
-  PagePointsState({this.points});
+class UpdateCanvasState extends DoddlerState {
+  DrawController? drawController;
+  UpdateCanvasState({this.drawController});
 }

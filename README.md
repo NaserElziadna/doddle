@@ -70,7 +70,7 @@ Amazing magical doodle game provide a creative doodle world for you!
 - [ ] create draw controller 
   - [ ] varibals
     - [ ] List of points
-      - [ ] Offse
+      - [ ] Offset
       - [ ] paint
     - [ ] List of stamp (layer of canvas)  
   - [ ] method

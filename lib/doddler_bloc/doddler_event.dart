@@ -1,4 +1,8 @@
-import '../dot.dart';
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
+
+import '../point.dart';
 
 abstract class DoddlerEvent {}
 
@@ -7,8 +11,8 @@ class ClearPageEvent extends DoddlerEvent {
 }
 
 class AddPointEvent extends DoddlerEvent {
-  final Dot? dot;
-  AddPointEvent(this.dot);
+  final Point? point;
+  AddPointEvent(this.point);
 }
 
 class UndoPointEvent extends DoddlerEvent {
@@ -17,4 +21,32 @@ class UndoPointEvent extends DoddlerEvent {
 
 class RedoPointEvent extends DoddlerEvent {
   RedoPointEvent();
+}
+
+class InitGlobalKeyEvent extends DoddlerEvent {
+  GlobalKey globalKey;
+  InitGlobalKeyEvent(
+    this.globalKey,
+  );
+}
+
+class TakePageStampEvent extends DoddlerEvent {
+  GlobalKey globalKey;
+  TakePageStampEvent(
+    this.globalKey,
+  );
+}
+
+class ChangeCurrentColorEvent extends DoddlerEvent {
+  final Color? color;
+  ChangeCurrentColorEvent(this.color);
+}
+
+class SavePageToGalleryEvent extends DoddlerEvent {
+  final GlobalKey? globalKey;
+  SavePageToGalleryEvent({this.globalKey});
+}
+class UpdateSymmetryLines extends DoddlerEvent {
+  final double? symmetryLines;
+  UpdateSymmetryLines({this.symmetryLines});
 }

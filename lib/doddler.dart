@@ -1,10 +1,18 @@
 import 'dart:math';
-import 'package:doddle/doddler_bloc/doddler_event.dart';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+
+import 'package:doddle/doddler_bloc/doddler_event.dart';
+
 import 'doddler_bloc/doddler_bloc.dart';
 import 'doddler_bloc/doddler_state.dart';
-import 'dot.dart';
+import 'point.dart';
+import 'tools_widget.dart';
 
 class Doddler extends StatefulWidget {
   const Doddler({Key? key}) : super(key: key);
@@ -14,77 +22,124 @@ class Doddler extends StatefulWidget {
 }
 
 class _DoddlerState extends State<Doddler> {
-  List<Dot?> points = [];
+  // List<Point?> points = [];
   // List<ByteData?> imgsBytes = [];
-  double symmetryLines = 0;
+  GlobalKey? globalKey = GlobalKey();
 
   static Size kCanvasSize = Size.zero;
-  // GlobalKey _globalKey = GlobalKey();
+  double symmetryLines = 0;
+
+  @override
+  void initState() {
+    BlocProvider.of<DoddlerBloc>(context).add(InitGlobalKeyEvent(globalKey!));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<DoddlerBloc, DoddlerState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
-        if (state is PagePointsState) {
-          return Container(
-            margin: const EdgeInsets.all(20),
-            color: Colors.black,
-            child: GestureDetector(
-              onPanUpdate: (DragUpdateDetails details) {
-                setState(() {
-                  kCanvasSize = Size(
-                      MediaQuery.of(context).size.width,
-                      MediaQuery.of(context).size.height -
-                          (AppBar().preferredSize.height));
-                  const pinSpace = 0;
+        if (state is UpdateCanvasState) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Sketcher'),
+              backgroundColor: Colors.purple,
+              actions: [
+                Slider(
+                  value: context.read<DoddlerBloc>().drawController!.symmetryLines ?? 15,
+                  max: 20,
+                  min: 0,
+                  activeColor: Colors.redAccent,
+                  label: "S L",
+                  thumbColor: Colors.black,
+                  inactiveColor: Colors.green,
+                  onChanged: (value) {
+                    print(context.read<DoddlerBloc>().drawController.toString());
+                    // setState(() {
+                    //   symmetryLines = value;
+                      context.read<DoddlerBloc>().add(
+                          UpdateSymmetryLines(symmetryLines: symmetryLines));
+                    // });
+                  },
+                )
+              ],
+            ),
+            body: Container(
+              margin: const EdgeInsets.all(20),
+              color: Colors.black,
+              child: GestureDetector(
+                onPanUpdate: (DragUpdateDetails details) {
+                  setState(() {
+                    kCanvasSize = Size(
+                        MediaQuery.of(context).size.width,
+                        MediaQuery.of(context).size.height -
+                            (AppBar().preferredSize.height));
+                    const pinSpace = 0;
 
-                  RenderBox box = context.findRenderObject() as RenderBox;
-                  Offset point = box.globalToLocal(details.globalPosition);
+                    RenderBox box = context.findRenderObject() as RenderBox;
+                    Offset point = box.globalToLocal(details.globalPosition);
 
-                  point = point.translate(-(kCanvasSize.width / 2),
-                      -((kCanvasSize.height / 2) + pinSpace));
+                    point = point.translate(-(kCanvasSize.width / 2),
+                        -((kCanvasSize.height / 2) + pinSpace));
 
-                  print("x = ${point.dx} , y = ${point.dy}");
-                  BlocProvider.of<DoddlerBloc>(context).add(AddPointEvent(Dot(
-                      offset: point,
-                      paint: Paint()
-                        ..color = Color.fromRGBO(Random().nextInt(255),
-                            Random().nextInt(255), Random().nextInt(255), 1)
-                        ..strokeCap = StrokeCap.round
-                        ..strokeJoin = StrokeJoin.miter
-                        ..strokeWidth = (Random().nextInt(10)) * 1.0)));
-                  // points = List.from(points)
-                  //   ..add(Dot(
-                  //       offset: point,
-                  //       paint: Paint()
-                  //         ..color = Color.fromRGBO(Random().nextInt(255),
-                  //             Random().nextInt(255), Random().nextInt(255), 1)
-                  //         ..strokeCap = StrokeCap.round
-                  //         ..strokeJoin = StrokeJoin.miter
-                  //         ..strokeWidth = (Random().nextInt(10)) * 1.0));
-                });
-              },
-              onPanEnd: (DragEndDetails details) {
-                setState(() {
-                  BlocProvider.of<DoddlerBloc>(context)
-                      .add(AddPointEvent(null));
-                  // points.add(null);
-                });
-              },
-              //
-              child: ClipRect(
-                child: CustomPaint(
-                  painter:
-                      Sketcher(state.points ?? [], kCanvasSize, 10),
-                  size: Size(kCanvasSize.width / 2, kCanvasSize.height / 2),
-                  willChange: true,
-                  isComplex: true,
-                  child: const SizedBox.expand(),
+                    print("x = ${point.dx} , y = ${point.dy}");
+                    BlocProvider.of<DoddlerBloc>(context)
+                        .add(AddPointEvent(Point(
+                            offset: point,
+                            paint: Paint()
+                              ..color = state.drawController == null
+                                  ? Colors.white
+                                  : state.drawController!.currentColor
+                              ..strokeCap = StrokeCap.round
+                              ..strokeJoin = StrokeJoin.miter
+                              ..strokeWidth = (Random().nextInt(10)) * 1.0)));
+                  });
+                },
+                onPanEnd: (DragEndDetails details) {
+                  setState(() {
+                    BlocProvider.of<DoddlerBloc>(context)
+                        .add(AddPointEvent(Point(
+                            offset: null,
+                            paint: Paint()
+                              ..color = Color.fromRGBO(
+                                  Random().nextInt(255),
+                                  Random().nextInt(255),
+                                  Random().nextInt(255),
+                                  1)
+                              ..strokeCap = StrokeCap.round
+                              ..strokeJoin = StrokeJoin.miter
+                              ..strokeWidth = (Random().nextInt(10)) * 1.0)));
+                  });
+                  // BlocProvider.of<DoddlerBloc>(context)
+                  //     .add(SavePageToGalleryEvent());
+                },
+                child: RepaintBoundary(
+                  key: globalKey,
+                  child: ClipRect(
+                    child: CustomPaint(
+                      // foregroundPainter: LastImageAsBackground(
+                      // image: state.drawController!.stamp!.first!.image),
+                      painter: Sketcher(
+                        state.drawController?.points ?? [],
+                        kCanvasSize,
+                        state.drawController != null
+                            ? state.drawController!.symmetryLines!
+                            : 5,
+                      ),
+                      size: Size(
+                        kCanvasSize.width / 2,
+                        kCanvasSize.height / 2,
+                      ),
+                      willChange: true,
+                      isComplex: true,
+                      child: const SizedBox.expand(),
+                    ),
+                  ),
                 ),
               ),
             ),
+            bottomSheet: const ToolsWidget(),
           );
         }
         return const Center(
@@ -97,8 +152,26 @@ class _DoddlerState extends State<Doddler> {
   }
 }
 
+class LastImageAsBackground extends CustomPainter {
+  ui.Image image;
+  LastImageAsBackground({
+    required this.image,
+  });
+  @override
+  void paint(Canvas canvas, Size size) {
+    print("=entered=" * 100);
+    canvas.drawImage(image, Offset.zero, Paint());
+    print("=out=" * 100);
+  }
+
+  @override
+  bool shouldRepaint(LastImageAsBackground oldDelegate) {
+    return oldDelegate.image != image;
+  }
+}
+
 class Sketcher extends CustomPainter {
-  final List<Dot?> points;
+  final List<Point?> points;
   final Size screenSize;
   final double symmetryLines;
 
@@ -120,6 +193,7 @@ class Sketcher extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     print(size.toString());
+    // canvas.drawPicture(picture)
     canvas.translate(size.width / 2, size.height / 2);
 
     Paint paint = Paint()
@@ -130,7 +204,7 @@ class Sketcher extends CustomPainter {
 
     // const symmetryLines = 0;
     var angle = 360 / (symmetryLines);
-    
+
     print(angle);
     Path path = Path();
     for (var j = 0; j < points.length - 1; j++) {
@@ -158,10 +232,8 @@ class Sketcher extends CustomPainter {
         j++;
       }
     }
-    // Rect myRect = const Offset(1.0, 2.0) & const Size(3.0, 4.0);
 
     for (var i = 0; i <= symmetryLines; i++) {
-      // canvas.drawRect(const Offset(1.0, 2.0) & const Size(3.0, 4.0), paint);
       canvas.drawPath(
           path,
           Paint()
@@ -174,6 +246,6 @@ class Sketcher extends CustomPainter {
       canvas.rotate(angle);
     }
 
-    print("canvas.getSaveCount() = ${canvas.getSaveCount()}");
+    // print("canvas.getSaveCount() = ${canvas.getSaveCount()}");
   }
 }
