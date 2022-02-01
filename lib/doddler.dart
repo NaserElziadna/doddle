@@ -85,7 +85,7 @@ class _DoddlerState extends State<Doddler> {
                         MediaQuery.of(context).size.width,
                         MediaQuery.of(context).size.height -
                             (AppBar().preferredSize.height));
-                    const pinSpace = 0;
+                    const pinSpace = 100;
 
                     RenderBox box = context.findRenderObject() as RenderBox;
                     Offset point = box.globalToLocal(details.globalPosition);
@@ -107,8 +107,7 @@ class _DoddlerState extends State<Doddler> {
                   });
                 },
                 onPanEnd: (DragEndDetails details) {
-                  setState(() {
-                    BlocProvider.of<DoddlerBloc>(context)
+                  BlocProvider.of<DoddlerBloc>(context)
                         .add(AddPointEvent(Point(
                             offset: null,
                             paint: Paint()
@@ -120,8 +119,7 @@ class _DoddlerState extends State<Doddler> {
                               ..strokeCap = StrokeCap.square
                               ..strokeJoin = StrokeJoin.bevel
                               ..strokeWidth = (Random().nextInt(10)) * 1.0)));
-                  });
-                  context
+                              context
                       .read<DoddlerBloc>()
                       .add(TakePageStampEvent(globalKey!));
                 },
