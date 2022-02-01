@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:doddle/draw_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,10 +29,14 @@ class _DoddlerState extends State<Doddler> {
 
   static Size kCanvasSize = Size.zero;
   double symmetryLines = 0;
+  DrawController? drawController;
 
   @override
   void initState() {
-    BlocProvider.of<DoddlerBloc>(context).add(InitGlobalKeyEvent(globalKey!));
+    drawController = context.read<DoddlerBloc>().drawController;
+    print(drawController!.toString());
+    if (drawController!.globalKey == null)
+      BlocProvider.of<DoddlerBloc>(context).add(InitGlobalKeyEvent(globalKey!));
     super.initState();
   }
 
@@ -47,7 +52,7 @@ class _DoddlerState extends State<Doddler> {
               backgroundColor: Colors.purple,
               actions: [
                 Slider(
-                  value: context.read<DoddlerBloc>().drawController!.symmetryLines ?? 15,
+                  value: drawController!.symmetryLines!,
                   max: 20,
                   min: 0,
                   activeColor: Colors.redAccent,
@@ -55,12 +60,17 @@ class _DoddlerState extends State<Doddler> {
                   thumbColor: Colors.black,
                   inactiveColor: Colors.green,
                   onChanged: (value) {
-                    print(context.read<DoddlerBloc>().drawController.toString());
-                    // setState(() {
-                    //   symmetryLines = value;
-                      context.read<DoddlerBloc>().add(
-                          UpdateSymmetryLines(symmetryLines: symmetryLines));
-                    // });
+                    setState(() {
+                      drawController =
+                          drawController?.copyWith(symmetryLines: value);
+                      context
+                          .read<DoddlerBloc>()
+                          .add(UpdateSymmetryLines(symmetryLines: value));
+
+                      context
+                          .read<DoddlerBloc>()
+                          .add(TakePageStampEvent(globalKey!));
+                    });
                   },
                 )
               ],
@@ -119,14 +129,30 @@ class _DoddlerState extends State<Doddler> {
                   child: ClipRect(
                     child: CustomPaint(
                       // foregroundPainter: LastImageAsBackground(
-                      // image: state.drawController!.stamp!.first!.image),
-                      painter: Sketcher(
+                      //     image: state.drawController!.stamp!.isEmpty
+                      //         ? null
+                      //         : state.drawController!.stamp!.last!.image),
+                      // painter: Sketcher(
+                      //   state.drawController?.points ?? [],
+                      //   kCanvasSize,
+                      //   state.drawController != null
+                      //       ? state.drawController!.symmetryLines!
+                      //       : 5,
+                      // ),
+                      foregroundPainter: Sketcher(
                         state.drawController?.points ?? [],
                         kCanvasSize,
                         state.drawController != null
                             ? state.drawController!.symmetryLines!
                             : 5,
                       ),
+                      painter: LastImageAsBackground(
+                          image: state.drawController == null
+                              ? null
+                              : state.drawController!.stamp!.isEmpty
+                                  ? null
+                                  : state.drawController!.stamp!.last!.image),
+
                       size: Size(
                         kCanvasSize.width / 2,
                         kCanvasSize.height / 2,
@@ -153,15 +179,22 @@ class _DoddlerState extends State<Doddler> {
 }
 
 class LastImageAsBackground extends CustomPainter {
-  ui.Image image;
+  ui.Image? image;
   LastImageAsBackground({
     required this.image,
   });
   @override
   void paint(Canvas canvas, Size size) {
-    print("=entered=" * 100);
-    canvas.drawImage(image, Offset.zero, Paint());
-    print("=out=" * 100);
+    if (image != null) {
+      print("=entered=");
+      canvas.drawImage(
+          image!,
+          Offset.zero,
+          Paint()
+            ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10.0)
+            ..color = Colors.white);
+    }
+    print("=out=");
   }
 
   @override

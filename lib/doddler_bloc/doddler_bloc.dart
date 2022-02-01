@@ -15,7 +15,6 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
 
   @override
   Stream<DoddlerState> mapEventToState(DoddlerEvent event) async* {
-    // print(drawController.toString());
     if (event is ClearPageEvent) {
       drawController!.points!.clear();
       yield UpdateCanvasState(drawController: drawController);
@@ -25,18 +24,26 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
     } else if (event is UndoPointEvent) {
     } else if (event is RedoPointEvent) {
     } else if (event is ChangeCurrentColorEvent) {
-      drawController?.copyWith(currentColor: event.color ?? Colors.white);
+      drawController =
+          drawController?.copyWith(currentColor: event.color ?? Colors.white);
     } else if (event is SavePageToGalleryEvent) {
       save(event.globalKey ?? drawController!.globalKey!);
     } else if (event is InitGlobalKeyEvent) {
-      drawController?.copyWith(globalKey: event.globalKey);
+      drawController = drawController?.copyWith(globalKey: event.globalKey);
       // drawController!.globalKey = event.globalKey;
     } else if (event is UpdateSymmetryLines) {
-      drawController?.copyWith(symmetryLines: event.symmetryLines);
+      drawController =
+          drawController?.copyWith(symmetryLines: event.symmetryLines);
       // drawController!.globalKey = event.globalKey;
     } else if (event is TakePageStampEvent) {
-      ui.Image image = canvasToImage(event.globalKey) as ui.Image;
-      drawController!.stamp!.add(Stamp(image: image));
+      try {
+        ui.Image image = await canvasToImage(event.globalKey);
+        List<Stamp?>? stamps = List.from(drawController!.stamp!);
+        stamps.add(Stamp(image: image));
+        drawController =drawController!.copyWith(stamp: stamps);
+      } catch (e) {
+        print(e);
+      }
       yield UpdateCanvasState(drawController: drawController);
     }
   }
@@ -44,7 +51,9 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
   Future<ui.Image> canvasToImage(GlobalKey globalKey) async {
     final boundary =
         globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-    return await boundary.toImage();
+
+    final image = await boundary.toImage();
+    return image;
   }
 
   Future<void> save(GlobalKey globalKey) async {
