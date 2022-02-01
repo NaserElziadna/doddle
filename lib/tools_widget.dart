@@ -37,7 +37,9 @@ class _ToolsWidgetState extends State<ToolsWidget> {
                   size: 36,
                 )),
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  BlocProvider.of<DoddlerBloc>(context).add(UndoStampsEvent());
+                },
                 icon: const Icon(
                   Icons.undo,
                   color: Colors.white,
@@ -59,7 +61,9 @@ class _ToolsWidgetState extends State<ToolsWidget> {
                   size: 36,
                 )),
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                   BlocProvider.of<DoddlerBloc>(context).add(RedoStampsEvent());
+                },
                 icon: const Icon(
                   Icons.redo,
                   color: Colors.white,

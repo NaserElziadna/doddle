@@ -10,22 +10,44 @@ import 'doddler_state.dart';
 
 class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
   DrawController? drawController;
-  DoddlerBloc({this.drawController = const DrawController()})
-      : super(UpdateCanvasState());
+  DoddlerBloc({this.drawController}) : super(UpdateCanvasState());
 
   @override
   Stream<DoddlerState> mapEventToState(DoddlerEvent event) async* {
     if (event is ClearPointEvent) {
       drawController!.points!.clear();
       yield UpdateCanvasState(drawController: drawController);
-    }else if (event is ClearStampsEvent) {
+    } else if (event is ClearStampsEvent) {
       drawController!.stamp!.clear();
       yield UpdateCanvasState(drawController: drawController);
     } else if (event is AddPointEvent) {
       drawController!.points!.add(event.point);
       yield UpdateCanvasState(drawController: drawController);
     } else if (event is UndoStampsEvent) {
+      if (drawController!.stamp!.isNotEmpty) {
+        List<Stamp?>? stamps = List.from(drawController!.stamp!);
+        final undoS = stamps.removeLast();
+
+        List<Stamp?>? undoStamps = List.from(drawController!.stampUndo!);
+        undoStamps.add(undoS);
+        drawController =
+            drawController!.copyWith(stamp: stamps, stampUndo: undoStamps);
+
+        yield UpdateCanvasState(drawController: drawController);
+      }
     } else if (event is RedoStampsEvent) {
+      if (drawController!.stampUndo!.isNotEmpty) {
+        List<Stamp?>? stampUndo = List.from(drawController!.stampUndo!);
+        final toRedo = stampUndo.removeLast();
+
+        List<Stamp?>? stamps = List.from(drawController!.stamp!);
+        stamps.add(toRedo);
+
+        drawController =
+            drawController!.copyWith(stamp: stamps, stampUndo: stampUndo);
+
+        yield UpdateCanvasState(drawController: drawController);
+      }
     } else if (event is ChangeCurrentColorEvent) {
       drawController =
           drawController?.copyWith(currentColor: event.color ?? Colors.white);
@@ -43,7 +65,7 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
         ui.Image image = await canvasToImage(event.globalKey);
         List<Stamp?>? stamps = List.from(drawController!.stamp!);
         stamps.add(Stamp(image: image));
-        drawController =drawController!.copyWith(stamp: stamps);
+        drawController = drawController!.copyWith(stamp: stamps);
 
         add(ClearPointEvent());
       } catch (e) {

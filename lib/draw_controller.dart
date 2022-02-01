@@ -10,13 +10,15 @@ import 'point.dart';
 class DrawController {
   final List<Point?>? points;
   final List<Stamp?>? stamp;
+  final List<Stamp?>? stampUndo;
   final Color currentColor;
   final GlobalKey? globalKey;
   final double? symmetryLines;
 
-  const DrawController({
+  DrawController({
     this.points = const [],
     this.stamp =const [],
+    this.stampUndo=const [],
     this.currentColor = const Color(0x12457895) ,
     this.globalKey,
     this.symmetryLines = 20,
@@ -25,6 +27,7 @@ class DrawController {
   DrawController copyWith({
     List<Point?>? points,
     List<Stamp?>? stamp,
+    List<Stamp?>? stampUndo,
     Color? currentColor,
     GlobalKey? globalKey,
     double? symmetryLines,
@@ -32,6 +35,7 @@ class DrawController {
     return DrawController(
       points: points ?? this.points,
       stamp: stamp ?? this.stamp,
+      stampUndo: stampUndo ?? this.stampUndo,
       currentColor: currentColor ?? this.currentColor,
       globalKey: globalKey ?? this.globalKey,
       symmetryLines: symmetryLines ?? this.symmetryLines,
@@ -40,7 +44,7 @@ class DrawController {
 
   @override
   String toString() {
-    return 'DrawController(points: ${points.toString()}, stamp: $stamp, currentColor: $currentColor, globalKey: $globalKey, symmetryLines: $symmetryLines)';
+    return 'DrawController(points: ${points.toString()}, stamp: $stamp, stampUndo: $stampUndo, currentColor: $currentColor, globalKey: $globalKey, symmetryLines: $symmetryLines)';
   }
 
   @override
@@ -50,6 +54,7 @@ class DrawController {
     return other is DrawController &&
       listEquals(other.points, points) &&
       listEquals(other.stamp, stamp) &&
+      listEquals(other.stampUndo, stampUndo) &&
       other.currentColor == currentColor &&
       other.globalKey == globalKey &&
       other.symmetryLines == symmetryLines;
@@ -59,6 +64,7 @@ class DrawController {
   int get hashCode {
     return points.hashCode ^
       stamp.hashCode ^
+      stampUndo.hashCode ^
       currentColor.hashCode ^
       globalKey.hashCode ^
       symmetryLines.hashCode;
