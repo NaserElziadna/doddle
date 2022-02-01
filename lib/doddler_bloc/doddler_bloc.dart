@@ -15,14 +15,17 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
 
   @override
   Stream<DoddlerState> mapEventToState(DoddlerEvent event) async* {
-    if (event is ClearPageEvent) {
+    if (event is ClearPointEvent) {
       drawController!.points!.clear();
+      yield UpdateCanvasState(drawController: drawController);
+    }else if (event is ClearStampsEvent) {
+      drawController!.stamp!.clear();
       yield UpdateCanvasState(drawController: drawController);
     } else if (event is AddPointEvent) {
       drawController!.points!.add(event.point);
       yield UpdateCanvasState(drawController: drawController);
-    } else if (event is UndoPointEvent) {
-    } else if (event is RedoPointEvent) {
+    } else if (event is UndoStampsEvent) {
+    } else if (event is RedoStampsEvent) {
     } else if (event is ChangeCurrentColorEvent) {
       drawController =
           drawController?.copyWith(currentColor: event.color ?? Colors.white);
@@ -41,6 +44,8 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
         List<Stamp?>? stamps = List.from(drawController!.stamp!);
         stamps.add(Stamp(image: image));
         drawController =drawController!.copyWith(stamp: stamps);
+
+        add(ClearPointEvent());
       } catch (e) {
         print(e);
       }

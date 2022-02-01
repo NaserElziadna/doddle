@@ -6,8 +6,12 @@ import '../point.dart';
 
 abstract class DoddlerEvent {}
 
-class ClearPageEvent extends DoddlerEvent {
-  ClearPageEvent();
+class ClearPointEvent extends DoddlerEvent {
+  ClearPointEvent();
+}
+
+class ClearStampsEvent extends DoddlerEvent {
+  ClearStampsEvent();
 }
 
 class AddPointEvent extends DoddlerEvent {
@@ -15,12 +19,12 @@ class AddPointEvent extends DoddlerEvent {
   AddPointEvent(this.point);
 }
 
-class UndoPointEvent extends DoddlerEvent {
-  UndoPointEvent();
+class UndoStampsEvent extends DoddlerEvent {
+  UndoStampsEvent();
 }
 
-class RedoPointEvent extends DoddlerEvent {
-  RedoPointEvent();
+class RedoStampsEvent extends DoddlerEvent {
+  RedoStampsEvent();
 }
 
 class InitGlobalKeyEvent extends DoddlerEvent {

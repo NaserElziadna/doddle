@@ -67,7 +67,7 @@ class _ToolsWidgetState extends State<ToolsWidget> {
                 )),
             IconButton(
                 onPressed: () {
-                  BlocProvider.of<DoddlerBloc>(context).add(ClearPageEvent());
+                  BlocProvider.of<DoddlerBloc>(context).add(ClearStampsEvent());
                 },
                 icon: const Icon(
                   Icons.clear,

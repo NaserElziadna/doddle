@@ -53,7 +53,7 @@ class _DoddlerState extends State<Doddler> {
               actions: [
                 Slider(
                   value: drawController!.symmetryLines!,
-                  max: 20,
+                  max: 50,
                   min: 0,
                   activeColor: Colors.redAccent,
                   label: "S L",
@@ -67,9 +67,9 @@ class _DoddlerState extends State<Doddler> {
                           .read<DoddlerBloc>()
                           .add(UpdateSymmetryLines(symmetryLines: value));
 
-                      context
-                          .read<DoddlerBloc>()
-                          .add(TakePageStampEvent(globalKey!));
+                      // context
+                      //     .read<DoddlerBloc>()
+                      //     .add(TakePageStampEvent(globalKey!));
                     });
                   },
                 )
@@ -117,28 +117,18 @@ class _DoddlerState extends State<Doddler> {
                                   Random().nextInt(255),
                                   Random().nextInt(255),
                                   1)
-                              ..strokeCap = StrokeCap.round
-                              ..strokeJoin = StrokeJoin.miter
+                              ..strokeCap = StrokeCap.square
+                              ..strokeJoin = StrokeJoin.bevel
                               ..strokeWidth = (Random().nextInt(10)) * 1.0)));
                   });
-                  // BlocProvider.of<DoddlerBloc>(context)
-                  //     .add(SavePageToGalleryEvent());
+                  context
+                      .read<DoddlerBloc>()
+                      .add(TakePageStampEvent(globalKey!));
                 },
                 child: RepaintBoundary(
                   key: globalKey,
                   child: ClipRect(
                     child: CustomPaint(
-                      // foregroundPainter: LastImageAsBackground(
-                      //     image: state.drawController!.stamp!.isEmpty
-                      //         ? null
-                      //         : state.drawController!.stamp!.last!.image),
-                      // painter: Sketcher(
-                      //   state.drawController?.points ?? [],
-                      //   kCanvasSize,
-                      //   state.drawController != null
-                      //       ? state.drawController!.symmetryLines!
-                      //       : 5,
-                      // ),
                       foregroundPainter: Sketcher(
                         state.drawController?.points ?? [],
                         kCanvasSize,
@@ -147,12 +137,12 @@ class _DoddlerState extends State<Doddler> {
                             : 5,
                       ),
                       painter: LastImageAsBackground(
-                          image: state.drawController == null
-                              ? null
-                              : state.drawController!.stamp!.isEmpty
-                                  ? null
-                                  : state.drawController!.stamp!.last!.image),
-
+                        image: state.drawController == null
+                            ? null
+                            : state.drawController!.stamp!.isEmpty
+                                ? null
+                                : state.drawController!.stamp!.last!.image,
+                      ),
                       size: Size(
                         kCanvasSize.width / 2,
                         kCanvasSize.height / 2,
@@ -190,9 +180,7 @@ class LastImageAsBackground extends CustomPainter {
       canvas.drawImage(
           image!,
           Offset.zero,
-          Paint()
-            ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10.0)
-            ..color = Colors.white);
+          Paint());
     }
     print("=out=");
   }
@@ -271,7 +259,11 @@ class Sketcher extends CustomPainter {
           path,
           Paint()
             ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10.0)
-            ..color = Colors.red.withAlpha(255)
+            ..color = Color.fromRGBO(
+                                  Random().nextInt(255),
+                                  Random().nextInt(255),
+                                  Random().nextInt(255),
+                                  1)
             ..style = PaintingStyle.stroke
             ..strokeWidth = 10.0);
 
