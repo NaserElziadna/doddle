@@ -22,6 +22,9 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
       yield UpdateCanvasState(drawController: drawController);
     } else if (event is AddPointEvent) {
       drawController!.points!.add(event.point);
+      if(event.end){
+        add(TakePageStampEvent(drawController!.globalKey!));
+      }
       yield UpdateCanvasState(drawController: drawController);
     } else if (event is UndoStampsEvent) {
       if (drawController!.stamp!.isNotEmpty) {

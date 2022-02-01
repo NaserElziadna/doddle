@@ -16,7 +16,8 @@ class ClearStampsEvent extends DoddlerEvent {
 
 class AddPointEvent extends DoddlerEvent {
   final Point? point;
-  AddPointEvent(this.point);
+  final bool end;
+  AddPointEvent(this.point, {this.end=false});
 }
 
 class UndoStampsEvent extends DoddlerEvent {
@@ -50,6 +51,7 @@ class SavePageToGalleryEvent extends DoddlerEvent {
   final GlobalKey? globalKey;
   SavePageToGalleryEvent({this.globalKey});
 }
+
 class UpdateSymmetryLines extends DoddlerEvent {
   final double? symmetryLines;
   UpdateSymmetryLines({this.symmetryLines});

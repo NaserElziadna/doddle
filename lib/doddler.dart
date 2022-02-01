@@ -66,10 +66,6 @@ class _DoddlerState extends State<Doddler> {
                       context
                           .read<DoddlerBloc>()
                           .add(UpdateSymmetryLines(symmetryLines: value));
-
-                      // context
-                      //     .read<DoddlerBloc>()
-                      //     .add(TakePageStampEvent(globalKey!));
                     });
                   },
                 )
@@ -118,10 +114,10 @@ class _DoddlerState extends State<Doddler> {
                                   1)
                               ..strokeCap = StrokeCap.square
                               ..strokeJoin = StrokeJoin.bevel
-                              ..strokeWidth = (Random().nextInt(10)) * 1.0)));
-                              context
-                      .read<DoddlerBloc>()
-                      .add(TakePageStampEvent(globalKey!));
+                              ..strokeWidth = (Random().nextInt(10)) * 1.0),end: true));
+                      //         context
+                      // .read<DoddlerBloc>()
+                      // .add(TakePageStampEvent(globalKey!));
                 },
                 child: RepaintBoundary(
                   key: globalKey,
