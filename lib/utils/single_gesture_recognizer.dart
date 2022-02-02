@@ -7,9 +7,9 @@ class SingleGestureRecognizer extends OneSequenceGestureRecognizer {
   @override
   String get debugDescription => 'single_gesture_recognizer';
 
-  ValueChanged<Offset>? onStart;
-  ValueChanged<Offset>? onUpdate;
-  ValueChanged<Offset>? onEnd;
+  ValueChanged<PointerEvent>? onStart;
+  ValueChanged<PointerEvent>? onUpdate;
+  ValueChanged<PointerEvent>? onEnd;
 
   bool pointerActive = false;
 
@@ -33,16 +33,16 @@ class SingleGestureRecognizer extends OneSequenceGestureRecognizer {
   @override
   void handleEvent(PointerEvent event) {
     if (event is PointerMoveEvent) {
-      onUpdate?.call(event.position);
+      onUpdate?.call(event);
     } else if (event is PointerDownEvent) {
       pointerActive = true;
-      onStart?.call(event.position);
+      onStart?.call(event);
     } else if (event is PointerUpEvent) {
       pointerActive = false;
-      onEnd?.call(event.position);
+      onEnd?.call(event);
     } else if (event is PointerCancelEvent) {
       pointerActive = false;
-      onEnd?.call(event.position);
+      onEnd?.call(event);
     }
   }
 
