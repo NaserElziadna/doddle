@@ -64,30 +64,44 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size(50, 50),
+          preferredSize: const Size.fromHeight(50),
           child: Container(
-            color: Colors.purple[500],
+            color: Colors.purple[800],
             child: Row(
               children: [
-                Slider(
-                  value: drawController!.symmetryLines!,
-                  max: 50,
-                  min: 0,
-                  activeColor: Colors.redAccent,
-                  label: "S L",
-                  thumbColor: Colors.black,
-                  inactiveColor: Colors.green,
-                  onChanged: (value) {
-                    setState(() {
-                      drawController =
-                          drawController?.copyWith(symmetryLines: value);
-                      context
-                          .read<DoddlerBloc>()
-                          .add(UpdateSymmetryLines(symmetryLines: value));
-                    });
-                  },
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.35,
+                  child: Slider(
+                    value: drawController!.symmetryLines!,
+                    max: 30,
+                    min: 0,
+                    activeColor: Colors.redAccent,
+                    label: "S L",
+                    thumbColor: Colors.black,
+                    inactiveColor: Colors.green,
+                    onChanged: (value) {
+                      setState(() {
+                        drawController =
+                            drawController?.copyWith(symmetryLines: value);
+                        context
+                            .read<DoddlerBloc>()
+                            .add(UpdateSymmetryLines(symmetryLines: value));
+                      });
+                    },
+                  ),
                 ),
-                const Spacer(),
+                // const Spacer(),
+                IconButton(
+                    tooltip: "share",
+                    onPressed: () {
+                      BlocProvider.of<DoddlerBloc>(context)
+                          .add(ShareImageEvent(context: context));
+                    },
+                    icon: const Icon(
+                      Icons.share,
+                      color: Colors.white,
+                      size: 30,
+                    )),
                 IconButton(
                     tooltip: "save",
                     onPressed: () {
@@ -97,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                     icon: const Icon(
                       Icons.save,
                       color: Colors.white,
-                      size: 36,
+                      size: 30,
                     )),
                 IconButton(
                     tooltip: "undo",
@@ -108,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                     icon: const Icon(
                       Icons.undo,
                       color: Colors.white,
-                      size: 36,
+                      size: 30,
                     )),
                 IconButton(
                     tooltip: "redo",
@@ -119,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                     icon: const Icon(
                       Icons.redo,
                       color: Colors.white,
-                      size: 36,
+                      size: 30,
                     )),
                 IconButton(
                     tooltip: "clear",
@@ -130,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                     icon: const Icon(
                       Icons.clear,
                       color: Colors.white,
-                      size: 36,
+                      size: 30,
                     )),
               ],
             ),
