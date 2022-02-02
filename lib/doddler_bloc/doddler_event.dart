@@ -14,10 +14,16 @@ class ClearStampsEvent extends DoddlerEvent {
   ClearStampsEvent();
 }
 
+class ShareImageEvent extends DoddlerEvent {
+  final BuildContext? context;
+  final GlobalKey? globalKey;
+  ShareImageEvent({this.globalKey, this.context});
+}
+
 class AddPointEvent extends DoddlerEvent {
   final Point? point;
   final bool end;
-  AddPointEvent(this.point, {this.end=false});
+  AddPointEvent(this.point, {this.end = false});
 }
 
 class UndoStampsEvent extends DoddlerEvent {

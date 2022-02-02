@@ -37,6 +37,8 @@ dependencies:
   flutter_bloc: ^7.1.0
   flutter_colorpicker: ^1.0.3
   image_gallery_saver: ^1.7.1
+  share_plus: ^3.0.4
+  path_provider: ^2.0.8
   # permission_handler: ^8.3.0
 
 dev_dependencies:

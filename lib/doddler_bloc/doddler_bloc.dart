@@ -1,8 +1,15 @@
+import 'dart:async';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:bloc/bloc.dart';
 import 'package:doddle/draw_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'dart:ui' as ui;
 
 import 'doddler_event.dart';
@@ -22,7 +29,7 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
       yield UpdateCanvasState(drawController: drawController);
     } else if (event is AddPointEvent) {
       drawController!.points!.add(event.point);
-      if(event.end){
+      if (event.end) {
         add(TakePageStampEvent(drawController!.globalKey!));
       }
       yield UpdateCanvasState(drawController: drawController);
@@ -75,6 +82,14 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
         print(e);
       }
       yield UpdateCanvasState(drawController: drawController);
+    } else if (event is ShareImageEvent) {
+      try {
+        screenShotAndShare(
+            event.globalKey ?? drawController!.globalKey!, event.context!);
+      } catch (e) {
+        print(e);
+      }
+      // yield UpdateCanvasState(drawController: drawController);
     }
   }
 
@@ -93,6 +108,7 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
       final image = await boundary.toImage();
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       final pngBytes = byteData!.buffer.asUint8List();
+
       final saved = await ImageGallerySaver.saveImage(
         pngBytes,
         quality: 100,
@@ -101,6 +117,35 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
       );
     } catch (e) {
       print(e);
+    }
+  }
+
+  Future<Null> screenShotAndShare(
+      GlobalKey globalKey, BuildContext context) async {
+    try {
+      RenderRepaintBoundary boundary =
+          globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      if (boundary.debugNeedsPaint) {
+        Timer(const Duration(seconds: 1), () => add(ShareImageEvent()));
+        return null;
+      }
+      ui.Image image = await boundary.toImage();
+      final directory = (await getExternalStorageDirectory())?.path;
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+      File imgFile = File('$directory/screenshot.png');
+      imgFile.writeAsBytes(pngBytes);
+      print('Screenshot Path:' + imgFile.path);
+
+      final RenderBox box = context.findRenderObject() as RenderBox;
+      Share.shareFiles(['$directory/screenshot.png'],
+          subject: 'Doddle App',
+          text: 'Hey, check it out My Amazing Doddle!',
+          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+    } on PlatformException catch (e) {
+      print("Exception while taking screenshot:" + e.toString());
     }
   }
 }
