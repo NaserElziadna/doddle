@@ -1,13 +1,21 @@
 import 'package:doddle/doddler.dart';
 import 'package:doddle/draw_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'doddler_bloc/doddler_bloc.dart';
 import 'doddler_bloc/doddler_event.dart';
 import 'tools_widget.dart';
 
-void main() => runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    // DeviceOrientation.portraitDown,
+  ]); // To turn off landscape mode
+  runApp(const MyApp());
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -17,24 +25,122 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  double symmetryLines = 0;
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => DoddlerBloc(
         drawController: DrawController(
-            points: [], currentColor: Colors.white, symmetryLines: 15),
+            points: [], currentColor: Colors.green, symmetryLines: 15),
       ),
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: Container(
-          color: Colors.purple[700],
-          child: Doddler(),
+        home: const HomePage(),
+      ),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  DrawController? drawController;
+
+  @override
+  void initState() {
+    drawController = context.read<DoddlerBloc>().drawController;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size(50, 50),
+          child: Container(
+            color: Colors.purple[500],
+            child: Row(
+              children: [
+                Slider(
+                  value: drawController!.symmetryLines!,
+                  max: 50,
+                  min: 0,
+                  activeColor: Colors.redAccent,
+                  label: "S L",
+                  thumbColor: Colors.black,
+                  inactiveColor: Colors.green,
+                  onChanged: (value) {
+                    setState(() {
+                      drawController =
+                          drawController?.copyWith(symmetryLines: value);
+                      context
+                          .read<DoddlerBloc>()
+                          .add(UpdateSymmetryLines(symmetryLines: value));
+                    });
+                  },
+                ),
+                const Spacer(),
+                IconButton(
+                    tooltip: "save",
+                    onPressed: () {
+                      BlocProvider.of<DoddlerBloc>(context)
+                          .add(SavePageToGalleryEvent());
+                    },
+                    icon: const Icon(
+                      Icons.save,
+                      color: Colors.white,
+                      size: 36,
+                    )),
+                IconButton(
+                    tooltip: "undo",
+                    onPressed: () {
+                      BlocProvider.of<DoddlerBloc>(context)
+                          .add(UndoStampsEvent());
+                    },
+                    icon: const Icon(
+                      Icons.undo,
+                      color: Colors.white,
+                      size: 36,
+                    )),
+                IconButton(
+                    tooltip: "redo",
+                    onPressed: () {
+                      BlocProvider.of<DoddlerBloc>(context)
+                          .add(RedoStampsEvent());
+                    },
+                    icon: const Icon(
+                      Icons.redo,
+                      color: Colors.white,
+                      size: 36,
+                    )),
+                IconButton(
+                    tooltip: "clear",
+                    onPressed: () {
+                      BlocProvider.of<DoddlerBloc>(context)
+                          .add(ClearStampsEvent());
+                    },
+                    icon: const Icon(
+                      Icons.clear,
+                      color: Colors.white,
+                      size: 36,
+                    )),
+              ],
+            ),
+          ),
         ),
+        body: Container(
+          color: Colors.purple[800],
+          child: const Doddler(),
+        ),
+        bottomSheet: const ToolsWidget(),
       ),
     );
   }
