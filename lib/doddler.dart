@@ -61,7 +61,14 @@ class _DoddlerState extends State<Doddler> {
                           _SingleGestureRecognizer>(
                     () => _SingleGestureRecognizer(debugOwner: this),
                     (instance) {
-                      // instance.onStart = (position) => _startPath(position);
+                      instance.onStart = (position) {
+                        BlocProvider.of<DoddlerBloc>(context).add(
+                            ChangeCurrentColorEvent(Color.fromRGBO(
+                                Random().nextInt(255),
+                                Random().nextInt(255),
+                                Random().nextInt(255),
+                                1)));
+                      };
                       instance.onUpdate = (position) {
                         setState(() {
                           kCanvasSize = Size(
@@ -95,23 +102,21 @@ class _DoddlerState extends State<Doddler> {
                       };
                       instance.onEnd = (position) => {
                             BlocProvider.of<DoddlerBloc>(context).add(
-                                AddPointEvent(
-                                    Point(
-                                        offset: null,
-                                        paint: Paint()
-                                          ..color = Color.fromRGBO(
-                                              Random().nextInt(255),
-                                              Random().nextInt(255),
-                                              Random().nextInt(255),
-                                              1)
-                                          ..strokeCap = StrokeCap.square
-                                          ..strokeJoin = StrokeJoin.bevel
-                                          ..strokeWidth =
-                                              (Random().nextInt(10)) * 1.0),
-                                    end: true))
-                            //         context
-                            // .read<DoddlerBloc>()
-                            // .add(TakePageStampEvent(globalKey!));
+                              AddPointEvent(
+                                  Point(
+                                      offset: null,
+                                      paint: Paint()
+                                        ..color = Color.fromRGBO(
+                                            Random().nextInt(255),
+                                            Random().nextInt(255),
+                                            Random().nextInt(255),
+                                            1)
+                                        ..strokeCap = StrokeCap.square
+                                        ..strokeJoin = StrokeJoin.bevel
+                                        ..strokeWidth =
+                                            (Random().nextInt(10)) * 1.0),
+                                  end: true),
+                            )
                           };
                     },
                   ),
