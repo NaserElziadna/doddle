@@ -13,6 +13,15 @@ class ToolsWidget extends StatefulWidget {
 }
 
 class _ToolsWidgetState extends State<ToolsWidget> {
+  // create some values
+  Color pickerColor = Color(0xff443a49);
+  Color currentColor = Color(0xff443a49);
+
+// ValueChanged<Color> callback
+  void changeColor(Color color) {
+    setState(() => pickerColor = color);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -25,56 +34,33 @@ class _ToolsWidgetState extends State<ToolsWidget> {
           children: [
             IconButton(
                 onPressed: () {
-                  // final globalKey = BlocProvider.of<DoddlerBloc>(context)
-                  //     .drawController!
-                  //     .globalKey;
-                  BlocProvider.of<DoddlerBloc>(context)
-                      .add(SavePageToGalleryEvent());
-                },
-                icon: const Icon(
-                  Icons.save,
-                  color: Colors.white,
-                  size: 36,
-                )),
-            IconButton(
-                onPressed: () {
-                  BlocProvider.of<DoddlerBloc>(context).add(UndoStampsEvent());
-                },
-                icon: const Icon(
-                  Icons.undo,
-                  color: Colors.white,
-                  size: 36,
-                )),
-            IconButton(
-                onPressed: () {
-                  ColorPicker(
-                    pickerColor: Colors.red,
-                    onColorChanged: (color) {
-                      BlocProvider.of<DoddlerBloc>(context)
-                          .add(ChangeCurrentColorEvent(color));
-                    },
-                  );
+                  // raise the [showDialog] widget
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Pick a color!'),
+                          content: SingleChildScrollView(
+                            child: ColorPicker(
+                              pickerColor: pickerColor,
+                              onColorChanged: changeColor,
+                            ),
+                          ),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              child: const Text('Got it'),
+                              onPressed: () {
+                                BlocProvider.of<DoddlerBloc>(context)
+                                    .add(ChangeCurrentColorEvent(pickerColor));
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      });
                 },
                 icon: const Icon(
                   Icons.color_lens,
-                  color: Colors.white,
-                  size: 36,
-                )),
-            IconButton(
-                onPressed: () {
-                   BlocProvider.of<DoddlerBloc>(context).add(RedoStampsEvent());
-                },
-                icon: const Icon(
-                  Icons.redo,
-                  color: Colors.white,
-                  size: 36,
-                )),
-            IconButton(
-                onPressed: () {
-                  BlocProvider.of<DoddlerBloc>(context).add(ClearStampsEvent());
-                },
-                icon: const Icon(
-                  Icons.clear,
                   color: Colors.white,
                   size: 36,
                 )),
