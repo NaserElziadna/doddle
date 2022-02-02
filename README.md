@@ -60,29 +60,29 @@ Amazing magical doodle game provide a creative doodle world for you!
 - [x] add bloc pattern
 - [x] publish project on githup 💓
 - [x] add bottom sheet toolkit
-  - [ ] redo tool
-  - [ ] undo tool
+  - [x] redo tool
+  - [x] undo tool
   - [x] clear canvas 
   - [x] brush types (didn't apply to ui)
     - [x] noraml line
     - [x] glow line
     - [ ] dotted line
-- [ ] create draw controller 
-  - [ ] varibals
-    - [ ] List of points
-      - [ ] Offset
-      - [ ] paint
-    - [ ] List of stamp (layer of canvas)  
-  - [ ] method
-      - [ ] save image to gallery
-      - [ ] take stamp of the canvas 
+- [x] create draw controller 
+  - [x] varibals
+    - [x] List of points
+      - [x] Offset
+      - [x] paint
+    - [x] List of stamp (layer of canvas)  
+  - [x] method
+      - [x] save image to gallery
+      - [x] take stamp of the canvas 
 - [ ] add gallery page
   - [ ] all saved work
   - [ ] edit a saved work
   - [ ] delete a saved work
   - [ ] share a saved work 
 - [ ] Playback the painting process as a cartoon video clip
-- [ ] symmetry line picker
+- [x] symmetry line picker
 
 # My Goal App
 # <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/myGoalApp.jpeg" alt="drawing" style="width:50%;"/>    
