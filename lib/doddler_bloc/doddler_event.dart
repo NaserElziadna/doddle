@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:doddle/models/draw_controller.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../models/point.dart';
@@ -8,6 +9,10 @@ abstract class DoddlerEvent {}
 
 class ClearPointEvent extends DoddlerEvent {
   ClearPointEvent();
+}
+
+class AddASceneEvent extends DoddlerEvent {
+  AddASceneEvent();
 }
 
 class ClearStampsEvent extends DoddlerEvent {
@@ -61,4 +66,8 @@ class SavePageToGalleryEvent extends DoddlerEvent {
 class UpdateSymmetryLines extends DoddlerEvent {
   final double? symmetryLines;
   UpdateSymmetryLines({this.symmetryLines});
+}
+
+class CallNextFrameEvent extends DoddlerEvent {
+  CallNextFrameEvent();
 }

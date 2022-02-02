@@ -17,6 +17,7 @@ import 'doddler_state.dart';
 
 class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
   DrawController? drawController;
+  var index = 0;
   DoddlerBloc({this.drawController}) : super(UpdateCanvasState());
 
   @override
@@ -31,6 +32,7 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
       drawController!.points!.add(event.point);
       if (event.end) {
         add(TakePageStampEvent(drawController!.globalKey!));
+        add(AddASceneEvent());
       }
       yield UpdateCanvasState(drawController: drawController);
     } else if (event is UndoStampsEvent) {
@@ -90,6 +92,24 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
         print(e);
       }
       // yield UpdateCanvasState(drawController: drawController);
+    } else if (event is AddASceneEvent) {
+      try {
+        ui.Image image = await canvasToImage(drawController!.globalKey!);
+        List<Frame?>? frames = List.from(drawController!.frames!);
+        frames.add(Frame(frame: image));
+        drawController = drawController!.copyWith(frames: frames);
+      } catch (e) {
+        print(e);
+      }
+    } else if (event is CallNextFrameEvent) {
+      if (index < drawController!.frames!.length) {
+        yield GetNextFrameState(frame: drawController!.frames![index]);
+        index++;
+        add(CallNextFrameEvent());
+      } else {
+        yield UpdateCanvasState(drawController: drawController);
+      }
+      index = 0;
     }
   }
 

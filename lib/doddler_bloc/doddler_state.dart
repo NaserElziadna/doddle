@@ -10,3 +10,8 @@ class UpdateCanvasState extends DoddlerState {
   DrawController? drawController;
   UpdateCanvasState({this.drawController});
 }
+
+class GetNextFrameState extends DoddlerState {
+  final Frame? frame;
+  GetNextFrameState({this.frame});
+}

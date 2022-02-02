@@ -1,4 +1,5 @@
 import 'package:doddle/doddler_bloc/doddler_event.dart';
+import 'package:doddle/pages/canvas_movie_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -71,6 +72,16 @@ class _ToolsWidgetState extends State<ToolsWidget> {
                   color: Colors.white,
                   size: 36,
                 )),
+            // IconButton(
+            //     onPressed: () {
+            //       Navigator.of(context).push(MaterialPageRoute(
+            //           builder: (context) => const CanvasMoviePage()));
+            //     },
+            //     icon: const Icon(
+            //       Icons.movie,
+            //       color: Colors.white,
+            //       size: 36,
+            //     )),
           ],
         ),
       ),
