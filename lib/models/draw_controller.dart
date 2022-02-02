@@ -1,11 +1,10 @@
 import 'dart:ui' as ui;
 import 'dart:ui';
 
+import 'package:doddle/models/point.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import 'point.dart';
 
 class DrawController {
   final List<Point?>? points;
@@ -17,9 +16,9 @@ class DrawController {
 
   DrawController({
     this.points = const [],
-    this.stamp =const [],
-    this.stampUndo=const [],
-    this.currentColor = const Color(0x12457895) ,
+    this.stamp = const [],
+    this.stampUndo = const [],
+    this.currentColor = const Color(0x12457895),
     this.globalKey,
     this.symmetryLines = 20,
   });
@@ -50,24 +49,24 @@ class DrawController {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is DrawController &&
-      listEquals(other.points, points) &&
-      listEquals(other.stamp, stamp) &&
-      listEquals(other.stampUndo, stampUndo) &&
-      other.currentColor == currentColor &&
-      other.globalKey == globalKey &&
-      other.symmetryLines == symmetryLines;
+        listEquals(other.points, points) &&
+        listEquals(other.stamp, stamp) &&
+        listEquals(other.stampUndo, stampUndo) &&
+        other.currentColor == currentColor &&
+        other.globalKey == globalKey &&
+        other.symmetryLines == symmetryLines;
   }
 
   @override
   int get hashCode {
     return points.hashCode ^
-      stamp.hashCode ^
-      stampUndo.hashCode ^
-      currentColor.hashCode ^
-      globalKey.hashCode ^
-      symmetryLines.hashCode;
+        stamp.hashCode ^
+        stampUndo.hashCode ^
+        currentColor.hashCode ^
+        globalKey.hashCode ^
+        symmetryLines.hashCode;
   }
 }
 

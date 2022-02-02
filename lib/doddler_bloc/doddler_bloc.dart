@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
-import 'package:doddle/draw_controller.dart';
+import 'package:doddle/models/draw_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';

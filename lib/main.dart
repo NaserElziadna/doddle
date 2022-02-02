@@ -1,12 +1,12 @@
 import 'package:doddle/doddler.dart';
-import 'package:doddle/draw_controller.dart';
+import 'package:doddle/models/draw_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'doddler_bloc/doddler_bloc.dart';
 import 'doddler_bloc/doddler_event.dart';
-import 'tools_widget.dart';
+import 'widgets/tools_widget.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

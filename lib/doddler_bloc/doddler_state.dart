@@ -1,6 +1,6 @@
-import 'package:doddle/draw_controller.dart';
+import 'package:doddle/models/draw_controller.dart';
 
-import '../point.dart';
+import '../models/point.dart';
 
 abstract class DoddlerState {}
 

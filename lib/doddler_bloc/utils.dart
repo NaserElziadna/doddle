@@ -1,4 +1,0 @@
-enum BrushType{
- glow,
- normal 
-}

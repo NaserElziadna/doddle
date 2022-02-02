@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-import 'doddler_bloc/doddler_bloc.dart';
+import '../doddler_bloc/doddler_bloc.dart';
 
 class ToolsWidget extends StatefulWidget {
   const ToolsWidget({Key? key}) : super(key: key);
