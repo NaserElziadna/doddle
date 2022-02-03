@@ -1,7 +1,8 @@
 import 'dart:ui';
 
-import 'package:doddle/models/draw_controller.dart';
 import 'package:flutter/cupertino.dart';
+
+import 'package:doddle/models/draw_controller.dart';
 
 import '../models/point.dart';
 
@@ -55,8 +56,16 @@ class TakePageStampEvent extends DoddlerEvent {
 
 class ChangeCurrentColorEvent extends DoddlerEvent {
   final Color? color;
-  ChangeCurrentColorEvent(this.color);
+  final bool isRandomColor;
+  ChangeCurrentColorEvent(this.color, this.isRandomColor);
 }
+
+// class IsRandomColorColorEvent extends DoddlerEvent {
+//   final bool isRandomColor;
+//   IsRandomColorColorEvent(
+//     this.isRandomColor,
+//   );
+// }
 
 class SavePageToGalleryEvent extends DoddlerEvent {
   final GlobalKey? globalKey;

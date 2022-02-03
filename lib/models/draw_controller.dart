@@ -1,10 +1,11 @@
 import 'dart:ui' as ui;
 import 'dart:ui';
 
-import 'package:doddle/models/point.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'package:doddle/models/point.dart';
 
 class DrawController {
   final List<Point?>? points;
@@ -12,6 +13,7 @@ class DrawController {
   final List<Stamp?>? stampUndo;
   final List<Frame?>? frames;
   final Color currentColor;
+  final bool isRandomColor;
   final GlobalKey? globalKey;
   final double? symmetryLines;
 
@@ -21,6 +23,7 @@ class DrawController {
     this.stampUndo = const [],
     this.frames = const [],
     this.currentColor = const Color(0x12457895),
+    this.isRandomColor = false,
     this.globalKey,
     this.symmetryLines = 20,
   });
@@ -31,6 +34,7 @@ class DrawController {
     List<Stamp?>? stampUndo,
     List<Frame?>? frames,
     Color? currentColor,
+    bool? isRandomColor,
     GlobalKey? globalKey,
     double? symmetryLines,
   }) {
@@ -40,6 +44,7 @@ class DrawController {
       stampUndo: stampUndo ?? this.stampUndo,
       frames: frames ?? this.frames,
       currentColor: currentColor ?? this.currentColor,
+      isRandomColor: isRandomColor ?? this.isRandomColor,
       globalKey: globalKey ?? this.globalKey,
       symmetryLines: symmetryLines ?? this.symmetryLines,
     );
@@ -47,7 +52,7 @@ class DrawController {
 
   @override
   String toString() {
-    return 'DrawController(points: ${points.toString()}, stamp: $stamp, stampUndo: $stampUndo, frames: $frames, currentColor: $currentColor, globalKey: $globalKey, symmetryLines: $symmetryLines)';
+    return 'DrawController(points: $points, stamp: $stamp, stampUndo: $stampUndo, frames: $frames, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines)';
   }
 
   @override
@@ -60,6 +65,7 @@ class DrawController {
         listEquals(other.stampUndo, stampUndo) &&
         listEquals(other.frames, frames) &&
         other.currentColor == currentColor &&
+        other.isRandomColor == isRandomColor &&
         other.globalKey == globalKey &&
         other.symmetryLines == symmetryLines;
   }
@@ -71,6 +77,7 @@ class DrawController {
         stampUndo.hashCode ^
         frames.hashCode ^
         currentColor.hashCode ^
+        isRandomColor.hashCode ^
         globalKey.hashCode ^
         symmetryLines.hashCode;
   }

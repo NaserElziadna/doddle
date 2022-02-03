@@ -1,10 +1,15 @@
-import 'package:doddle/doddler_bloc/doddler_event.dart';
-import 'package:doddle/pages/canvas_movie_page.dart';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:doddle/doddler_bloc/doddler_event.dart';
+import 'package:doddle/generated/assets.gen.dart';
 
 import '../doddler_bloc/doddler_bloc.dart';
+import 'popover.dart';
 
 class ToolsWidget extends StatefulWidget {
   const ToolsWidget({Key? key}) : super(key: key);
@@ -15,8 +20,8 @@ class ToolsWidget extends StatefulWidget {
 
 class _ToolsWidgetState extends State<ToolsWidget> {
   // create some values
-  Color pickerColor = Color(0xff443a49);
-  Color currentColor = Color(0xff443a49);
+  Color pickerColor = const Color(0xff443a49);
+  Color currentColor = const Color(0xff443a49);
 
 // ValueChanged<Color> callback
   void changeColor(Color color) {
@@ -29,62 +34,268 @@ class _ToolsWidgetState extends State<ToolsWidget> {
       create: (context) => DoddlerBloc(),
       child: Container(
         height: MediaQuery.of(context).size.height * .1,
-        color: Colors.purple,
+        color: Colors.purple[800],
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            IconButton(
-                onPressed: () {
-                  // raise the [showDialog] widget
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text('Pick a color!'),
-                          content: SingleChildScrollView(
-                            child: ColorPicker(
-                              pickerColor: pickerColor,
-                              onColorChanged: changeColor,
-                            ),
-                          ),
-                          actions: <Widget>[
-                            ElevatedButton(
-                              child: const Text('Got it'),
-                              onPressed: () {
-                                BlocProvider.of<DoddlerBloc>(context)
-                                    .add(ChangeCurrentColorEvent(pickerColor));
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      });
-                },
-                icon: const Icon(
-                  Icons.color_lens,
-                  color: Colors.white,
-                  size: 36,
-                )),
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.brush,
-                  color: Colors.white,
-                  size: 36,
-                )),
-            // IconButton(
-            //     onPressed: () {
-            //       Navigator.of(context).push(MaterialPageRoute(
-            //           builder: (context) => const CanvasMoviePage()));
-            //     },
-            //     icon: const Icon(
-            //       Icons.movie,
-            //       color: Colors.white,
-            //       size: 36,
-            //     )),
+            GestureDetector(
+              child: Assets.svg.pen.svg(
+                width: 50,
+              ),
+              onTap: () {},
+            ),
+            GestureDetector(
+              child: Assets.svg.eraser.svg(
+                width: 60,
+              ),
+              onTap: () {},
+            ),
+            GestureDetector(
+              child: Stack(alignment: AlignmentDirectional.center, children: [
+                Assets.svg.symmetricalLineBg.svg(
+                  width: 80,
+                ),
+                Assets.svg.symmtricalLine6.svg(
+                  width: 60,
+                )
+              ]),
+              onTap: () {
+                _handleFABPressed(context, ToolType.brushs);
+              },
+            ),
+            GestureDetector(
+              child: Stack(alignment: AlignmentDirectional.center, children: [
+                Assets.svg.colorBorder.svg(
+                  width: 70,
+                ),
+                Assets.svg.randomColor.svg(
+                  width: 61,
+                ),
+              ]),
+              onTap: () {
+                _handleFABPressed(context, ToolType.colors);
+              },
+            ),
           ],
         ),
       ),
     );
   }
+
+  void _handleFABPressed(BuildContext context, ToolType toolType) {
+    showModalBottomSheet<int>(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) {
+        return Popover(
+          child: _buildToolSettings(context, toolType),
+        );
+      },
+    );
+  }
+
+  Widget _buildToolSettings(BuildContext context, ToolType toolType) {
+    if (toolType == ToolType.colors) {
+      return buildColorTool(context);
+    } else if (toolType == ToolType.brushs) {
+      return buildBrushesTool(context);
+    }
+    return buildColorTool(context);
+  }
+
+  Widget buildBrushesTool(BuildContext context) {
+    final theme = Theme.of(context);
+    final symmtricalLines = [
+      SymmtriclLine(count: 1, picture: Assets.svg.symmtricalLine1.svg()),
+      SymmtriclLine(count: 2, picture: Assets.svg.symmtricalLine2.svg()),
+      SymmtriclLine(count: 3, picture: Assets.svg.symmtricalLine3.svg()),
+      SymmtriclLine(count: 4, picture: Assets.svg.symmtricalLine4.svg()),
+      SymmtriclLine(count: 5, picture: Assets.svg.symmtricalLine5.svg()),
+      SymmtriclLine(count: 6, picture: Assets.svg.symmtricalLine6.svg()),
+      SymmtriclLine(count: 7, picture: Assets.svg.symmtricalLine7.svg()),
+      SymmtriclLine(count: 8, picture: Assets.svg.symmtricalLine8.svg()),
+      SymmtriclLine(count: 9, picture: Assets.svg.symmtricalLine9.svg()),
+      SymmtriclLine(count: 10, picture: Assets.svg.symmtricalLine10.svg()),
+      SymmtriclLine(count: 11, picture: Assets.svg.symmtricalLine11.svg()),
+      SymmtriclLine(count: 12, picture: Assets.svg.symmtricalLine12.svg()),
+      SymmtriclLine(count: 13, picture: Assets.svg.symmtricalLine13.svg()),
+      SymmtriclLine(count: 14, picture: Assets.svg.symmtricalLine14.svg()),
+      SymmtriclLine(count: 15, picture: Assets.svg.symmtricalLine15.svg()),
+      SymmtriclLine(count: 16, picture: Assets.svg.symmtricalLine16.svg()),
+    ];
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 24.0,
+        vertical: 16.0,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: theme.dividerColor,
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: GridView.builder(
+          shrinkWrap: true,
+          itemCount: symmtricalLines.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4),
+          itemBuilder: (BuildContext context, int index) {
+            final symmtricalLine = symmtricalLines[index];
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                child: Container(
+                  child: symmtricalLine.picture,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    border: Border.all(color: Colors.black, width: 3),
+                  ),
+                ),
+                onTap: () {
+                  BlocProvider.of<DoddlerBloc>(context).add(
+                      UpdateSymmetryLines(symmetryLines: symmtricalLine.count-1));
+                  Navigator.of(context).pop();
+                },
+              ),
+            );
+          }),
+    );
+  }
+
+  Widget buildColorTool(BuildContext context) {
+    final colors = [
+      Colors.green,
+      Colors.black,
+      Colors.blue,
+      Colors.red,
+      Colors.grey,
+      Colors.yellow,
+      Colors.purple,
+      Colors.indigo,
+      Colors.lime,
+      Colors.orange,
+      "Random Color",
+      "Color Picker"
+    ];
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 24.0,
+        vertical: 16.0,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: theme.dividerColor,
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: GridView.builder(
+        shrinkWrap: true,
+        itemCount: colors.length,
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+        itemBuilder: (BuildContext context, int index) {
+          final color = colors[index];
+          if (color is Color) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: color,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white70, width: 3),
+                  ),
+                ),
+                onTap: () {
+                  BlocProvider.of<DoddlerBloc>(context)
+                      .add(ChangeCurrentColorEvent(color, false));
+                  Navigator.of(context).pop();
+                },
+              ),
+            );
+          } else {
+            if (color == "Random Color") {
+              return GestureDetector(
+                child: Stack(alignment: AlignmentDirectional.center, children: [
+                  Assets.svg.colorBorder.svg(
+                    width: 60,
+                  ),
+                  Assets.svg.randomColor.svg(
+                    width: 50,
+                  ),
+                ]),
+                onTap: () {
+                  BlocProvider.of<DoddlerBloc>(context).add(
+                      ChangeCurrentColorEvent(Color(Colors.green.value), true));
+                  Navigator.of(context).pop();
+                },
+              );
+            } else if (color == "Color Picker") {
+              return IconButton(
+                  onPressed: () {
+                    // raise the [showDialog] widget
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Pick a color!'),
+                            content: SingleChildScrollView(
+                              child: ColorPicker(
+                                pickerColor: pickerColor,
+                                onColorChanged: changeColor,
+                              ),
+                            ),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                child: const Text('Got it'),
+                                onPressed: () {
+                                  BlocProvider.of<DoddlerBloc>(context).add(
+                                      ChangeCurrentColorEvent(
+                                          pickerColor, false));
+                                  //for the dialog
+                                  Navigator.of(context).pop();
+                                  //for the model
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        });
+                  },
+                  icon: const Icon(
+                    Icons.color_lens,
+                    color: Colors.red,
+                    size: 60,
+                  ));
+            }
+          }
+          return Container();
+        },
+      ),
+    );
+  }
+}
+
+enum ToolType {
+  colors,
+  brushs,
+  symmyrticllLine,
+}
+
+class SymmtriclLine {
+  double count;
+  SvgPicture picture;
+  SymmtriclLine({
+    required this.count,
+    required this.picture,
+  });
 }

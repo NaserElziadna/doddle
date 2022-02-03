@@ -1,4 +1,5 @@
 import 'package:doddle/doddler.dart';
+import 'package:doddle/generated/assets.gen.dart';
 import 'package:doddle/models/draw_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -69,83 +70,46 @@ class _HomePageState extends State<HomePage> {
             color: Colors.purple[800],
             child: Row(
               children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.35,
-                  child: Slider(
-                    value: drawController!.symmetryLines!,
-                    max: 30,
-                    min: 0,
-                    activeColor: Colors.redAccent,
-                    label: "S L",
-                    thumbColor: Colors.black,
-                    inactiveColor: Colors.green,
-                    onChanged: (value) {
-                      setState(() {
-                        drawController =
-                            drawController?.copyWith(symmetryLines: value);
-                        context
-                            .read<DoddlerBloc>()
-                            .add(UpdateSymmetryLines(symmetryLines: value));
-                      });
-                    },
+                GestureDetector(
+                  child: const Icon(
+                    Icons.save_alt_outlined,
+                    color: Colors.white,
+                    size: 40,
                   ),
+                  onTap: () {
+                    BlocProvider.of<DoddlerBloc>(context)
+                        .add(SavePageToGalleryEvent());
+                  },
                 ),
-                // const Spacer(),
-                IconButton(
-                    tooltip: "share",
-                    onPressed: () {
-                      BlocProvider.of<DoddlerBloc>(context)
-                          .add(ShareImageEvent(context: context));
-                    },
-                    icon: const Icon(
-                      Icons.share,
-                      color: Colors.white,
-                      size: 30,
-                    )),
-                IconButton(
-                    tooltip: "save",
-                    onPressed: () {
-                      BlocProvider.of<DoddlerBloc>(context)
-                          .add(SavePageToGalleryEvent());
-                    },
-                    icon: const Icon(
-                      Icons.save,
-                      color: Colors.white,
-                      size: 30,
-                    )),
-                IconButton(
-                    tooltip: "undo",
-                    onPressed: () {
-                      BlocProvider.of<DoddlerBloc>(context)
-                          .add(UndoStampsEvent());
-                    },
-                    icon: const Icon(
-                      Icons.undo,
-                      color: Colors.white,
-                      size: 30,
-                    )),
-                IconButton(
-                    tooltip: "redo",
-                    onPressed: () {
-                      BlocProvider.of<DoddlerBloc>(context)
-                          .add(RedoStampsEvent());
-                    },
-                    icon: const Icon(
-                      Icons.redo,
-                      color: Colors.white,
-                      size: 30,
-                    )),
-                IconButton(
-                    tooltip: "clear",
-                    onPressed: () {
-                      BlocProvider.of<DoddlerBloc>(context)
-                          .add(ClearStampsEvent());
-                    },
-                    icon: const Icon(
-                      Icons.clear,
-                      color: Colors.white,
-                      size: 30,
-                    )),
+                GestureDetector(
+                  child: Assets.svg.share.svg(width: 40),
+                  onTap: () {
+                    BlocProvider.of<DoddlerBloc>(context)
+                        .add(ShareImageEvent(context: context));
+                  },
+                ),
+                const Spacer(),
+                GestureDetector(
+                  child: Assets.svg.undo.svg(width: 40),
+                  onTap: () {
+                    BlocProvider.of<DoddlerBloc>(context)
+                        .add(UndoStampsEvent());
+                  },
+                ),
+                GestureDetector(
+                  child: Assets.svg.redo.svg(width: 40),
+                  onTap: () {
+                    BlocProvider.of<DoddlerBloc>(context)
+                        .add(RedoStampsEvent());
+                  },
+                ),
+                GestureDetector(
+                  child: Assets.svg.close.svg(width: 40),
+                  onTap: () {
+                    BlocProvider.of<DoddlerBloc>(context)
+                        .add(ClearStampsEvent());
+                  },
+                ),
               ],
             ),
           ),

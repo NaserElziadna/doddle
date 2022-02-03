@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
@@ -55,15 +56,25 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
         List<Stamp?>? stamps = List.from(drawController!.stamp!);
         stamps.add(toRedo);
 
-        drawController =
-            drawController!.copyWith(stamp: stamps, stampUndo: stampUndo);
+        drawController = drawController!.copyWith(
+          stamp: stamps,
+          stampUndo: stampUndo,
+        );
 
         yield UpdateCanvasState(drawController: drawController);
       }
     } else if (event is ChangeCurrentColorEvent) {
-      drawController =
-          drawController?.copyWith(currentColor: event.color ?? Colors.white);
-    } else if (event is SavePageToGalleryEvent) {
+      drawController = drawController?.copyWith(
+        currentColor: event.color,
+        isRandomColor: event.isRandomColor,
+      );
+      yield UpdateCanvasState(drawController: drawController);
+    }
+    //  else if (event is IsRandomColorColorEvent) {
+    //   drawController =
+    //       drawController?.copyWith(isRandomColor: event.isRandomColor);
+    // }
+    else if (event is SavePageToGalleryEvent) {
       save(event.globalKey ?? drawController!.globalKey!);
     } else if (event is InitGlobalKeyEvent) {
       drawController = drawController?.copyWith(globalKey: event.globalKey);
