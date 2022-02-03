@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:doddle/models/point.dart';
 
 class DrawController {
+  final bool isPanActive;
   final List<Point?>? points;
   final List<Stamp?>? stamp;
   final List<Stamp?>? stampUndo;
@@ -18,6 +19,7 @@ class DrawController {
   final double? symmetryLines;
 
   DrawController({
+    this.isPanActive=true,
     this.points = const [],
     this.stamp = const [],
     this.stampUndo = const [],
@@ -29,6 +31,7 @@ class DrawController {
   });
 
   DrawController copyWith({
+    bool? isPanActive,
     List<Point?>? points,
     List<Stamp?>? stamp,
     List<Stamp?>? stampUndo,
@@ -39,6 +42,7 @@ class DrawController {
     double? symmetryLines,
   }) {
     return DrawController(
+      isPanActive: isPanActive ?? this.isPanActive,
       points: points ?? this.points,
       stamp: stamp ?? this.stamp,
       stampUndo: stampUndo ?? this.stampUndo,
@@ -52,7 +56,7 @@ class DrawController {
 
   @override
   String toString() {
-    return 'DrawController(points: $points, stamp: $stamp, stampUndo: $stampUndo, frames: $frames, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines)';
+    return 'DrawController(isPanActive: $isPanActive, points: $points, stamp: $stamp, stampUndo: $stampUndo, frames: $frames, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines)';
   }
 
   @override
@@ -60,6 +64,7 @@ class DrawController {
     if (identical(this, other)) return true;
 
     return other is DrawController &&
+        other.isPanActive == isPanActive &&
         listEquals(other.points, points) &&
         listEquals(other.stamp, stamp) &&
         listEquals(other.stampUndo, stampUndo) &&
@@ -72,7 +77,8 @@ class DrawController {
 
   @override
   int get hashCode {
-    return points.hashCode ^
+    return isPanActive.hashCode ^
+        points.hashCode ^
         stamp.hashCode ^
         stampUndo.hashCode ^
         frames.hashCode ^

@@ -17,7 +17,8 @@ class AddASceneEvent extends DoddlerEvent {
 }
 
 class ClearStampsEvent extends DoddlerEvent {
-  ClearStampsEvent();
+  final bool ok;
+  ClearStampsEvent({this.ok = false});
 }
 
 class ShareImageEvent extends DoddlerEvent {
@@ -29,7 +30,7 @@ class ShareImageEvent extends DoddlerEvent {
 class AddPointEvent extends DoddlerEvent {
   final Point? point;
   final bool end;
-  AddPointEvent(this.point, {this.end = false});
+  AddPointEvent({this.point = null, this.end = false});
 }
 
 class UndoStampsEvent extends DoddlerEvent {
@@ -80,3 +81,14 @@ class UpdateSymmetryLines extends DoddlerEvent {
 class CallNextFrameEvent extends DoddlerEvent {
   CallNextFrameEvent();
 }
+
+class MessageEvent extends DoddlerEvent {
+  final String message;
+  final bool isClear;
+  MessageEvent(this.message, {this.isClear = false});
+}
+
+// class PanActiveEvent extends DoddlerEvent {
+//   final bool isActive;
+//   PanActiveEvent(this.isActive);
+// }

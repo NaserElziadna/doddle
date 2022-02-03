@@ -27,15 +27,19 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
       drawController!.points!.clear();
       yield UpdateCanvasState(drawController: drawController);
     } else if (event is ClearStampsEvent) {
-      drawController!.stamp!.clear();
-      yield UpdateCanvasState(drawController: drawController);
-    } else if (event is AddPointEvent) {
-      drawController!.points!.add(event.point);
-      if (event.end) {
-        add(TakePageStampEvent(drawController!.globalKey!));
-        // add(AddASceneEvent());
+      if (event.ok) {
+        drawController!.stamp!.clear();
+        yield UpdateCanvasState(drawController: drawController);
       }
-      yield UpdateCanvasState(drawController: drawController);
+    } else if (event is AddPointEvent) {
+      if (drawController!.isPanActive) {
+        drawController!.points!.add(event.point);
+        if (event.end) {
+          add(TakePageStampEvent(drawController!.globalKey!));
+          // add(AddASceneEvent());
+        }
+        yield UpdateCanvasState(drawController: drawController);
+      }
     } else if (event is UndoStampsEvent) {
       if (drawController!.stamp!.isNotEmpty) {
         List<Stamp?>? stamps = List.from(drawController!.stamp!);
@@ -92,7 +96,7 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
 
         add(ClearPointEvent());
       } catch (e) {
-        print(e);
+        yield MessageState(e.toString());
       }
       yield UpdateCanvasState(drawController: drawController);
     } else if (event is ShareImageEvent) {
@@ -100,7 +104,7 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
         screenShotAndShare(
             event.globalKey ?? drawController!.globalKey!, event.context!);
       } catch (e) {
-        print(e);
+        yield MessageState(e.toString());
       }
       // yield UpdateCanvasState(drawController: drawController);
     } else if (event is AddASceneEvent) {
@@ -110,7 +114,7 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
         frames.add(Frame(frame: image));
         drawController = drawController!.copyWith(frames: frames);
       } catch (e) {
-        print(e);
+        yield MessageState(e.toString());
       }
     } else if (event is CallNextFrameEvent) {
       if (index < drawController!.frames!.length) {
@@ -121,7 +125,14 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
         yield UpdateCanvasState(drawController: drawController);
       }
       index = 0;
+    } else if (event is MessageEvent) {
+      yield MessageState(event.message, isClear: event.isClear);
+      yield UpdateCanvasState(drawController: drawController);
     }
+    //  else if (event is PanActiveEvent) {
+    //   drawController = drawController!.copyWith(isPanActive: event.isActive);
+    //   yield UpdateCanvasState(drawController: drawController);
+    // }
   }
 
   Future<ui.Image> canvasToImage(GlobalKey globalKey) async {
@@ -146,8 +157,9 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
         name: DateTime.now().toIso8601String() + ".jpeg",
         isReturnImagePathOfIOS: true,
       );
+      add(MessageEvent("Image Saved To Gallery ♥"));
     } catch (e) {
-      print(e);
+      add(MessageEvent(e.toString()));
     }
   }
 
@@ -176,7 +188,7 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
           text: 'Hey, check it out My Amazing Doddle!',
           sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
     } on PlatformException catch (e) {
-      print("Exception while taking screenshot:" + e.toString());
+      add(MessageEvent(e.toString()));
     }
   }
 }

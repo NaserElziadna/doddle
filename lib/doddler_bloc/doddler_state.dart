@@ -15,3 +15,9 @@ class GetNextFrameState extends DoddlerState {
   final Frame? frame;
   GetNextFrameState({this.frame});
 }
+
+class MessageState extends DoddlerState {
+  final String message;
+  final bool isClear;
+  MessageState(this.message, {this.isClear = false});
+}

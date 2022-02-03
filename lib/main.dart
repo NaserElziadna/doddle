@@ -31,7 +31,10 @@ class _MyAppState extends State<MyApp> {
     return BlocProvider(
       create: (context) => DoddlerBloc(
         drawController: DrawController(
-            points: [], currentColor: Colors.green, symmetryLines: 15),
+            isPanActive: true,
+            points: [],
+            currentColor: Colors.green,
+            symmetryLines: 15),
       ),
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -68,6 +71,7 @@ class _HomePageState extends State<HomePage> {
           preferredSize: const Size.fromHeight(50),
           child: Container(
             color: Colors.purple[800],
+            padding: const EdgeInsets.all(5),
             child: Row(
               children: [
                 GestureDetector(
@@ -81,13 +85,13 @@ class _HomePageState extends State<HomePage> {
                         .add(SavePageToGalleryEvent());
                   },
                 ),
-                GestureDetector(
-                  child: Assets.svg.share.svg(width: 40),
-                  onTap: () {
-                    BlocProvider.of<DoddlerBloc>(context)
-                        .add(ShareImageEvent(context: context));
-                  },
-                ),
+                // GestureDetector(
+                //   child: Assets.svg.share.svg(width: 40),
+                //   onTap: () {
+                //     BlocProvider.of<DoddlerBloc>(context)
+                //         .add(ShareImageEvent(context: context));
+                //   },
+                // ),
                 const Spacer(),
                 GestureDetector(
                   child: Assets.svg.undo.svg(width: 40),
@@ -103,11 +107,16 @@ class _HomePageState extends State<HomePage> {
                         .add(RedoStampsEvent());
                   },
                 ),
+                const Spacer(),
                 GestureDetector(
                   child: Assets.svg.close.svg(width: 40),
                   onTap: () {
-                    BlocProvider.of<DoddlerBloc>(context)
-                        .add(ClearStampsEvent());
+                    // BlocProvider.of<DoddlerBloc>(context)
+                    //     .add(ClearStampsEvent());
+
+                    context.read<DoddlerBloc>().add(MessageEvent(
+                        "This will case to clear the canvas ,\n are you sure you want to Continue ? ",
+                        isClear: true));
                   },
                 ),
               ],
