@@ -172,6 +172,7 @@ class _DoddlerState extends State<Doddler> {
                         state.drawController != null
                             ? state.drawController!.currentColor
                             : Colors.red,
+                        drawController!.penTool!,
                       ),
                       painter: LastImageAsBackground(
                         image: state.drawController == null

@@ -73,12 +73,10 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
         isRandomColor: event.isRandomColor,
       );
       yield UpdateCanvasState(drawController: drawController);
-    }
-    //  else if (event is IsRandomColorColorEvent) {
-    //   drawController =
-    //       drawController?.copyWith(isRandomColor: event.isRandomColor);
-    // }
-    else if (event is SavePageToGalleryEvent) {
+    } else if (event is ChangePenToolEvent) {
+      drawController = drawController?.copyWith(penTool: event.penTool);
+      yield UpdateCanvasState(drawController: drawController);
+    } else if (event is SavePageToGalleryEvent) {
       save(event.globalKey ?? drawController!.globalKey!);
     } else if (event is InitGlobalKeyEvent) {
       drawController = drawController?.copyWith(globalKey: event.globalKey);

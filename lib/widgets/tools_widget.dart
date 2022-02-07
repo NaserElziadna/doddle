@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:doddle/models/draw_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -42,7 +43,9 @@ class _ToolsWidgetState extends State<ToolsWidget> {
               child: Assets.svg.pen.svg(
                 width: 50,
               ),
-              onTap: () {},
+              onTap: () {
+                _handleFABPressed(context, ToolType.brushs);
+              },
             ),
             GestureDetector(
               child: Assets.svg.eraser.svg(
@@ -60,7 +63,7 @@ class _ToolsWidgetState extends State<ToolsWidget> {
                 )
               ]),
               onTap: () {
-                _handleFABPressed(context, ToolType.brushs);
+                _handleFABPressed(context, ToolType.symmyrticllLine);
               },
             ),
             GestureDetector(
@@ -97,6 +100,8 @@ class _ToolsWidgetState extends State<ToolsWidget> {
   Widget _buildToolSettings(BuildContext context, ToolType toolType) {
     if (toolType == ToolType.colors) {
       return buildColorTool(context);
+    } else if (toolType == ToolType.symmyrticllLine) {
+      return buildSymmyrticllLinesTool(context);
     } else if (toolType == ToolType.brushs) {
       return buildBrushesTool(context);
     }
@@ -104,6 +109,54 @@ class _ToolsWidgetState extends State<ToolsWidget> {
   }
 
   Widget buildBrushesTool(BuildContext context) {
+    final theme = Theme.of(context);
+    final brushes = [PenTool.glowPen, PenTool.normalPen];
+
+    return Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 24.0,
+          vertical: 16.0,
+        ),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: theme.dividerColor,
+              width: 0.5,
+            ),
+          ),
+        ),
+        child: Column(
+          children: [
+            Wrap(
+              children: [
+                for (var item in brushes)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      child: Container(
+                        child: Assets.svg.pen.svg(width: 30, height: 50),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          border: Border.all(color: Colors.black, width: 3),
+                        ),
+                      ),
+                      onTap: () {
+                        BlocProvider.of<DoddlerBloc>(context)
+                            .add(ChangePenToolEvent(penTool: item));
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ));
+  }
+
+  Widget buildSymmyrticllLinesTool(BuildContext context) {
     final theme = Theme.of(context);
     final symmtricalLines = [
       SymmtriclLine(count: 1, picture: Assets.svg.symmtricalLine1.svg()),
@@ -157,8 +210,8 @@ class _ToolsWidgetState extends State<ToolsWidget> {
                   ),
                 ),
                 onTap: () {
-                  BlocProvider.of<DoddlerBloc>(context).add(
-                      UpdateSymmetryLines(symmetryLines: symmtricalLine.count-1));
+                  BlocProvider.of<DoddlerBloc>(context).add(UpdateSymmetryLines(
+                      symmetryLines: symmtricalLine.count - 1));
                   Navigator.of(context).pop();
                 },
               ),

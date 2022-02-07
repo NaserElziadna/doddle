@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'package:doddle/models/point.dart';
 
+enum PenTool { normalPen, glowPen }
+
 class DrawController {
   final bool isPanActive;
   final List<Point?>? points;
@@ -17,9 +19,10 @@ class DrawController {
   final bool isRandomColor;
   final GlobalKey? globalKey;
   final double? symmetryLines;
+  final PenTool? penTool;
 
   DrawController({
-    this.isPanActive=true,
+    this.isPanActive = true,
     this.points = const [],
     this.stamp = const [],
     this.stampUndo = const [],
@@ -28,7 +31,10 @@ class DrawController {
     this.isRandomColor = false,
     this.globalKey,
     this.symmetryLines = 20,
+    this.penTool = PenTool.glowPen,
   });
+
+  //Add Initial Constructer // Add Empty Constructer
 
   DrawController copyWith({
     bool? isPanActive,
@@ -40,6 +46,7 @@ class DrawController {
     bool? isRandomColor,
     GlobalKey? globalKey,
     double? symmetryLines,
+    PenTool? penTool,
   }) {
     return DrawController(
       isPanActive: isPanActive ?? this.isPanActive,
@@ -51,12 +58,13 @@ class DrawController {
       isRandomColor: isRandomColor ?? this.isRandomColor,
       globalKey: globalKey ?? this.globalKey,
       symmetryLines: symmetryLines ?? this.symmetryLines,
+      penTool: penTool ?? this.penTool,
     );
   }
 
   @override
   String toString() {
-    return 'DrawController(isPanActive: $isPanActive, points: $points, stamp: $stamp, stampUndo: $stampUndo, frames: $frames, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines)';
+    return 'DrawController(isPanActive: $isPanActive, points: $points, stamp: $stamp, stampUndo: $stampUndo, frames: $frames, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines, penTool: $penTool)';
   }
 
   @override
@@ -72,7 +80,8 @@ class DrawController {
         other.currentColor == currentColor &&
         other.isRandomColor == isRandomColor &&
         other.globalKey == globalKey &&
-        other.symmetryLines == symmetryLines;
+        other.symmetryLines == symmetryLines &&
+        other.penTool == penTool;
   }
 
   @override
@@ -85,7 +94,8 @@ class DrawController {
         currentColor.hashCode ^
         isRandomColor.hashCode ^
         globalKey.hashCode ^
-        symmetryLines.hashCode;
+        symmetryLines.hashCode ^
+        penTool.hashCode;
   }
 }
 

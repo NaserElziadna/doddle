@@ -41,6 +41,13 @@ class RedoStampsEvent extends DoddlerEvent {
   RedoStampsEvent();
 }
 
+class ChangePenToolEvent extends DoddlerEvent {
+  final PenTool penTool;
+  ChangePenToolEvent({
+    this.penTool = PenTool.glowPen,
+  });
+}
+
 class InitGlobalKeyEvent extends DoddlerEvent {
   GlobalKey globalKey;
   InitGlobalKeyEvent(
