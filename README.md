@@ -52,20 +52,22 @@ Amazing magical doodle game provide a creative doodle world for you!
      <td>
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851803.jpg" alt="drawing" style="width:100%;"/>    
     </td>
+  </tr>
+  <tr>
      <td>
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851811.jpeg" alt="drawing" style="width:100%;"/>    
     </td>
      <td>
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851820.jpeg" alt="drawing" style="width:100%;"/>    
     </td>
-  </tr>
-   <tr>
-    <td>
+     <td>
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851828.jpeg" alt="drawing" style="width:100%;"/>    
     </td>
      <td>
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851837.jpeg" alt="drawing" style="width:100%;"/>    
     </td>
+  </tr>
+   <tr>
      <td>
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851846.jpeg" alt="drawing" style="width:100%;"/>    
     </td>
@@ -80,12 +82,6 @@ Amazing magical doodle game provide a creative doodle world for you!
     </td>
   </tr>
    <tr>
-    <td>
-      <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851880.jpeg" alt="drawing" style="width:100%;"/>    
-    </td>
-     <td>
-      <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851889.jpeg" alt="drawing" style="width:100%;"/>    
-    </td>
      <td>
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851897.jpeg" alt="drawing" style="width:100%;"/>    
     </td>
@@ -99,13 +95,21 @@ Amazing magical doodle game provide a creative doodle world for you!
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851923.jpeg" alt="drawing" style="width:100%;"/>    
     </td>
   </tr>
-   <tr>
-    <td>
+  <tr>
+     <td>
+      <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851880.jpeg" alt="drawing" style="width:100%;"/>    
+    </td>
+     <td>
+      <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851889.jpeg" alt="drawing" style="width:100%;"/>    
+    </td>
+     <td>
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851941.jpeg" alt="drawing" style="width:100%;"/>    
     </td>
      <td>
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851932.jpeg" alt="drawing" style="width:100%;"/>    
     </td>
+  </tr>
+   <tr>
      <td>
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851949.jpeg" alt="drawing" style="width:100%;"/>    
     </td>
@@ -131,12 +135,6 @@ Amazing magical doodle game provide a creative doodle world for you!
     </td>
       <td>
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214852011.jpeg" alt="drawing" style="width:100%;"/>    
-    </td>
-     <td>
-      <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214852019.jpeg" alt="drawing" style="width:100%;"/>    
-    </td>
-     <td>
-      <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214852019.jpeg" alt="drawing" style="width:100%;"/>    
     </td>
   </tr>
 </table>
