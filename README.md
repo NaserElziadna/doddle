@@ -3,9 +3,9 @@
 
 Amazing magical doodle game provide a creative doodle world for you!
 
-💚Accurate detailed divination reader : To know your life, moods, and relationships at tomorrow
-💜Doodle Glow 🖌: The glow art game full of pleasant surprise.
-💛Simplest doodle way : Create glow mandala and magical kaleidoscope patterns.🌸
+💚Accurate detailed divination reader : To know your life, moods, and relationships at tomorrow</br>
+💜Doodle Glow 🖌: The glow art game full of pleasant surprise.</br>
+💛Simplest doodle way : Create glow mandala and magical kaleidoscope patterns.🌸</br>
 💚Playback the painting process as a cartoon video clip. 📽🎞
 
 # app ScreenShot
