@@ -142,25 +142,33 @@ Amazing magical doodle game provide a creative doodle world for you!
 </table>
 
 # Current To Do (fell free to take part in this)
+- [x] publish project on githup 💓
 - [x] start new drawing application 
 - [x] make it draw with fingers
 - [x] add symmtrical feature (360 / symmetrical lines) = (360 / 4 = 90)
 - [x] add bloc pattern
-- [x] publish project on githup 💓
 - [x] add bottom sheet toolkit
+- [x] make the canvas zoomable
+- [x] add share image feature (not visible in the app) 
   - [x] redo tool
   - [x] undo tool
   - [x] clear canvas 
   - [x] brush types (didn't apply to ui)
     - [x] noraml line
     - [x] glow line
-    - [ ] dotted line
+    - [x] dotted line (not visible in the app)
+    - [x] eraser
 - [x] create draw controller 
   - [x] varibals
     - [x] List of points
       - [x] Offset
       - [x] paint
-    - [x] List of stamp (layer of canvas)  
+    - [x] List of stamp (layer of canvas)
+      - [x] Image
+    - [x] Current Color  
+    - [x] Is Random Color  
+    - [x] GlobalKey  
+    - [x] Symmetry Lines  
   - [x] method
       - [x] save image to gallery
       - [x] take stamp of the canvas 
