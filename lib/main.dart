@@ -32,9 +32,10 @@ class _MyAppState extends State<MyApp> {
       create: (context) => DoddlerBloc(
         drawController: DrawController(
             isPanActive: true,
+            penTool: PenTool.glowPen,
             points: [],
             currentColor: Colors.green,
-            symmetryLines: 15),
+            symmetryLines: 0),
       ),
       child: MaterialApp(
         title: 'Flutter Demo',
