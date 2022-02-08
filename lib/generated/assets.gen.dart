@@ -82,6 +82,34 @@ class $AssetsSvgGen {
   SvgGenImage get close => const SvgGenImage('assets/svg/close.svg');
   SvgGenImage get eraser => const SvgGenImage('assets/svg/eraser.svg');
   SvgGenImage get share => const SvgGenImage('assets/svg/share.svg');
+  SvgGenImage get profileImage =>
+      const SvgGenImage('assets/svg/profileImage.svg');
+
+  SvgGenImage get penOff => const SvgGenImage('assets/svg/pen_off.svg');
+  SvgGenImage get pen2Preview =>
+      const SvgGenImage('assets/svg/pen2_preview.svg');
+  SvgGenImage get pen1Preview =>
+      const SvgGenImage('assets/svg/pen1_preview.svg');
+  SvgGenImage get pen3Preview =>
+      const SvgGenImage('assets/svg/pen3_preview.svg');
+  SvgGenImage get pen5Preview =>
+      const SvgGenImage('assets/svg/pen5_preview.svg');
+  SvgGenImage get pen4Preview =>
+      const SvgGenImage('assets/svg/pen4_preview.svg');
+  SvgGenImage get pen6Preview =>
+      const SvgGenImage('assets/svg/pen6_preview.svg');
+  SvgGenImage get pen3Preview2 =>
+      const SvgGenImage('assets/svg/pen3_preview2.svg');
+  SvgGenImage get pen2Preview2 =>
+      const SvgGenImage('assets/svg/pen2_preview2.svg');
+  SvgGenImage get pen1Preview2 =>
+      const SvgGenImage('assets/svg/pen1_preview2.svg');
+  SvgGenImage get pen4Preview2 =>
+      const SvgGenImage('assets/svg/pen4_preview2.svg');
+  SvgGenImage get pen6Preview2 =>
+      const SvgGenImage('assets/svg/pen6_preview2.svg');
+  SvgGenImage get pen5Preview2 =>
+      const SvgGenImage('assets/svg/pen5_preview2.svg');
 }
 
 class Assets {
