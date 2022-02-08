@@ -57,7 +57,7 @@ class Sketcher extends CustomPainter {
                 ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5.0)
                 ..color = color
                 ..style = PaintingStyle.stroke
-                ..strokeWidth = 5.0);
+                ..strokeWidth = 10.0);
 
           canvas.drawPath(path, paint);
         } else if (penTool == PenTool.normalPen) {
