@@ -51,7 +51,10 @@ class _ToolsWidgetState extends State<ToolsWidget> {
               child: Assets.svg.eraser.svg(
                 width: 60,
               ),
-              onTap: () {},
+              onTap: () {
+                BlocProvider.of<DoddlerBloc>(context)
+                    .add(ChangePenToolEvent(penTool: PenTool.eraserPen));
+              },
             ),
             GestureDetector(
               child: Stack(alignment: AlignmentDirectional.center, children: [
@@ -110,50 +113,66 @@ class _ToolsWidgetState extends State<ToolsWidget> {
 
   Widget buildBrushesTool(BuildContext context) {
     final theme = Theme.of(context);
-    final brushes = [PenTool.glowPen, PenTool.normalPen];
+    var brushes = [
+      BrushTool(
+          penTool: PenTool.glowPen, picture: Assets.svg.pen1Preview.svg()),
+      BrushTool(
+          penTool: PenTool.normalPen, picture: Assets.svg.pen2Preview.svg()),
+      // BrushTool(
+      // penTool: PenTool.normalPen, picture: Assets.svg.pen3Preview.svg()),
+      // BrushTool(
+      // penTool: PenTool.normalPen, picture: Assets.svg.pen4Preview.svg()),
+      BrushTool(
+          penTool: PenTool.glowWithDotsPen,
+          picture: Assets.svg.pen5Preview.svg()),
+      BrushTool(
+          penTool: PenTool.normalWithShaderPen,
+          picture: Assets.svg.pen6Preview.svg()),
+    ];
 
     return Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 24.0,
-          vertical: 16.0,
-        ),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: theme.dividerColor,
-              width: 0.5,
-            ),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 24.0,
+        vertical: 16.0,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: theme.dividerColor,
+            width: 0.5,
           ),
         ),
-        child: Column(
-          children: [
-            Wrap(
-              children: [
-                for (var item in brushes)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      child: Container(
-                        child: Assets.svg.pen.svg(width: 30, height: 50),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          border: Border.all(color: Colors.black, width: 3),
-                        ),
-                      ),
-                      onTap: () {
-                        BlocProvider.of<DoddlerBloc>(context)
-                            .add(ChangePenToolEvent(penTool: item));
-                        Navigator.of(context).pop();
-                      },
+      ),
+      child: GridView.builder(
+          shrinkWrap: true,
+          itemCount: brushes.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+          ),
+          itemBuilder: (BuildContext context, int index) {
+            final brush = brushes[index];
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                child: Container(
+                  child: brush.picture,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
                     ),
+                    border: Border.all(color: Colors.black, width: 3),
                   ),
-              ],
-            ),
-          ],
-        ));
+                ),
+                onTap: () {
+                  BlocProvider.of<DoddlerBloc>(context)
+                      .add(ChangePenToolEvent(penTool: brush.penTool));
+                  Navigator.of(context).pop();
+                },
+              ),
+            );
+          }),
+    );
   }
 
   Widget buildSymmyrticllLinesTool(BuildContext context) {
@@ -349,6 +368,15 @@ class SymmtriclLine {
   SvgPicture picture;
   SymmtriclLine({
     required this.count,
+    required this.picture,
+  });
+}
+
+class BrushTool {
+  PenTool penTool;
+  SvgPicture picture;
+  BrushTool({
+    required this.penTool,
     required this.picture,
   });
 }
