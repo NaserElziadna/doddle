@@ -1,6 +1,7 @@
 import 'package:doddle/doddler.dart';
 import 'package:doddle/generated/assets.gen.dart';
 import 'package:doddle/models/draw_controller.dart';
+import 'package:doddle/pages/about_me_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,6 +85,19 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     BlocProvider.of<DoddlerBloc>(context)
                         .add(SavePageToGalleryEvent());
+                  },
+                ),
+                GestureDetector(
+                  child: const Icon(
+                    Icons.info_outline,
+                    color: Colors.white,
+                    size: 40,
+                  ),
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (builder) {
+                      return const AboutMePage();
+                    }));
                   },
                 ),
                 // GestureDetector(
