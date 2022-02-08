@@ -42,7 +42,8 @@ dependencies:
   # permission_handler: ^8.3.0
   flutter_svg: ^1.0.0
   flutter_gen: ^4.1.5
-
+  contactus: ^1.2.0
+  path_drawing: ^1.0.0
 
 dev_dependencies:
   flutter_test:
