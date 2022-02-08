@@ -11,6 +11,9 @@ Amazing magical doodle game provide a creative doodle world for you!
 # app ScreenShot
 <table style="width:75%;height:75%;">
   <tr>
+     <td>
+      <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644326919330.jpg" alt="drawing" style="width:100%;"/>    
+    </td>
     <td>
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214659716.jpg" alt="drawing" style="width:100%;"/>    
     </td>
@@ -30,6 +33,9 @@ Amazing magical doodle game provide a creative doodle world for you!
     </td>
      <td>
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214659658.jpg" alt="drawing" style="width:100%;"/>    
+    </td>
+     <td>
+      <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644327099363.jpg" alt="drawing" style="width:100%;"/>    
     </td>
   </tr>
 </table>  
