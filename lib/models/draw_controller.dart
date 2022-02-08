@@ -7,7 +7,13 @@ import 'package:flutter/material.dart';
 
 import 'package:doddle/models/point.dart';
 
-enum PenTool { normalPen, glowPen }
+enum PenTool {
+  normalPen,
+  normalWithShaderPen,
+  glowPen,
+  glowWithDotsPen,
+  eraserPen,
+}
 
 class DrawController {
   final bool isPanActive;
