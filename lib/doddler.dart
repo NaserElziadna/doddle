@@ -81,7 +81,7 @@ class _DoddlerState extends State<Doddler> {
             panEnabled: false,
             scaleEnabled: true,
             minScale: 0.1,
-            maxScale: 3,
+            maxScale: 5,
             boundaryMargin: const EdgeInsets.all(80),
             onInteractionEnd: (details) {
               setState(() {
