@@ -9,10 +9,14 @@ class LastImageAsBackground extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (image != null) {
-      print("=entered=");
-      canvas.drawImage(image!, Offset.zero, Paint());
+      canvas.drawImage(
+        image!,
+        Offset.zero,
+        ui.Paint()
+          // ..filterQuality = ui.FilterQuality.high
+          // ..isAntiAlias = true,
+      );
     }
-    print("=out=");
   }
 
   @override
