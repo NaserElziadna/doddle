@@ -29,15 +29,27 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DoddlerBloc(
-        drawController: DrawController(
-            isPanActive: true,
-            penTool: PenTool.glowPen,
-            points: [],
-            currentColor: Colors.green,
-            symmetryLines: 0),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => DoddlerBloc(
+            drawController: DrawController(
+                isPanActive: true,
+                penTool: PenTool.glowPen,
+                points: [],
+                currentColor: Colors.green,
+                symmetryLines: 0),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => RecorderBloc(
+            recorderController: RecorderController(
+              frames: [],
+              globalKey: GlobalKey(),
+            ),
+          ),
+        ),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
