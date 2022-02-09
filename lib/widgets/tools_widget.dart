@@ -89,6 +89,21 @@ class _ToolsWidgetState extends State<ToolsWidget> {
                 _handleFABPressed(context, ToolType.colors);
               },
             ),
+            GestureDetector(
+              child: const Icon(
+                Icons.play_circle,
+                size: 36,
+              ),
+              onTap: () {
+                print(
+                    context.read<RecorderBloc>().recorderController.toString());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MovieTimePage()),
+                );
+              },
+            ),
           ],
         ),
       ),
