@@ -31,8 +31,15 @@ class _ToolsWidgetState extends State<ToolsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DoddlerBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => DoddlerBloc(),
+        ),
+        BlocProvider(
+          create: (context) => RecorderBloc(),
+        ),
+      ],
       child: Container(
         height: MediaQuery.of(context).size.height * .1,
         color: Colors.purple[800],
