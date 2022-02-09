@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:doddle/models/draw_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -105,24 +103,6 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
         yield MessageState(e.toString());
       }
       // yield UpdateCanvasState(drawController: drawController);
-    } else if (event is AddASceneEvent) {
-      try {
-        ui.Image image = await canvasToImage(drawController!.globalKey!);
-        List<Frame?>? frames = List.from(drawController!.frames!);
-        frames.add(Frame(frame: image));
-        drawController = drawController!.copyWith(frames: frames);
-      } catch (e) {
-        yield MessageState(e.toString());
-      }
-    } else if (event is CallNextFrameEvent) {
-      if (index < drawController!.frames!.length) {
-        yield GetNextFrameState(frame: drawController!.frames![index]);
-        index++;
-        add(CallNextFrameEvent());
-      } else {
-        yield UpdateCanvasState(drawController: drawController);
-      }
-      index = 0;
     } else if (event is MessageEvent) {
       yield MessageState(event.message, isClear: event.isClear);
       yield UpdateCanvasState(drawController: drawController);
