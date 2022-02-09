@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:doddle/doddler.dart';
 import 'package:doddle/generated/assets.gen.dart';
 import 'package:doddle/models/draw_controller.dart';
+import 'package:doddle/models/recorder_controller.dart';
 import 'package:doddle/pages/about_me_page.dart';
+import 'package:doddle/recorder_bloc/recorder_bloc.dart';
+import 'package:doddle/recorder_bloc/recorder_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
