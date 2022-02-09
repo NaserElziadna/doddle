@@ -14,6 +14,8 @@ import 'painting/sketcher.dart';
 import 'utils/single_gesture_recognizer.dart';
 
 class Doddler extends StatefulWidget {
+  static GlobalKey? globalKey = GlobalKey();
+
   const Doddler({Key? key}) : super(key: key);
 
   @override
@@ -21,7 +23,6 @@ class Doddler extends StatefulWidget {
 }
 
 class _DoddlerState extends State<Doddler> {
-  GlobalKey? globalKey = GlobalKey();
 
   static Size kCanvasSize = Size.zero;
   double symmetryLines = 0;
@@ -35,7 +36,7 @@ class _DoddlerState extends State<Doddler> {
     ignorePointer = false;
     pointerCount = 1;
     if (drawController!.globalKey == null) {
-      BlocProvider.of<DoddlerBloc>(context).add(InitGlobalKeyEvent(globalKey!));
+      BlocProvider.of<DoddlerBloc>(context).add(InitGlobalKeyEvent(Doddler.globalKey!));
     }
     super.initState();
   }
@@ -211,7 +212,7 @@ class _DoddlerState extends State<Doddler> {
                     }),
                   },
                   child: RepaintBoundary(
-                    key: globalKey,
+                    key: Doddler.globalKey,
                     child: ClipRect(
                       child: CustomPaint(
                         foregroundPainter: Sketcher(
