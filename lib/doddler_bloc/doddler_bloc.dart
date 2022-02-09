@@ -164,28 +164,29 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
   Future<Null> screenShotAndShare(
       GlobalKey globalKey, BuildContext context) async {
     try {
+      print("Phase 1" * 200);
       RenderRepaintBoundary boundary =
           globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-      if (boundary.debugNeedsPaint) {
-        Timer(const Duration(seconds: 1), () => add(ShareImageEvent()));
-        return null;
-      }
+
       ui.Image image = await boundary.toImage();
       final directory = (await getExternalStorageDirectory())?.path;
       ByteData? byteData =
           await image.toByteData(format: ui.ImageByteFormat.png);
       Uint8List pngBytes = byteData!.buffer.asUint8List();
+      print("Phase 2" * 200);
 
       File imgFile = File('$directory/screenshot.png');
       imgFile.writeAsBytes(pngBytes);
       print('Screenshot Path:' + imgFile.path);
 
+      print("Phase 3" * 200);
       final RenderBox box = context.findRenderObject() as RenderBox;
       Share.shareFiles(['$directory/screenshot.png'],
           subject: 'Doddle App',
           text: 'Hey, check it out My Amazing Doddle!',
           sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
-    } on PlatformException catch (e) {
+      print("Phase 4" * 200);
+    } catch (e) {
       add(MessageEvent(e.toString()));
     }
   }
