@@ -100,13 +100,13 @@ class _HomePageState extends State<HomePage> {
                     }));
                   },
                 ),
-                // GestureDetector(
-                //   child: Assets.svg.share.svg(width: 40),
-                //   onTap: () {
-                //     BlocProvider.of<DoddlerBloc>(context)
-                //         .add(ShareImageEvent(context: context));
-                //   },
-                // ),
+                GestureDetector(
+                  child: Assets.svg.share.svg(width: 40),
+                  onTap: () {
+                    BlocProvider.of<DoddlerBloc>(context)
+                        .add(ShareImageEvent(context: context));
+                  },
+                ),
                 const Spacer(),
                 GestureDetector(
                   child: Assets.svg.undo.svg(width: 40),
