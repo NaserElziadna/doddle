@@ -20,7 +20,6 @@ class DrawController {
   final List<Point?>? points;
   final List<Stamp?>? stamp;
   final List<Stamp?>? stampUndo;
-  final List<Frame?>? frames;
   final Color currentColor;
   final bool isRandomColor;
   final GlobalKey? globalKey;
@@ -32,7 +31,6 @@ class DrawController {
     this.points = const [],
     this.stamp = const [],
     this.stampUndo = const [],
-    this.frames = const [],
     this.currentColor = const Color(0x12457895),
     this.isRandomColor = false,
     this.globalKey,
@@ -47,7 +45,6 @@ class DrawController {
     List<Point?>? points,
     List<Stamp?>? stamp,
     List<Stamp?>? stampUndo,
-    List<Frame?>? frames,
     Color? currentColor,
     bool? isRandomColor,
     GlobalKey? globalKey,
@@ -59,7 +56,6 @@ class DrawController {
       points: points ?? this.points,
       stamp: stamp ?? this.stamp,
       stampUndo: stampUndo ?? this.stampUndo,
-      frames: frames ?? this.frames,
       currentColor: currentColor ?? this.currentColor,
       isRandomColor: isRandomColor ?? this.isRandomColor,
       globalKey: globalKey ?? this.globalKey,
@@ -70,7 +66,7 @@ class DrawController {
 
   @override
   String toString() {
-    return 'DrawController(isPanActive: $isPanActive, points: $points, stamp: $stamp, stampUndo: $stampUndo, frames: $frames, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines, penTool: $penTool)';
+    return 'DrawController(isPanActive: $isPanActive, points: $points, stamp: $stamp, stampUndo: $stampUndo, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines, penTool: $penTool)';
   }
 
   @override
@@ -82,7 +78,6 @@ class DrawController {
         listEquals(other.points, points) &&
         listEquals(other.stamp, stamp) &&
         listEquals(other.stampUndo, stampUndo) &&
-        listEquals(other.frames, frames) &&
         other.currentColor == currentColor &&
         other.isRandomColor == isRandomColor &&
         other.globalKey == globalKey &&
@@ -96,7 +91,6 @@ class DrawController {
         points.hashCode ^
         stamp.hashCode ^
         stampUndo.hashCode ^
-        frames.hashCode ^
         currentColor.hashCode ^
         isRandomColor.hashCode ^
         globalKey.hashCode ^
@@ -131,31 +125,4 @@ class Stamp {
 
   @override
   int get hashCode => image.hashCode;
-}
-
-class Frame {
-  ui.Image? frame;
-  Frame({
-    required this.frame,
-  });
-  Frame copyWith({
-    ui.Image? frame,
-  }) {
-    return Frame(
-      frame: frame ?? this.frame,
-    );
-  }
-
-  @override
-  String toString() => 'Frame(frame: $frame)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Frame && other.frame == frame;
-  }
-
-  @override
-  int get hashCode => frame.hashCode;
 }
