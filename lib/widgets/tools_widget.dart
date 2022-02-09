@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:doddle/models/draw_controller.dart';
+import 'package:doddle/pages/movie_time_page.dart';
+import 'package:doddle/recorder_bloc/recorder_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
