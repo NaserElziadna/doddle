@@ -70,11 +70,24 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   DrawController? drawController;
+  Timer? timer;
 
   @override
   void initState() {
     drawController = context.read<DoddlerBloc>().drawController;
+    timer = Timer.periodic(Duration(milliseconds: 34), (Timer t) {
+      context
+          .read<RecorderBloc>()
+          .add(TakeSnapshotEvent(globalKey: Doddler.globalKey));
+      print("TakeSnapshotEvent");
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   @override
