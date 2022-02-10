@@ -10,3 +10,16 @@ class NextFrameState extends RecorderState {
     this.frame,
   });
 }
+
+class MessageState extends RecorderState {
+  final String message;
+
+  MessageState(this.message);
+}
+
+class ShowGifState extends RecorderState {
+  final gif;
+  ShowGifState({
+    this.gif,
+  });
+}

@@ -1,7 +1,13 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import 'frame.dart';
+import 'package:image/image.dart' as image;
 
 class RecorderController {
   final GlobalKey? globalKey;
@@ -10,6 +16,44 @@ class RecorderController {
     this.globalKey,
     this.frames,
   });
+
+  Future<Uint8List> convertImageToUint8List(ui.Image image) async {
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData!.buffer.asUint8List();
+    return pngBytes;
+  }
+
+  Future<List<int>?> export() async {
+    List<RawFrame> bytes = [];
+    for (final frame in frames!) {
+      final i = await frame.frame!.toByteData(format: ui.ImageByteFormat.png);
+      if (i != null) {
+        bytes.add(RawFrame(32, i));
+      } else {
+        print('Skipped frame while enconding');
+      }
+    }
+    final result = compute(_export, bytes);
+    frames!.clear();
+    return result;
+  }
+
+  static Future<List<int>?> _export(List<RawFrame> frames) async {
+    final animation = image.Animation();
+    animation.backgroundColor = Colors.transparent.value;
+    for (final frame in frames) {
+      final iAsBytes = frame.image.buffer.asUint8List();
+      final decodedImage = image.decodePng(iAsBytes);
+
+      if (decodedImage == null) {
+        print('Skipped frame while enconding');
+        continue;
+      }
+      decodedImage.duration = frame.durationInMillis;
+      animation.addFrame(decodedImage);
+    }
+    return image.encodeGifAnimation(animation);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -36,4 +80,11 @@ class RecorderController {
       frames: frames ?? this.frames,
     );
   }
+}
+
+class RawFrame {
+  RawFrame(this.durationInMillis, this.image);
+
+  final int durationInMillis;
+  final ByteData image;
 }

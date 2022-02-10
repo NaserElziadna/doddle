@@ -80,12 +80,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     drawController = context.read<DoddlerBloc>().drawController;
-    timer = Timer.periodic(Duration(milliseconds: 34), (Timer t) {
-      context
-          .read<RecorderBloc>()
-          .add(TakeSnapshotEvent(globalKey: Doddler.globalKey));
-      print("TakeSnapshotEvent");
-    });
+    context.read<RecorderBloc>().add(StartRecordingEvent());
     super.initState();
   }
 

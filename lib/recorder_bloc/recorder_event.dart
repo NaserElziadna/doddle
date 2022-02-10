@@ -16,6 +16,8 @@ class PlayVideoEvent extends RecorderEvent {}
 
 class StopVideoEvent extends RecorderEvent {}
 
+class SaveGifEvent extends RecorderEvent {}
+
 class CallNextFrameEvent extends RecorderEvent {
   final int index;
   CallNextFrameEvent({

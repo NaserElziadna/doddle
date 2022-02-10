@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:bloc/bloc.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/rendering.dart';
 
 import 'package:doddle/models/recorder_controller.dart';
 
+import '../doddler.dart';
 import 'recorder_event.dart';
 import 'recorder_state.dart';
 
@@ -14,18 +16,34 @@ class RecorderBloc extends Bloc<RecorderEvent, RecorderState> {
   RecorderController? recorderController =
       RecorderController(frames: [], globalKey: GlobalKey());
   int index = 0;
+  bool isRecording = false;
+  int recordingIndex = 0;
+  Timer? timer;
 
   RecorderBloc({this.recorderController}) : super(InitialRecorderState());
 
   @override
   Stream<RecorderState> mapEventToState(RecorderEvent event) async* {
     if (event is TakeSnapshotEvent) {
-      final image = await canvasToImage(event.globalKey!);
-      final frames = recorderController!.frames;
-      frames!.add(Frame(frame: image, index: index++));
-      recorderController = recorderController!.copyWith(frames: frames);
-    } else if (event is CallNextFrameEvent) {
-      yield NextFrameState(frame: recorderController!.frames![event.index]);
+      if (!isRecording) {
+        timer =
+            Timer.periodic(const Duration(milliseconds: 34), (Timer t) async {
+          final frames = recorderController!.frames;
+
+          final image = await canvasToImage(event.globalKey!);
+          frames!.add(Frame(frame: image, index: index++));
+          recorderController = recorderController!.copyWith(frames: frames);
+        });
+      }
+    } else if (event is SaveGifEvent) {
+      add(StopRecordingEvent());
+      yield MessageState("Waiting ... ");
+      final gif = await recorderController!.export();
+      yield ShowGifState(gif: gif);
+    } else if (event is StartRecordingEvent) {
+      add(TakeSnapshotEvent(globalKey: Doddler.globalKey));
+    } else if (event is StopRecordingEvent) {
+      timer!.cancel();
     }
   }
 
