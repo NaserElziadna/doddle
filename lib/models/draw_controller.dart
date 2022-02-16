@@ -13,6 +13,7 @@ enum PenTool {
   glowPen,
   glowWithDotsPen,
   eraserPen,
+  customPen
 }
 
 class DrawController {

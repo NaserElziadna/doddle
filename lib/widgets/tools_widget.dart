@@ -22,6 +22,8 @@ class ToolsWidget extends StatefulWidget {
 }
 
 class _ToolsWidgetState extends State<ToolsWidget> {
+  bool _iseraserSelected = false;
+
   // create some values
   Color pickerColor = const Color(0xff443a49);
   Color currentColor = const Color(0xff443a49);
@@ -91,21 +93,21 @@ class _ToolsWidgetState extends State<ToolsWidget> {
                 _handleFABPressed(context, ToolType.colors);
               },
             ),
-            GestureDetector(
-              child: const Icon(
-                Icons.play_circle,
-                size: 36,
-              ),
-              onTap: () {
-                print(
-                    context.read<RecorderBloc>().recorderController.toString());
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>  MovieTimePage()),
-                );
-              },
-            ),
+            // GestureDetector(
+            //   child: const Icon(
+            //     Icons.play_circle,
+            //     size: 36,
+            //   ),
+            //   onTap: () {
+            //     print(
+            //         context.read<RecorderBloc>().recorderController.toString());
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //           builder: (context) =>  MovieTimePage()),
+            //     );
+            //   },
+            // ),
           ],
         ),
       ),
@@ -204,20 +206,20 @@ class _ToolsWidgetState extends State<ToolsWidget> {
     final symmtricalLines = [
       SymmtriclLine(count: 1, picture: Assets.svg.symmtricalLine1.svg()),
       SymmtriclLine(count: 2, picture: Assets.svg.symmtricalLine2.svg()),
-      SymmtriclLine(count: 3, picture: Assets.svg.symmtricalLine3.svg()),
-      SymmtriclLine(count: 4, picture: Assets.svg.symmtricalLine4.svg()),
-      SymmtriclLine(count: 5, picture: Assets.svg.symmtricalLine5.svg()),
-      SymmtriclLine(count: 6, picture: Assets.svg.symmtricalLine6.svg()),
-      SymmtriclLine(count: 7, picture: Assets.svg.symmtricalLine7.svg()),
+      // SymmtriclLine(count: 3, picture: Assets.svg.symmtricalLine3.svg()),
+      // SymmtriclLine(count: 4, picture: Assets.svg.symmtricalLine4.svg()),
+      SymmtriclLine(count: 3, picture: Assets.svg.symmtricalLine5.svg()),
+      // SymmtriclLine(count: 6, picture: Assets.svg.symmtricalLine6.svg()),
+      SymmtriclLine(count: 4, picture: Assets.svg.symmtricalLine7.svg()),
       SymmtriclLine(count: 8, picture: Assets.svg.symmtricalLine8.svg()),
-      SymmtriclLine(count: 9, picture: Assets.svg.symmtricalLine9.svg()),
+      SymmtriclLine(count: 5, picture: Assets.svg.symmtricalLine9.svg()),
       SymmtriclLine(count: 10, picture: Assets.svg.symmtricalLine10.svg()),
-      SymmtriclLine(count: 11, picture: Assets.svg.symmtricalLine11.svg()),
-      SymmtriclLine(count: 12, picture: Assets.svg.symmtricalLine12.svg()),
-      SymmtriclLine(count: 13, picture: Assets.svg.symmtricalLine13.svg()),
-      SymmtriclLine(count: 14, picture: Assets.svg.symmtricalLine14.svg()),
-      SymmtriclLine(count: 15, picture: Assets.svg.symmtricalLine15.svg()),
-      SymmtriclLine(count: 16, picture: Assets.svg.symmtricalLine16.svg()),
+      SymmtriclLine(count: 6, picture: Assets.svg.symmtricalLine11.svg()),
+      // SymmtriclLine(count: 12, picture: Assets.svg.symmtricalLine12.svg()),
+      // SymmtriclLine(count: 8, picture: Assets.svg.symmtricalLine13.svg()),
+      // SymmtriclLine(count: 16, picture: Assets.svg.symmtricalLine14.svg()),
+      // SymmtriclLine(count: 15, picture: Assets.svg.symmtricalLine15.svg()),
+      // SymmtriclLine(count: 32, picture: Assets.svg.symmtricalLine16.svg()),
     ];
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -254,7 +256,7 @@ class _ToolsWidgetState extends State<ToolsWidget> {
                 ),
                 onTap: () {
                   BlocProvider.of<DoddlerBloc>(context).add(UpdateSymmetryLines(
-                      symmetryLines: symmtricalLine.count - 1));
+                      symmetryLines: symmtricalLine.count));
                   Navigator.of(context).pop();
                 },
               ),

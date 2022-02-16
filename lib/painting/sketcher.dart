@@ -1,8 +1,14 @@
+import 'dart:math';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:path_drawing/path_drawing.dart';
+
 import 'package:doddle/generated/assets.gen.dart';
 import 'package:doddle/models/draw_controller.dart';
 import 'package:doddle/models/point.dart';
-import 'package:flutter/material.dart';
-import 'package:path_drawing/path_drawing.dart';
 
 import 'shapes.dart';
 
@@ -12,9 +18,15 @@ class Sketcher extends CustomPainter {
   final double symmetryLines;
   final Color color;
   final PenTool penTool;
+  List<Offset> randomOffsets = [];
 
-  Sketcher(this.points, this.screenSize, this.symmetryLines, this.color,
-      this.penTool);
+  Sketcher(
+    this.points,
+    this.screenSize,
+    this.symmetryLines,
+    this.color,
+    this.penTool,
+  );
 
   @override
   bool shouldRepaint(Sketcher oldDelegate) {
@@ -32,14 +44,38 @@ class Sketcher extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
 
-    var angle = 360 / (symmetryLines);
-
+    // var angle = 360 / symmetryLines;
+    // print("angle = $angle");
     Path path = Path();
     for (var j = 0; j < points.length - 1; j++) {
       if (points[j + 1] != null) {
         if (points[j]!.offset != null && points[j + 1]!.offset != null) {
-          path.moveTo(points[j]!.offset!.dx, points[j]!.offset!.dy);
-          path.lineTo(points[j + 1]!.offset!.dx, points[j + 1]!.offset!.dy);
+          if (penTool == PenTool.customPen) {
+            // int a = 20;
+            // randomOffsets.add(Offset(
+            //     points[j]!.offset!.dx + Random().nextInt(a) * 1.0,
+            //     points[j]!.offset!.dy - Random().nextInt(a) * 1.0));
+            for (var i = 0; i < points[j]!.randomOffset!.length; i++) {
+              canvas.drawRect(
+                  points[j]!.randomOffset![i] & const Size(1.0, 1.0), paint);
+            }
+
+            // Shapes shapes = Shapes(
+            //     canvas: canvas,
+            //     radius: 1,
+            //     paint: Paint()
+            //       ..color = color
+            //       ..style = PaintingStyle.stroke
+            //       ..strokeWidth = 1.0,
+            //     center: points[j]!.offset!,
+            //     angle: 0);
+
+            // shapes.drawType(ShapeType.Custom);
+          } else {
+            randomOffsets = [];
+            path.moveTo(points[j]!.offset!.dx, points[j]!.offset!.dy);
+            path.lineTo(points[j + 1]!.offset!.dx, points[j + 1]!.offset!.dy);
+          }
         }
       } else {
         j++;
@@ -48,8 +84,9 @@ class Sketcher extends CustomPainter {
     if (penTool == PenTool.glowPen ||
         penTool == PenTool.normalPen ||
         penTool == PenTool.normalWithShaderPen ||
+        // penTool == PenTool.customPen ||
         penTool == PenTool.glowWithDotsPen) {
-      for (var i = 0; i <= symmetryLines; i++) {
+      for (var i = 0; i < symmetryLines; i++) {
         if (penTool == PenTool.glowPen) {
           canvas.drawPath(
               path,
@@ -94,7 +131,8 @@ class Sketcher extends CustomPainter {
               ),
               paint);
         }
-        canvas.rotate(angle);
+        print("symmetryLines = $symmetryLines");
+        performSymmetryLines(canvas, size, symmetryLines);
       }
     } else {
       //eraser
@@ -109,6 +147,41 @@ class Sketcher extends CustomPainter {
     }
   }
 }
+
+performSymmetryLines(Canvas canvas, Size size, double symmetryLines) {
+  if (symmetryLines == 2) {
+    canvas.translate(size.width / 2, 0);
+  } else if (symmetryLines == 3) {
+    canvas.rotate(180 / 12.2);
+  } else if (symmetryLines == 4) {
+    canvas.rotate(360 / 4.5);
+  } else if (symmetryLines == 8) {
+    canvas.rotate(360 / 4.5);
+  } else if (symmetryLines == 5) {
+    canvas.rotate(180 / 5.5);
+  } else if (symmetryLines == 10) {
+    canvas.rotate(180 / 5.5);
+  }else if (symmetryLines == 6) {
+    canvas.rotate(360 / 8);
+  }
+  // else if (symmetryLines == 12) {
+  //   canvas.rotate(360 / 8);
+  // }else if (symmetryLines == 8) {
+  //   canvas.rotate(360/180);
+  // }
+  else {
+    canvas.rotate(360 / symmetryLines);
+  }
+}
+
+// double getAngle(double symmetryLines) {
+//   if (symmetryLines == 1) {
+//     return 360 / (symmetryLines);
+//   } else if (symmetryLines == 2) {
+//     return 360;
+//   }
+//   return 360 / (symmetryLines);
+// }
 
 const SweepGradient colorWheelGradient =
     SweepGradient(center: Alignment.bottomRight, colors: [

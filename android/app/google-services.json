@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "119476167573",
+    "project_id": "doddle-344ad",
+    "storage_bucket": "doddle-344ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:119476167573:android:24244640c14fcb5cedcc9c",
+        "android_client_info": {
+          "package_name": "com.nmmsoft.doddle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "119476167573-ms53njq4i7igl1e8ahj4t36su7bff45u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNPjOl-ItUp_YzC25htgZOOQ5ODZDrJ48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "119476167573-ms53njq4i7igl1e8ahj4t36su7bff45u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

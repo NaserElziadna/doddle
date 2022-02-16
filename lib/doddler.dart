@@ -1,7 +1,10 @@
 import 'dart:math';
-
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:doddle/models/draw_controller.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:doddle/doddler_bloc/doddler_event.dart';
@@ -23,7 +26,6 @@ class Doddler extends StatefulWidget {
 }
 
 class _DoddlerState extends State<Doddler> {
-
   static Size kCanvasSize = Size.zero;
   double symmetryLines = 0;
   DrawController? drawController;
@@ -31,15 +33,44 @@ class _DoddlerState extends State<Doddler> {
   late int pointerCount;
 
   @override
-  void initState() {
+  initState() {
     drawController = context.read<DoddlerBloc>().drawController;
     ignorePointer = false;
     pointerCount = 1;
     if (drawController!.globalKey == null) {
-      BlocProvider.of<DoddlerBloc>(context).add(InitGlobalKeyEvent(Doddler.globalKey!));
+      BlocProvider.of<DoddlerBloc>(context)
+          .add(InitGlobalKeyEvent(Doddler.globalKey!));
     }
     super.initState();
   }
+
+  // Future<ui.Image> getUiImage(
+  //     String imageAssetPath, int height, int width) async {
+  //   final ByteData assetImageByteData = await rootBundle.load(imageAssetPath);
+  //   final codec = await ui.instantiateImageCodec(
+  //     assetImageByteData.buffer.asUint8List(),
+  //     targetHeight: height,
+  //     targetWidth: width,
+  //   );
+  //   final image = (await codec.getNextFrame()).image;
+  //   return image;
+  // }
+
+  // _loadImage(int height, int width) async {
+  //   ByteData bd = await rootBundle.load("assets/brush.png");
+
+  //   final Uint8List bytes = Uint8List.view(bd.buffer);
+
+  //   final ui.Codec codec = await ui.instantiateImageCodec(
+  //     bytes.buffer.asUint8List(),
+  //     targetHeight: height,
+  //     targetWidth: width,
+  //   );
+
+  //   final ui.Image image = (await codec.getNextFrame()).image;
+
+  //   setState(() => _image = image);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +107,6 @@ class _DoddlerState extends State<Doddler> {
       },
       builder: (context, state) {
         if (state is UpdateCanvasState) {
-          // print(drawController.toString());
-
           return InteractiveViewer(
             panEnabled: false,
             scaleEnabled: true,
@@ -153,6 +182,18 @@ class _DoddlerState extends State<Doddler> {
                               ),
                             );
                           }
+                          // if (drawController!.penTool == PenTool.customPen) {
+                          //   BlocProvider.of<DoddlerBloc>(context)
+                          //       .add(AddRandomPoints([
+                          //     List.generate(
+                          //         10,
+                          //         (index) => randomOffsets.add(Offset(
+                          //             points[j]!.offset!.dx +
+                          //                 Random().nextInt(a) * 1.0,
+                          //             points[j]!.offset!.dy -
+                          //                 Random().nextInt(a) * 1.0)))
+                          //   ]));
+                          // }
                         }
                       };
                       instance.onUpdate = (pointerEvent) {

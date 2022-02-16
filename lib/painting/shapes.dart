@@ -81,6 +81,15 @@ class Shapes {
     });
   }
 
+  void drawCustom() {
+    rotate(() {
+      int a=20;
+      for (var i = 0; i < a; i++) {
+        canvas!.drawRect(center+ Offset(center.dx+Random().nextInt(a)*1.0 ,center.dy-Random().nextInt(a)*1.0) & const Size(1.0, 1.0), paint!);
+      }
+    });
+  }
+
   void drawStar(int num, {double initialAngle = 0}) {
     rotate(() {
       final Path path = Path();
@@ -146,6 +155,9 @@ class Shapes {
       case ShapeType.Star8:
         drawStar(16, initialAngle: 0);
         break;
+      case ShapeType.Custom:
+        drawCustom();
+        break;
     }
   }
 
@@ -168,6 +180,7 @@ class Shapes {
 enum ShapeType {
   Circle,
   Rect,
+  Custom,
   RoundedRect,
   Triangle,
   Diamond,

@@ -17,6 +17,7 @@ import 'doddler_state.dart';
 class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
   DrawController? drawController;
   var index = 0;
+  
   DoddlerBloc({this.drawController}) : super(UpdateCanvasState());
 
   @override

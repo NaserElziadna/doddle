@@ -3,10 +3,12 @@ import 'dart:ui';
 class Point {
   Offset? offset;
   Paint? paint;
+  List<Offset>? randomOffset = [];
 
   Point({
     this.offset,
     this.paint,
+    this.randomOffset
   });
 
   Point copyWith({
@@ -25,10 +27,8 @@ class Point {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
-    return other is Point &&
-      other.offset == offset &&
-      other.paint == paint;
+
+    return other is Point && other.offset == offset && other.paint == paint;
   }
 
   @override
