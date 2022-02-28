@@ -42,11 +42,31 @@ Amazing magical doodle game provide a creative doodle world for you!
   </tr>
 </table>  
 
+# Doddle Features
+- inApp sharing to social media.
+- saving high-quality image.
+- create mandala painting
+- draw with powerful symmetrical lines 
+- advanced color picker
+- magical brushes picker
+- symmetrical line picker
+- Playback the painting process as a cartoon video clip.
+- undo.
+- redo.
+- many magical brushes.
+- high-quality lines
+- apply filters on the image(future feature).
+- Google Ads.
+- inApp Purches(future feature).
+and many more . . .
 
+Naser Elziadna
+
+#sketch  #drawing #symmetricall #mandala 
 
 # some of my work of art
 
-<table style="width:75%;height:75%;">
+<table  style="width:75%;height:75%;">
   <tr>
     <td>
       <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/1644214851772.jpg" alt="drawing" style="width:100%;"/>    
