@@ -10,8 +10,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:doddle/doddler_bloc/doddler_event.dart';
 import 'package:doddle/generated/assets.gen.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../doddler_bloc/doddler_bloc.dart';
+import '../utils/ad_helper.dart';
 import 'popover.dart';
 
 class ToolsWidget extends StatefulWidget {
@@ -22,6 +24,44 @@ class ToolsWidget extends StatefulWidget {
 }
 
 class _ToolsWidgetState extends State<ToolsWidget> {
+  // TODO: Add _rewardedAd
+  late RewardedAd _rewardedAd;
+
+  // TODO: Add _isRewardedAdReady
+  bool _isRewardedAdReady = false;
+
+  // TODO: Implement _loadRewardedAd()
+  void _loadRewardedAd() {
+    RewardedAd.load(
+      adUnitId: AdHelper.rewardedAdUnitId,
+      request: AdRequest(),
+      rewardedAdLoadCallback: RewardedAdLoadCallback(
+        onAdLoaded: (ad) {
+          this._rewardedAd = ad;
+
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              setState(() {
+                _isRewardedAdReady = false;
+              });
+              _loadRewardedAd();
+            },
+          );
+
+          setState(() {
+            _isRewardedAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (err) {
+          print('Failed to load a rewarded ad: ${err.message}');
+          setState(() {
+            _isRewardedAdReady = false;
+          });
+        },
+      ),
+    );
+  }
+
   bool _iseraserSelected = false;
 
   // create some values
@@ -31,6 +71,13 @@ class _ToolsWidgetState extends State<ToolsWidget> {
 // ValueChanged<Color> callback
   void changeColor(Color color) {
     setState(() => pickerColor = color);
+  }
+
+@override
+  void initState() {
+    // TODO: implement initState
+    _loadRewardedAd();
+    super.initState();
   }
 
   @override
@@ -114,6 +161,13 @@ class _ToolsWidgetState extends State<ToolsWidget> {
     );
   }
 
+  @override
+  void dispose() {
+    // TODO: Dispose a RewardedAd object
+    _rewardedAd?.dispose();
+    super.dispose();
+  }
+
   void _handleFABPressed(BuildContext context, ToolType toolType) {
     showModalBottomSheet<int>(
       backgroundColor: Colors.transparent,
@@ -194,6 +248,9 @@ class _ToolsWidgetState extends State<ToolsWidget> {
                   BlocProvider.of<DoddlerBloc>(context)
                       .add(ChangePenToolEvent(penTool: brush.penTool));
                   Navigator.of(context).pop();
+                   _rewardedAd?.show(
+                      onUserEarnedReward:
+                          (AdWithoutView ad, RewardItem reward) {});
                 },
               ),
             );
@@ -255,8 +312,8 @@ class _ToolsWidgetState extends State<ToolsWidget> {
                   ),
                 ),
                 onTap: () {
-                  BlocProvider.of<DoddlerBloc>(context).add(UpdateSymmetryLines(
-                      symmetryLines: symmtricalLine.count));
+                  BlocProvider.of<DoddlerBloc>(context).add(
+                      UpdateSymmetryLines(symmetryLines: symmtricalLine.count));
                   Navigator.of(context).pop();
                 },
               ),

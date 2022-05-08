@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:doddle/doddler.dart';
 import 'package:doddle/generated/assets.gen.dart';
@@ -7,9 +6,9 @@ import 'package:doddle/models/draw_controller.dart';
 import 'package:doddle/models/recorder_controller.dart';
 import 'package:doddle/pages/about_me_page.dart';
 import 'package:doddle/recorder_bloc/recorder_bloc.dart';
-import 'package:doddle/recorder_bloc/recorder_event.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,11 +16,23 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'doddler_bloc/doddler_bloc.dart';
 import 'doddler_bloc/doddler_event.dart';
+import 'firebase_options.dart';
+import 'utils/ad_helper.dart';
 import 'widgets/tools_widget.dart';
+
+Future<InitializationStatus> _initGoogleMobileAds() {
+  // TODO: Initialize Google Mobile Ads SDK
+  return MobileAds.instance.initialize();
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await MobileAds.instance.initialize();
+  await MobileAds.instance.initialize();
+
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   await Firebase.initializeApp();
 
   // Pass all uncaught errors from the framework to Crashlytics.
@@ -94,6 +105,35 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   DrawController? drawController;
+  // TODO: Add _bannerAd
+  late BannerAd _bannerAd;
+
+  // TODO: Add _isBannerAdReady
+  bool _isBannerAdReady = false;
+
+  @override
+  void initState() {
+    // TODO: Initialize _bannerAd
+    _bannerAd = BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          _isBannerAdReady = false;
+          ad.dispose();
+        },
+      ),
+    );
+
+    _bannerAd.load();
+  }
   // Timer? timer;
 
   // static AdRequest request = const AdRequest(
@@ -168,77 +208,98 @@ class _HomePageState extends State<HomePage> {
   //   timer?.cancel();
   //   super.dispose();
   // }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _bannerAd.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
+          preferredSize: const Size.fromHeight(100),
           child: Container(
             color: Colors.purple[800],
             padding: const EdgeInsets.all(5),
-            child: Row(
+            child: Column(
               children: [
-                GestureDetector(
-                  child: const Icon(
-                    Icons.save_alt_outlined,
-                    color: Colors.white,
-                    size: 40,
-                  ),
-                  onTap: () {
-                    // _showRewardedAd();
-                    BlocProvider.of<DoddlerBloc>(context)
-                        .add(SavePageToGalleryEvent());
-                  },
-                ),
-                GestureDetector(
-                  child: const Icon(
-                    Icons.info_outline,
-                    color: Colors.white,
-                    size: 40,
-                  ),
-                  onTap: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (builder) {
-                      return const AboutMePage();
-                    }));
-                  },
-                ),
-                GestureDetector(
-                  child: Assets.svg.share.svg(width: 40),
-                  onTap: () {
-                    BlocProvider.of<DoddlerBloc>(context)
-                        .add(ShareImageEvent(context: context));
-                  },
-                ),
-                const Spacer(),
-                GestureDetector(
-                  child: Assets.svg.undo.svg(width: 40),
-                  onTap: () {
-                    BlocProvider.of<DoddlerBloc>(context)
-                        .add(UndoStampsEvent());
-                  },
-                ),
-                GestureDetector(
-                  child: Assets.svg.redo.svg(width: 40),
-                  onTap: () {
-                    BlocProvider.of<DoddlerBloc>(context)
-                        .add(RedoStampsEvent());
-                  },
-                ),
-                const Spacer(),
-                GestureDetector(
-                  child: Assets.svg.close.svg(width: 40),
-                  onTap: () {
-                    // BlocProvider.of<DoddlerBloc>(context)
-                    //     .add(ClearStampsEvent());
+                Row(
+                  children: [
+                    GestureDetector(
+                      child: const Icon(
+                        Icons.save_alt_outlined,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                      onTap: () {
+                        // _showRewardedAd();
+                        BlocProvider.of<DoddlerBloc>(context)
+                            .add(SavePageToGalleryEvent());
+                      },
+                    ),
+                    GestureDetector(
+                      child: const Icon(
+                        Icons.info_outline,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                      onTap: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (builder) {
+                          return const AboutMePage();
+                        }));
+                      },
+                    ),
+                    if (kIsWeb == false)
+                      GestureDetector(
+                        child: Assets.svg.share.svg(width: 40),
+                        onTap: () {
+                          BlocProvider.of<DoddlerBloc>(context)
+                              .add(ShareImageEvent(context: context));
+                        },
+                      ),
+                    const Spacer(),
+                    GestureDetector(
+                      child: Assets.svg.undo.svg(width: 40),
+                      onTap: () {
+                        BlocProvider.of<DoddlerBloc>(context)
+                            .add(UndoStampsEvent());
+                      },
+                    ),
+                    GestureDetector(
+                      child: Assets.svg.redo.svg(width: 40),
+                      onTap: () {
+                        BlocProvider.of<DoddlerBloc>(context)
+                            .add(RedoStampsEvent());
+                      },
+                    ),
+                    const Spacer(),
+                    GestureDetector(
+                      child: Assets.svg.close.svg(width: 40),
+                      onTap: () {
+                        // BlocProvider.of<DoddlerBloc>(context)
+                        //     .add(ClearStampsEvent());
 
-                    context.read<DoddlerBloc>().add(MessageEvent(
-                        "This will case to clear the canvas ,\n are you sure you want to Continue ? ",
-                        isClear: true));
-                  },
+                        context.read<DoddlerBloc>().add(MessageEvent(
+                            "This will case to clear the canvas ,\n are you sure you want to Continue ? ",
+                            isClear: true));
+                      },
+                    ),
+                  ],
                 ),
+                // TODO: Display a banner when ready
+                if (_isBannerAdReady)
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      width: _bannerAd.size.width.toDouble(),
+                      height: _bannerAd.size.height.toDouble(),
+                      child: AdWidget(ad: _bannerAd),
+                    ),
+                  ),
               ],
             ),
           ),
