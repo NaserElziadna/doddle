@@ -3,6 +3,12 @@
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=NaserElziadna.doddle)
 # <img src="https://github.com/NaserElziadna/doddle/blob/main/assets/launcher_icon.png" alt="drawing" style="width: 10%;max-width: 30%;border-radius: 17px;display: block;"/> doddle - (become an artist in a minute)
 
+<a href="https://play.google.com/store/apps/details?id=com.nmmsoft.doddle">
+    <img alt="Get it on Google Play"
+        height="80"
+        src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" />
+</a>  
+
 Amazing magical doodle game provide a creative doodle world for you!
 
 💚Accurate detailed divination reader : To know your life, moods, and relationships at tomorrow</br>
@@ -206,5 +212,7 @@ Naser Elziadna
 - [ ] Playback the painting process as a cartoon video clip
 - [x] symmetry line picker
 
-# My Goal App
-# <img src="https://github.com/NaserElziadna/doddle/blob/main/screen_shots/myGoalApp.jpeg" alt="drawing" style="width:50%;"/>    
+## License
+
+This application is released under GNU GPLv3 (see [LICENSE](LICENSE)).
+Some of the used libraries are released under different licenses.
