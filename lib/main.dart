@@ -288,6 +288,18 @@ class _HomePageState extends State<HomePage> {
                             isClear: true));
                       },
                     ),
+                    GestureDetector(
+                      child: const Icon(
+                        Icons.play_circle,
+                        size: 36,
+                      ),
+                      onTap: () async {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => MovieTimePage(),
+                        ));
+                        context.read<RecorderBloc>().add(PrepareVideoPageEvent());
+                      },
+                    ),
                   ],
                 ),
                 // TODO: Display a banner when ready
