@@ -19,6 +19,7 @@ class Sketcher extends CustomPainter {
   final Color color;
   final PenTool penTool;
   List<Offset> randomOffsets = [];
+  final double penSize;
 
   Sketcher(
     this.points,
@@ -26,6 +27,7 @@ class Sketcher extends CustomPainter {
     this.symmetryLines,
     this.color,
     this.penTool,
+    this.penSize,
   );
 
   @override
@@ -42,7 +44,7 @@ class Sketcher extends CustomPainter {
       ..color = Colors.white
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0;
+      ..strokeWidth = penSize;
 
     // var angle = 360 / symmetryLines;
     // print("angle = $angle");
@@ -104,7 +106,7 @@ class Sketcher extends CustomPainter {
                 ..color = color
                 ..strokeJoin = StrokeJoin.round
                 ..style = PaintingStyle.stroke
-                ..strokeWidth = 4.0);
+                ..strokeWidth = penSize);
         } else if (penTool == PenTool.normalWithShaderPen) {
           canvas.drawPath(
               path,
@@ -113,7 +115,7 @@ class Sketcher extends CustomPainter {
                 ..strokeJoin = StrokeJoin.round
                 ..style = PaintingStyle.stroke
                 ..shader = sweepShader
-                ..strokeWidth = 4.0);
+                ..strokeWidth = penSize);
         } else if (penTool == PenTool.glowWithDotsPen) {
           canvas.drawPath(
               path,
@@ -129,7 +131,7 @@ class Sketcher extends CustomPainter {
                 dashArray:
                     CircularIntervalList<double>(<double>[100.0, 0.0, 50.0]),
               ),
-              paint);
+              paint..strokeWidth =penSize);
         }
         print("symmetryLines = $symmetryLines");
         performSymmetryLines(canvas, size, symmetryLines);
@@ -142,7 +144,7 @@ class Sketcher extends CustomPainter {
           ..color = Colors.black
           ..strokeJoin = StrokeJoin.round
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 20.0,
+          ..strokeWidth = penSize,
       );
     }
   }
@@ -161,7 +163,7 @@ performSymmetryLines(Canvas canvas, Size size, double symmetryLines) {
     canvas.rotate(180 / 5.5);
   } else if (symmetryLines == 10) {
     canvas.rotate(180 / 5.5);
-  }else if (symmetryLines == 6) {
+  } else if (symmetryLines == 6) {
     canvas.rotate(360 / 8);
   }
   // else if (symmetryLines == 12) {
