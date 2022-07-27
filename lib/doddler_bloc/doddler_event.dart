@@ -48,6 +48,13 @@ class ChangePenToolEvent extends DoddlerEvent {
   });
 }
 
+class ChangePenSizeEvent extends DoddlerEvent {
+  final double penSize;
+  ChangePenSizeEvent({
+    this.penSize = 2,
+  });
+}
+
 class InitGlobalKeyEvent extends DoddlerEvent {
   GlobalKey globalKey;
   InitGlobalKeyEvent(
@@ -94,6 +101,11 @@ class MessageEvent extends DoddlerEvent {
   final bool isClear;
   MessageEvent(this.message, {this.isClear = false});
 }
+
+class ShowVideoEvent extends DoddlerEvent {
+  ShowVideoEvent();
+}
+
 
 // class PanActiveEvent extends DoddlerEvent {
 //   final bool isActive;

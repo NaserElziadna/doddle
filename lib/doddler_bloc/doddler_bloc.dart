@@ -17,7 +17,7 @@ import 'doddler_state.dart';
 class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
   DrawController? drawController;
   var index = 0;
-  
+
   DoddlerBloc({this.drawController}) : super(UpdateCanvasState());
 
   @override
@@ -27,6 +27,9 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
       yield UpdateCanvasState(drawController: drawController);
     } else if (event is ClearStampsEvent) {
       if (event.ok) {
+        if (drawController!.stamp!.isEmpty) {
+          return;
+        }
         drawController!.stamp!.clear();
         yield UpdateCanvasState(drawController: drawController);
       }
@@ -106,6 +109,13 @@ class DoddlerBloc extends Bloc<DoddlerEvent, DoddlerState> {
       // yield UpdateCanvasState(drawController: drawController);
     } else if (event is MessageEvent) {
       yield MessageState(event.message, isClear: event.isClear);
+      yield UpdateCanvasState(drawController: drawController);
+    } else if (event is ShowVideoEvent) {
+      yield ShowRecordState();
+    } else if (event is ChangePenSizeEvent) {
+      drawController!.copyWith(
+        penSize: event.penSize,
+      );
       yield UpdateCanvasState(drawController: drawController);
     }
     //  else if (event is PanActiveEvent) {
