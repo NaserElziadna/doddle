@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:doddle/doddler.dart';
 import 'package:doddle/generated/assets.gen.dart';
 import 'package:doddle/models/draw_controller.dart';
 import 'package:doddle/models/recorder_controller.dart';
 import 'package:doddle/pages/about_me_page.dart';
+import 'package:doddle/pages/movie_time_page.dart';
 import 'package:doddle/recorder_bloc/recorder_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -13,10 +15,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:screen_recorder/screen_recorder.dart';
 
 import 'doddler_bloc/doddler_bloc.dart';
 import 'doddler_bloc/doddler_event.dart';
 import 'firebase_options.dart';
+import 'recorder_bloc/recorder_event.dart';
 import 'utils/ad_helper.dart';
 import 'widgets/tools_widget.dart';
 
@@ -112,6 +116,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+   
     // TODO: Initialize _bannerAd
     _bannerAd = BannerAd(
       adUnitId: AdHelper.bannerAdUnitId,
@@ -133,80 +138,7 @@ class _HomePageState extends State<HomePage> {
 
     _bannerAd.load();
   }
-  // Timer? timer;
 
-  // static AdRequest request = const AdRequest(
-  //   keywords: <String>['draw', 'painting'],
-  //   contentUrl: 'www.nmmsoft.com',
-  //   nonPersonalizedAds: false,
-  // );
-  // RewardedAd? _rewardedAd;
-  // int _numRewardedLoadAttempts = 0;
-
-  // void _createRewardedAd() {
-  //   RewardedAd.load(
-  //       adUnitId: 'ca-app-pub-3940256099942544/5224354917',
-  //       request: request,
-  //       rewardedAdLoadCallback: RewardedAdLoadCallback(
-  //         onAdLoaded: (RewardedAd ad) {
-  //           print('$ad loaded.');
-  //           _rewardedAd = ad;
-  //           _numRewardedLoadAttempts = 0;
-  //         },
-  //         onAdFailedToLoad: (LoadAdError error) {
-  //           print('RewardedAd failed to load: $error');
-  //           _rewardedAd = null;
-  //           _numRewardedLoadAttempts += 1;
-  //           if (_numRewardedLoadAttempts < maxFailedLoadAttempts) {
-  //             _createRewardedAd();
-  //           }
-  //         },
-  //       ));
-  // }
-
-  // void _showRewardedAd() {
-  //   if (_rewardedAd == null) {
-  //     print('Warning: attempt to show rewarded before loaded.');
-  //     return;
-  //   }
-  //   _rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(
-  //     onAdShowedFullScreenContent: (RewardedAd ad) =>
-  //         print('ad onAdShowedFullScreenContent.'),
-  //     onAdDismissedFullScreenContent: (RewardedAd ad) {
-  //       print('$ad onAdDismissedFullScreenContent.');
-  //       ad.dispose();
-  //       _createRewardedAd();
-  //     },
-  //     onAdFailedToShowFullScreenContent: (RewardedAd ad, AdError error) {
-  //       print('$ad onAdFailedToShowFullScreenContent: $error');
-  //       ad.dispose();
-  //       _createRewardedAd();
-  //     },
-  //   );
-
-  //   _rewardedAd!.setImmersiveMode(true);
-  //   _rewardedAd!.show(
-  //       onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
-  //     print('$ad with reward $RewardItem(${reward.amount}, ${reward.type})');
-  //   });
-  //   _rewardedAd = null;
-  // }
-
-  // @override
-  // void initState() {
-  //   _createRewardedAd();
-  //   drawController = context.read<DoddlerBloc>().drawController;
-  //   context.read<RecorderBloc>().add(StartRecordingEvent());
-  //   super.initState();
-  // }
-
-  // @override
-  // void dispose() {
-  //   _rewardedAd?.dispose();
-
-  //   timer?.cancel();
-  //   super.dispose();
-  // }
   @override
   void dispose() {
     // TODO: implement dispose
