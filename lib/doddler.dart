@@ -2,18 +2,21 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:doddle/models/draw_controller.dart';
+import 'package:doddle/recorder_bloc/recorder_bloc.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:doddle/doddler_bloc/doddler_event.dart';
+import 'package:screen_recorder/screen_recorder.dart';
 
 import 'doddler_bloc/doddler_bloc.dart';
 import 'doddler_bloc/doddler_state.dart';
 import 'models/point.dart';
 import 'painting/last_image_as_background.dart';
 import 'painting/sketcher.dart';
+import 'recorder_bloc/recorder_event.dart';
 import 'utils/single_gesture_recognizer.dart';
 
 class Doddler extends StatefulWidget {
@@ -34,6 +37,7 @@ class _DoddlerState extends State<Doddler> {
 
   @override
   initState() {
+    context.read<RecorderBloc>().add(StartRecordingEvent());
     drawController = context.read<DoddlerBloc>().drawController;
     ignorePointer = false;
     pointerCount = 1;
@@ -255,32 +259,40 @@ class _DoddlerState extends State<Doddler> {
                   child: RepaintBoundary(
                     key: Doddler.globalKey,
                     child: ClipRect(
-                      child: CustomPaint(
-                        foregroundPainter: Sketcher(
-                          state.drawController?.points ?? [],
-                          kCanvasSize,
-                          state.drawController != null
-                              ? state.drawController!.symmetryLines!
-                              : 5,
-                          state.drawController != null
-                              ? state.drawController!.currentColor
-                              : Colors.red,
-                          drawController!.penTool!,
+                      child: ScreenRecorder(
+                        background:  Colors.black,
+                         height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    controller:
+                        context.read<RecorderBloc>().recorderController!,
+                        child: CustomPaint(
+                          foregroundPainter: Sketcher(
+                            state.drawController?.points ?? [],
+                            kCanvasSize,
+                            state.drawController != null
+                                ? state.drawController!.symmetryLines!
+                                : 5,
+                            state.drawController != null
+                                ? state.drawController!.currentColor
+                                : Colors.red,
+                            drawController!.penTool!,
+                            drawController!.penSize ?? 1 
+                          ),
+                          painter: LastImageAsBackground(
+                            image: state.drawController == null
+                                ? null
+                                : state.drawController!.stamp!.isEmpty
+                                    ? null
+                                    : state.drawController!.stamp!.last!.image,
+                          ),
+                          size: Size(
+                            kCanvasSize.width / 2,
+                            kCanvasSize.height / 2,
+                          ),
+                          willChange: true,
+                          isComplex: true,
+                          child: const SizedBox.expand(),
                         ),
-                        painter: LastImageAsBackground(
-                          image: state.drawController == null
-                              ? null
-                              : state.drawController!.stamp!.isEmpty
-                                  ? null
-                                  : state.drawController!.stamp!.last!.image,
-                        ),
-                        size: Size(
-                          kCanvasSize.width / 2,
-                          kCanvasSize.height / 2,
-                        ),
-                        willChange: true,
-                        isComplex: true,
-                        child: const SizedBox.expand(),
                       ),
                     ),
                   ),
