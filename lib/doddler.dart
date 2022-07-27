@@ -205,7 +205,7 @@ class _DoddlerState extends State<Doddler> {
                                 MediaQuery.of(context).size.height -
                                     (AppBar().preferredSize.height));
                             var pinSpaceX = -20;
-                            var pinSpaceY = -140;
+                            var pinSpaceY = -160;
 
                             Offset point = pointerEvent.localPosition;
 
