@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:bloc/bloc.dart';
@@ -7,51 +8,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:doddle/models/recorder_controller.dart';
+import 'package:screen_recorder/screen_recorder.dart';
 
 import '../doddler.dart';
 import 'recorder_event.dart';
 import 'recorder_state.dart';
 
 class RecorderBloc extends Bloc<RecorderEvent, RecorderState> {
-  RecorderController? recorderController =
-      RecorderController(frames: [], globalKey: GlobalKey());
-  int index = 0;
-  bool isRecording = false;
-  int recordingIndex = 0;
-  Timer? timer;
+  ScreenRecorderController? recorderController;
+  List<int>? old_gif = [];
 
   RecorderBloc({this.recorderController}) : super(InitialRecorderState());
 
   @override
   Stream<RecorderState> mapEventToState(RecorderEvent event) async* {
-    if (event is TakeSnapshotEvent) {
-      if (!isRecording) {
-        timer =
-            Timer.periodic(const Duration(milliseconds: 34), (Timer t) async {
-          final frames = recorderController!.frames;
+    if (event is StartRecordingEvent) {
+      recorderController!.start();
+      yield RecordState(RecordStatus.startRecording);
+    } else if (event is PrepareVideoPageEvent) {
+      print(old_gif);
+      recorderController!.stop();
+      yield RecordState(RecordStatus.prepareVideo);
+      List<int>? gif = await recorderController!.export();
 
-          final image = await canvasToImage(event.globalKey!);
-          frames!.add(Frame(frame: image, index: index++));
-          recorderController = recorderController!.copyWith(frames: frames);
-        });
-      }
-    } else if (event is SaveGifEvent) {
-      add(StopRecordingEvent());
-      yield MessageState("Waiting ... ");
-      final gif = await recorderController!.export();
-      yield ShowGifState(gif: gif);
-    } else if (event is StartRecordingEvent) {
-      add(TakeSnapshotEvent(globalKey: Doddler.globalKey));
-    } else if (event is StopRecordingEvent) {
-      timer!.cancel();
+      yield RecordState(RecordStatus.donePreparingVideo,
+          obg: gif!.followedBy(old_gif ?? []).toList());
+      old_gif = gif.followedBy(old_gif ?? []).toList();
     }
-  }
-
-  Future<ui.Image> canvasToImage(GlobalKey globalKey) async {
-    final boundary =
-        globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-
-    final image = await boundary.toImage();
-    return image;
   }
 }
