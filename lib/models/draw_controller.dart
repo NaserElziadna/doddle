@@ -26,6 +26,7 @@ class DrawController {
   final GlobalKey? globalKey;
   final double? symmetryLines;
   final PenTool? penTool;
+  final double? penSize;
 
   DrawController({
     this.isPanActive = true,
@@ -37,6 +38,7 @@ class DrawController {
     this.globalKey,
     this.symmetryLines = 20,
     this.penTool = PenTool.glowPen,
+    this.penSize = 2,
   });
 
   //Add Initial Constructer // Add Empty Constructer
@@ -51,6 +53,7 @@ class DrawController {
     GlobalKey? globalKey,
     double? symmetryLines,
     PenTool? penTool,
+    double? penSize,
   }) {
     return DrawController(
       isPanActive: isPanActive ?? this.isPanActive,
@@ -62,12 +65,13 @@ class DrawController {
       globalKey: globalKey ?? this.globalKey,
       symmetryLines: symmetryLines ?? this.symmetryLines,
       penTool: penTool ?? this.penTool,
+      penSize : penSize ?? this.penSize
     );
   }
 
   @override
   String toString() {
-    return 'DrawController(isPanActive: $isPanActive, points: $points, stamp: $stamp, stampUndo: $stampUndo, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines, penTool: $penTool)';
+    return 'DrawController(isPanActive: $isPanActive, points: $points, stamp: $stamp, stampUndo: $stampUndo, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines, penTool: $penTool, penSize: $penSize)';
   }
 
   @override
@@ -83,7 +87,8 @@ class DrawController {
         other.isRandomColor == isRandomColor &&
         other.globalKey == globalKey &&
         other.symmetryLines == symmetryLines &&
-        other.penTool == penTool;
+        other.penTool == penTool &&
+        other.penSize == penSize;
   }
 
   @override
@@ -96,7 +101,8 @@ class DrawController {
         isRandomColor.hashCode ^
         globalKey.hashCode ^
         symmetryLines.hashCode ^
-        penTool.hashCode;
+        penTool.hashCode ^
+        penSize.hashCode;
   }
 }
 
