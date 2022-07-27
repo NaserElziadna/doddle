@@ -50,7 +50,13 @@ dependencies:
   firebase_core: ^1.15.0
   firebase_database: ^9.0.12
   google_mobile_ads: ^1.1.0
+  screen_recorder: ^0.0.3
+  flutter_native_splash: ^2.2.6
 
+flutter_native_splash:
+  color: "#000000"
+  image: assets/animation_logo.gif
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
