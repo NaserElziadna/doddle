@@ -62,6 +62,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  ScreenRecorderController? recorderController;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -78,14 +79,12 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => RecorderBloc(
-            recorderController: RecorderController(
-              frames: [],
-              globalKey: GlobalKey(),
-            ),
+            recorderController: recorderController = ScreenRecorderController(),
           ),
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
