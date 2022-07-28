@@ -7,8 +7,8 @@
     <img alt="Get it on Google Play"
         height="80"
         src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" />
-</a>  
-
+</a>  <br/>
+<b>[Pull Request's are Always Welcomed ]</b><br/>
 Amazing magical doodle game provide a creative doodle world for you!
 
 💚Accurate detailed divination reader : To know your life, moods, and relationships at tomorrow</br>
@@ -181,14 +181,15 @@ Naser Elziadna
 - [x] add bloc pattern
 - [x] add bottom sheet toolkit
 - [x] make the canvas zoomable
+- [ ] add pin size tool
 - [x] add share image feature (not visible in the app) 
   - [x] redo tool
   - [x] undo tool
   - [x] clear canvas 
-  - [x] brush types (didn't apply to ui)
+  - [x] brush types 
     - [x] noraml line
     - [x] glow line
-    - [x] dotted line (not visible in the app)
+    - [x] dotted line 
     - [x] eraser
 - [x] create draw controller 
   - [x] varibals
@@ -209,7 +210,7 @@ Naser Elziadna
   - [ ] edit a saved work
   - [ ] delete a saved work
   - [ ] share a saved work 
-- [ ] Playback the painting process as a cartoon video clip
+- [x] Playback the painting process as a cartoon video clip
 - [x] symmetry line picker
 
 ## License
