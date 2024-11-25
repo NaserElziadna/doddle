@@ -27,6 +27,8 @@ mixin _$DrawController {
   double? get symmetryLines => throw _privateConstructorUsedError;
   PenTool? get penTool => throw _privateConstructorUsedError;
   double? get penSize => throw _privateConstructorUsedError;
+  bool get mirrorSymmetry => throw _privateConstructorUsedError;
+  bool get showGuidelines => throw _privateConstructorUsedError;
 
   /// Create a copy of DrawController
   /// with the given fields replaced by the non-null parameter values.
@@ -51,7 +53,9 @@ abstract class $DrawControllerCopyWith<$Res> {
       GlobalKey<State<StatefulWidget>>? globalKey,
       double? symmetryLines,
       PenTool? penTool,
-      double? penSize});
+      double? penSize,
+      bool mirrorSymmetry,
+      bool showGuidelines});
 }
 
 /// @nodoc
@@ -79,6 +83,8 @@ class _$DrawControllerCopyWithImpl<$Res, $Val extends DrawController>
     Object? symmetryLines = freezed,
     Object? penTool = freezed,
     Object? penSize = freezed,
+    Object? mirrorSymmetry = null,
+    Object? showGuidelines = null,
   }) {
     return _then(_value.copyWith(
       isPanActive: null == isPanActive
@@ -121,6 +127,14 @@ class _$DrawControllerCopyWithImpl<$Res, $Val extends DrawController>
           ? _value.penSize
           : penSize // ignore: cast_nullable_to_non_nullable
               as double?,
+      mirrorSymmetry: null == mirrorSymmetry
+          ? _value.mirrorSymmetry
+          : mirrorSymmetry // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showGuidelines: null == showGuidelines
+          ? _value.showGuidelines
+          : showGuidelines // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -143,7 +157,9 @@ abstract class _$$DrawControllerImplCopyWith<$Res>
       GlobalKey<State<StatefulWidget>>? globalKey,
       double? symmetryLines,
       PenTool? penTool,
-      double? penSize});
+      double? penSize,
+      bool mirrorSymmetry,
+      bool showGuidelines});
 }
 
 /// @nodoc
@@ -169,6 +185,8 @@ class __$$DrawControllerImplCopyWithImpl<$Res>
     Object? symmetryLines = freezed,
     Object? penTool = freezed,
     Object? penSize = freezed,
+    Object? mirrorSymmetry = null,
+    Object? showGuidelines = null,
   }) {
     return _then(_$DrawControllerImpl(
       isPanActive: null == isPanActive
@@ -211,6 +229,14 @@ class __$$DrawControllerImplCopyWithImpl<$Res>
           ? _value.penSize
           : penSize // ignore: cast_nullable_to_non_nullable
               as double?,
+      mirrorSymmetry: null == mirrorSymmetry
+          ? _value.mirrorSymmetry
+          : mirrorSymmetry // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showGuidelines: null == showGuidelines
+          ? _value.showGuidelines
+          : showGuidelines // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -228,7 +254,9 @@ class _$DrawControllerImpl implements _DrawController {
       this.globalKey,
       this.symmetryLines = 20,
       this.penTool = PenTool.glowPen,
-      this.penSize = 2})
+      this.penSize = 2,
+      this.mirrorSymmetry = false,
+      this.showGuidelines = true})
       : _points = points,
         _stamp = stamp,
         _stampUndo = stampUndo;
@@ -286,10 +314,16 @@ class _$DrawControllerImpl implements _DrawController {
   @override
   @JsonKey()
   final double? penSize;
+  @override
+  @JsonKey()
+  final bool mirrorSymmetry;
+  @override
+  @JsonKey()
+  final bool showGuidelines;
 
   @override
   String toString() {
-    return 'DrawController(isPanActive: $isPanActive, points: $points, stamp: $stamp, stampUndo: $stampUndo, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines, penTool: $penTool, penSize: $penSize)';
+    return 'DrawController(isPanActive: $isPanActive, points: $points, stamp: $stamp, stampUndo: $stampUndo, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines, penTool: $penTool, penSize: $penSize, mirrorSymmetry: $mirrorSymmetry, showGuidelines: $showGuidelines)';
   }
 
   @override
@@ -312,7 +346,11 @@ class _$DrawControllerImpl implements _DrawController {
             (identical(other.symmetryLines, symmetryLines) ||
                 other.symmetryLines == symmetryLines) &&
             (identical(other.penTool, penTool) || other.penTool == penTool) &&
-            (identical(other.penSize, penSize) || other.penSize == penSize));
+            (identical(other.penSize, penSize) || other.penSize == penSize) &&
+            (identical(other.mirrorSymmetry, mirrorSymmetry) ||
+                other.mirrorSymmetry == mirrorSymmetry) &&
+            (identical(other.showGuidelines, showGuidelines) ||
+                other.showGuidelines == showGuidelines));
   }
 
   @override
@@ -327,7 +365,9 @@ class _$DrawControllerImpl implements _DrawController {
       globalKey,
       symmetryLines,
       penTool,
-      penSize);
+      penSize,
+      mirrorSymmetry,
+      showGuidelines);
 
   /// Create a copy of DrawController
   /// with the given fields replaced by the non-null parameter values.
@@ -350,7 +390,9 @@ abstract class _DrawController implements DrawController {
       final GlobalKey<State<StatefulWidget>>? globalKey,
       final double? symmetryLines,
       final PenTool? penTool,
-      final double? penSize}) = _$DrawControllerImpl;
+      final double? penSize,
+      final bool mirrorSymmetry,
+      final bool showGuidelines}) = _$DrawControllerImpl;
 
   @override
   bool get isPanActive;
@@ -372,6 +414,10 @@ abstract class _DrawController implements DrawController {
   PenTool? get penTool;
   @override
   double? get penSize;
+  @override
+  bool get mirrorSymmetry;
+  @override
+  bool get showGuidelines;
 
   /// Create a copy of DrawController
   /// with the given fields replaced by the non-null parameter values.

@@ -8,6 +8,7 @@ import 'package:doddle/presentation/common/widgets/popover.dart';
 import 'brush_tool_grid.dart';
 import 'color_tool_grid.dart';
 import 'symmetry_tool_grid.dart';
+import 'canvas_settings_tool_grid.dart';
 
 class ToolsWidget extends ConsumerWidget {
   const ToolsWidget({Key? key}) : super(key: key);
@@ -47,6 +48,15 @@ class ToolsWidget extends ConsumerWidget {
               ],
             ),
             toolType: ToolType.colors,
+          ),
+          _buildToolButton(
+            context,
+            icon: const Icon(
+              Icons.settings,
+              size: 30,
+              color: Colors.white,
+            ),
+            toolType: ToolType.canvasSettings,
           ),
         ],
       ),
@@ -93,6 +103,8 @@ class ToolsWidget extends ConsumerWidget {
         return const ColorToolGrid();
       case ToolType.symmyrticllLine:
         return const SymmetryToolGrid();
+      case ToolType.canvasSettings:
+        return const CanvasSettingsToolGrid();
     }
   }
 } 

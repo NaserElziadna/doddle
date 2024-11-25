@@ -3,9 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../models/draw_controller.dart';
 
 enum ToolType {
-  colors,
   brushs,
+  colors,
   symmyrticllLine,
+  canvasSettings,
 }
 
 class SymmtriclLine {

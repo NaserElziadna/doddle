@@ -253,6 +253,8 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                       drawController.currentColor ?? Colors.red,
                       drawController.penTool ?? PenTool.glowPen,
                       drawController.penSize ?? 1,
+                      mirrorSymmetry: drawController.mirrorSymmetry ?? false,
+                      showGuidelines: drawController.showGuidelines ?? true,
                     ),
                     painter: LastImageAsBackground(
                       image: drawController.stamp?.isEmpty ?? true

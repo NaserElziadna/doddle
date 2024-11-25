@@ -27,5 +27,7 @@ class DrawController with _$DrawController {
     @Default(20) double? symmetryLines,
     @Default(PenTool.glowPen) PenTool? penTool,
     @Default(2) double? penSize,
+    @Default(false) bool mirrorSymmetry,
+    @Default(true) bool showGuidelines,
   }) = _DrawController;
 }

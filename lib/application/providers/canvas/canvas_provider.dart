@@ -25,9 +25,11 @@ class CanvasNotifier extends StateNotifier<DrawController> {
           stampUndo: [],
           currentColor: Colors.white,
           isRandomColor: false,
-          symmetryLines: 20,
+          symmetryLines: 6,
           penTool: PenTool.glowPen,
           penSize: 2,
+          mirrorSymmetry: false,
+          showGuidelines: true,
         ));
 
   void clearPoints() {
@@ -95,10 +97,24 @@ class CanvasNotifier extends StateNotifier<DrawController> {
 
   Future<void> takePageStamp(GlobalKey globalKey) async {
     try {
+      // Temporarily disable guidelines
+      final previousGuidelinesState = state.showGuidelines;
+      state = state.copyWith(showGuidelines: false);
+      
+      // Wait for the next frame to ensure the UI updates
+      await Future.delayed(Duration.zero);
+      
+      // Take the stamp
       ui.Image image = await canvasToImage(globalKey);
       final stamps = List<Stamp?>.from(state.stamp ?? [])
         ..add(Stamp(image: image));
-      state = state.copyWith(stamp: stamps);
+      
+      // Restore guidelines state
+      state = state.copyWith(
+        stamp: stamps,
+        showGuidelines: previousGuidelinesState
+      );
+      
       clearPoints();
     } catch (e) {
       debugPrint('Error taking page stamp: $e');
@@ -113,6 +129,13 @@ class CanvasNotifier extends StateNotifier<DrawController> {
 
   Future<void> saveToGallery(GlobalKey globalKey) async {
     try {
+      // Temporarily disable guidelines
+      final previousGuidelinesState = state.showGuidelines;
+      state = state.copyWith(showGuidelines: false);
+      
+      // Wait for the next frame to ensure the UI updates
+      await Future.delayed(Duration.zero);
+      
       final boundary =
           globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       final image = await boundary.toImage();
@@ -125,6 +148,9 @@ class CanvasNotifier extends StateNotifier<DrawController> {
         name: "${DateTime.now().toIso8601String()}.jpeg",
         isReturnImagePathOfIOS: true,
       );
+      
+      // Restore guidelines state
+      state = state.copyWith(showGuidelines: previousGuidelinesState);
     } catch (e) {
       debugPrint('Error saving to gallery: $e');
     }
@@ -132,6 +158,13 @@ class CanvasNotifier extends StateNotifier<DrawController> {
 
   Future<void> shareImage(GlobalKey globalKey, BuildContext context) async {
     try {
+      // Temporarily disable guidelines
+      final previousGuidelinesState = state.showGuidelines;
+      state = state.copyWith(showGuidelines: false);
+      
+      // Wait for the next frame to ensure the UI updates
+      await Future.delayed(Duration.zero);
+      
       final boundary =
           globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       final image = await boundary.toImage();
@@ -149,8 +182,19 @@ class CanvasNotifier extends StateNotifier<DrawController> {
         text: 'Hey, check out My Amazing Doddle!',
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
       );
+      
+      // Restore guidelines state
+      state = state.copyWith(showGuidelines: previousGuidelinesState);
     } catch (e) {
       debugPrint('Error sharing image: $e');
     }
+  }
+
+  void toggleMirrorSymmetry(bool value) {
+    state = state.copyWith(mirrorSymmetry: value);
+  }
+
+  void toggleGuidelines(bool value) {
+    state = state.copyWith(showGuidelines: value);
   }
 }

@@ -1,10 +1,7 @@
 import 'package:doddle/domain/models/draw_controller.dart';
 import 'package:doddle/domain/models/point.dart';
 import 'package:flutter/material.dart';
-import 'package:path_drawing/path_drawing.dart';
 import 'dart:math' as math;
-
-import 'shapes.dart';
 
 const pi = math.pi;
 
