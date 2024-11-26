@@ -11,11 +11,13 @@ enum ToolType {
 
 class SymmtriclLine {
   final double count;
+  final bool isMirror;
   final SvgPicture picture;
   
   const SymmtriclLine({
     required this.count,
     required this.picture,
+    required this.isMirror,
   });
 }
 

@@ -1,4 +1,5 @@
 import 'package:doddle/application/providers/canvas/canvas_provider.dart';
+import 'package:doddle/application/providers/config/config_provider.dart';
 import 'package:doddle/domain/value_objects/tool_types.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,16 +10,9 @@ class SymmetryToolGrid extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final symmetryLines = [
-      SymmtriclLine(count: 1, picture: Assets.svg.symmetricalLine1.svg()),
-      SymmtriclLine(count: 2, picture: Assets.svg.symmetricalLine2.svg()),
-      SymmtriclLine(count: 3, picture: Assets.svg.symmetricalLine5.svg()),
-      SymmtriclLine(count: 4, picture: Assets.svg.symmetricalLine7.svg()),
-      SymmtriclLine(count: 8, picture: Assets.svg.symmetricalLine8.svg()),
-      SymmtriclLine(count: 5, picture: Assets.svg.symmetricalLine9.svg()),
-      SymmtriclLine(count: 10, picture: Assets.svg.symmetricalLine10.svg()),
-      SymmtriclLine(count: 6, picture: Assets.svg.symmetricalLine11.svg()),
-    ];
+    final symmetryLines = ref.watch(configProvider).symmetryLines;
+    final selectedSymmetryLines = ref.watch(canvasProvider).symmetryLines ?? 1;
+    final isMirrorSymmetry = ref.watch(canvasProvider).mirrorSymmetry ?? false;
 
     return GridView.builder(
       shrinkWrap: true,
@@ -28,17 +22,23 @@ class SymmetryToolGrid extends ConsumerWidget {
       ),
       itemBuilder: (context, index) {
         final line = symmetryLines[index];
+        final isSelected = line.count == selectedSymmetryLines && 
+                         line.isMirror == isMirrorSymmetry;
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: () {
               ref.read(canvasProvider.notifier).updateSymmetryLines(line.count);
+              ref.read(canvasProvider.notifier).toggleMirrorSymmetry(line.isMirror);
               Navigator.of(context).pop();
             },
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.black, width: 3),
+                border: Border.all(
+                  color: isSelected ? Colors.blue : Colors.black,
+                  width: isSelected ? 4 : 3,
+                ),
               ),
               child: line.picture,
             ),

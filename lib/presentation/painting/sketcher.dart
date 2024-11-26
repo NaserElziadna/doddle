@@ -45,7 +45,7 @@ class Sketcher extends CustomPainter {
 
     Path path = Path();
     _drawPoints(canvas, path, paint);
-    
+
     for (var i = 0; i < symmetryLines; i++) {
       canvas.save();
       _applyPenEffects(canvas, path, paint);
@@ -61,14 +61,14 @@ class Sketcher extends CustomPainter {
     final relY = point.dy;
     final dist = math.sqrt(relX * relX + relY * relY);
     final angle = math.atan2(relX, relY);
-    
+
     List<Offset> result = [];
     for (int i = 0; i < symmetryLines; i++) {
       final theta = angle + 2 * pi * i / symmetryLines;
       final x = math.sin(theta) * dist;
       final y = math.cos(theta) * dist;
       result.add(Offset(x, y));
-      
+
       if (mirrorSymmetry) {
         result.add(Offset(-x, y));
       }
@@ -85,18 +85,16 @@ class Sketcher extends CustomPainter {
 
       final currentPoint = points[j]?.offset;
       final nextPoint = points[j + 1]?.offset;
-      
+
       if (currentPoint != null && nextPoint != null) {
-        if (penTool == PenTool.customPen) {
-          for (var offset in points[j]!.randomOffset!) {
-            final symmetryOffsets = _getSymmetryPoints(offset);
-            for (var symOffset in symmetryOffsets) {
-              canvas.drawRect(symOffset & const Size(1.0, 1.0), paint);
-            }
-          }
-        } else {
-          path.moveTo(currentPoint.dx, currentPoint.dy);
-          path.lineTo(nextPoint.dx, nextPoint.dy);
+        // Get all symmetry points for both current and next points
+        final currentSymPoints = _getSymmetryPoints(currentPoint);
+        final nextSymPoints = _getSymmetryPoints(nextPoint);
+
+        // Draw lines between corresponding symmetry points
+        for (var i = 0; i < currentSymPoints.length; i++) {
+          path.moveTo(currentSymPoints[i].dx, currentSymPoints[i].dy);
+          path.lineTo(nextSymPoints[i].dx, nextSymPoints[i].dy);
         }
       }
     }
@@ -138,13 +136,13 @@ class Sketcher extends CustomPainter {
   }
 
   void _drawGlowPath(Canvas canvas, Path path, Paint paint) {
-     canvas.drawPath(
-              path,
-              Paint()
-                ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5.0)
-                ..color = color
-                ..style = PaintingStyle.stroke
-                ..strokeWidth = 10.0);
+    canvas.drawPath(
+        path,
+        Paint()
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5.0)
+          ..color = color
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 10.0);
 
     canvas.drawPath(path, paint..color = Colors.white);
     // canvas.drawPath(
@@ -200,7 +198,7 @@ class Sketcher extends CustomPainter {
     for (var i = 0.0; i <= 1.0; i += 0.1) {
       final metric = path.computeMetrics().first;
       final tangent = metric.getTangentForOffset(metric.length * i);
-      
+
       if (tangent != null) {
         final position = tangent.position;
         canvas.drawCircle(

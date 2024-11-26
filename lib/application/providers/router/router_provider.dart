@@ -2,6 +2,7 @@ import 'package:doddle/presentation/screens/canvas_screen/canvas_screen.dart';
 import 'package:doddle/presentation/screens/common/screens/error_screen.dart';
 import 'package:doddle/presentation/screens/about_me_screen/about_me_page.dart';
 import 'package:doddle/presentation/screens/home_screen/home_screen.dart';
+import 'package:doddle/presentation/screens/preview_screen/preview_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,6 +26,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             name: RouteNames.aboutMe.name,
             builder: (context, state) => const AboutMeScreen(),
           ),
+          GoRoute(
+            path: RouteNames.preview.path,
+            name: RouteNames.preview.name,
+            builder: (context, state) => const PreviewScreen(),
+          ),
           // GoRoute(
           //   path: 'tools',
           //   name: 'tools',
@@ -45,6 +51,7 @@ class RouteNames {
   static const NavInfo tools = NavInfo('tools', '/tools');
   static const NavInfo canvas = NavInfo('canvas', '/canvas');
   static const NavInfo aboutMe = NavInfo('aboutMe', '/aboutMe');
+  static const NavInfo preview = NavInfo('preview', '/preview');
 
   // Add more route names
 }

@@ -17,6 +17,8 @@ class BrushToolGrid extends ConsumerWidget {
       BrushTool(penTool: PenTool.normalWithShaderPen, picture: Assets.svg.pen6Preview.svg()),
     ];
 
+    final selectedPenTool = ref.watch(canvasProvider).penTool;
+
     return GridView.builder(
       shrinkWrap: true,
       itemCount: brushes.length,
@@ -25,6 +27,7 @@ class BrushToolGrid extends ConsumerWidget {
       ),
       itemBuilder: (context, index) {
         final brush = brushes[index];
+        final isSelected = brush.penTool == selectedPenTool;
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
@@ -35,7 +38,10 @@ class BrushToolGrid extends ConsumerWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.black, width: 3),
+                border: Border.all(
+                  color: isSelected ? Colors.blue : Colors.black,
+                  width: isSelected ? 4 : 3,
+                ),
               ),
               child: brush.picture,
             ),

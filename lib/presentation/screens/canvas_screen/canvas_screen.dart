@@ -15,6 +15,8 @@ import '../../painting/sketcher.dart';
 import '../../common/utils/single_gesture_recognizer.dart';
 import '../../common/widgets/tools/tools_widget.dart';
 import '../../../application/providers/canvas/canvas_provider.dart';
+import '../../../application/providers/recorder/recorder_provider.dart';
+import '../../../presentation/common/widgets/recording/recording_controls.dart';
 
 class CanvasScreen extends ConsumerStatefulWidget {
   static GlobalKey? globalKey = GlobalKey();
@@ -98,6 +100,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                     ),
                   ],
                 ),
+                const RecordingControls(),
               ],
             ),
           ),
@@ -269,7 +272,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                     background: Colors.black,
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
-                    controller: ScreenRecorderController(),
+                    controller: ref.read(recorderControllerProvider),
                     child: CustomPaint(
                       foregroundPainter: Sketcher(
                         drawController.points ?? [],
@@ -301,8 +304,9 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
               CustomPaint(
                 painter: GuidelinesPainter(
                   symmetryLines: drawController.symmetryLines ?? 5,
-                  penSize: drawController.penSize ?? 1,
+                  penSize: 10,
                   showGuidelines: drawController.showGuidelines ?? true,
+                  isMirror: drawController.mirrorSymmetry ?? false,
                 ),
                 child: Container(),
               ),

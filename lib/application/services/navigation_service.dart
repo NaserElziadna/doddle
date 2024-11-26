@@ -20,5 +20,9 @@ class NavigationService {
     context.goNamed(RouteNames.home.name);
   }
 
+  void goToPreview(BuildContext context) {
+    context.pushNamed(RouteNames.preview.name);
+  }
+
   // Add more navigation methods
 }

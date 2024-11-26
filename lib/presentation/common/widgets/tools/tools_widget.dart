@@ -1,3 +1,4 @@
+import 'package:doddle/application/providers/config/config_provider.dart';
 import 'package:doddle/domain/models/draw_controller.dart';
 import 'package:doddle/domain/value_objects/tool_types.dart';
 import 'package:flutter/material.dart';
@@ -27,16 +28,30 @@ class ToolsWidget extends ConsumerWidget {
             toolType: ToolType.brushs,
           ),
           _buildEraserButton(ref),
-          _buildToolButton(
-            context,
-            icon: Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                Assets.svg.symmetricalLineBg.svg(width: 80),
-                Assets.svg.symmetricalLine6.svg(width: 60),
-              ],
-            ),
-            toolType: ToolType.symmyrticllLine,
+          Consumer(
+            builder: (context, ref, child) {
+              final selectedSymmetryLines = ref.watch(canvasProvider).symmetryLines ?? 1;
+              final isMirrorSymmetry = ref.watch(canvasProvider).mirrorSymmetry ?? false;
+              
+              final symmetryLines = ref.watch(configProvider).symmetryLines;
+
+              final selectedLine = symmetryLines.firstWhere(
+                (line) => line.count == selectedSymmetryLines && line.isMirror == isMirrorSymmetry,
+                orElse: () => symmetryLines.first,
+              );
+
+              return _buildToolButton(
+                context,
+                icon: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    Assets.svg.symmetricalLineBg.svg(width: 80),
+                    selectedLine.picture,
+                  ],
+                ),
+                toolType: ToolType.symmyrticllLine,
+              );
+            }
           ),
           _buildToolButton(
             context,
