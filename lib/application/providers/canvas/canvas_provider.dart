@@ -97,24 +97,10 @@ class CanvasNotifier extends StateNotifier<DrawController> {
 
   Future<void> takePageStamp(GlobalKey globalKey) async {
     try {
-      // Temporarily disable guidelines
-      final previousGuidelinesState = state.showGuidelines;
-      state = state.copyWith(showGuidelines: false);
-      
-      // Wait for the next frame to ensure the UI updates
-      await Future.delayed(Duration.zero);
-      
-      // Take the stamp
       ui.Image image = await canvasToImage(globalKey);
       final stamps = List<Stamp?>.from(state.stamp ?? [])
         ..add(Stamp(image: image));
-      
-      // Restore guidelines state
-      state = state.copyWith(
-        stamp: stamps,
-        showGuidelines: previousGuidelinesState
-      );
-      
+      state = state.copyWith(stamp: stamps);
       clearPoints();
     } catch (e) {
       debugPrint('Error taking page stamp: $e');
@@ -129,13 +115,6 @@ class CanvasNotifier extends StateNotifier<DrawController> {
 
   Future<void> saveToGallery(GlobalKey globalKey) async {
     try {
-      // Temporarily disable guidelines
-      final previousGuidelinesState = state.showGuidelines;
-      state = state.copyWith(showGuidelines: false);
-      
-      // Wait for the next frame to ensure the UI updates
-      await Future.delayed(Duration.zero);
-      
       final boundary =
           globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       final image = await boundary.toImage();
@@ -148,9 +127,6 @@ class CanvasNotifier extends StateNotifier<DrawController> {
         name: "${DateTime.now().toIso8601String()}.jpeg",
         isReturnImagePathOfIOS: true,
       );
-      
-      // Restore guidelines state
-      state = state.copyWith(showGuidelines: previousGuidelinesState);
     } catch (e) {
       debugPrint('Error saving to gallery: $e');
     }
@@ -158,13 +134,6 @@ class CanvasNotifier extends StateNotifier<DrawController> {
 
   Future<void> shareImage(GlobalKey globalKey, BuildContext context) async {
     try {
-      // Temporarily disable guidelines
-      final previousGuidelinesState = state.showGuidelines;
-      state = state.copyWith(showGuidelines: false);
-      
-      // Wait for the next frame to ensure the UI updates
-      await Future.delayed(Duration.zero);
-      
       final boundary =
           globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       final image = await boundary.toImage();
@@ -182,9 +151,6 @@ class CanvasNotifier extends StateNotifier<DrawController> {
         text: 'Hey, check out My Amazing Doddle!',
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
       );
-      
-      // Restore guidelines state
-      state = state.copyWith(showGuidelines: previousGuidelinesState);
     } catch (e) {
       debugPrint('Error sharing image: $e');
     }
@@ -197,4 +163,8 @@ class CanvasNotifier extends StateNotifier<DrawController> {
   void toggleGuidelines(bool value) {
     state = state.copyWith(showGuidelines: value);
   }
+
+  void changeCanvasBackgroundColor(Color color) {
+    state = state.copyWith(canvasBackgroundColor: color);
+  } 
 }

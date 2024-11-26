@@ -29,6 +29,7 @@ mixin _$DrawController {
   double? get penSize => throw _privateConstructorUsedError;
   bool get mirrorSymmetry => throw _privateConstructorUsedError;
   bool get showGuidelines => throw _privateConstructorUsedError;
+  Color get canvasBackgroundColor => throw _privateConstructorUsedError;
 
   /// Create a copy of DrawController
   /// with the given fields replaced by the non-null parameter values.
@@ -55,7 +56,8 @@ abstract class $DrawControllerCopyWith<$Res> {
       PenTool? penTool,
       double? penSize,
       bool mirrorSymmetry,
-      bool showGuidelines});
+      bool showGuidelines,
+      Color canvasBackgroundColor});
 }
 
 /// @nodoc
@@ -85,6 +87,7 @@ class _$DrawControllerCopyWithImpl<$Res, $Val extends DrawController>
     Object? penSize = freezed,
     Object? mirrorSymmetry = null,
     Object? showGuidelines = null,
+    Object? canvasBackgroundColor = null,
   }) {
     return _then(_value.copyWith(
       isPanActive: null == isPanActive
@@ -135,6 +138,10 @@ class _$DrawControllerCopyWithImpl<$Res, $Val extends DrawController>
           ? _value.showGuidelines
           : showGuidelines // ignore: cast_nullable_to_non_nullable
               as bool,
+      canvasBackgroundColor: null == canvasBackgroundColor
+          ? _value.canvasBackgroundColor
+          : canvasBackgroundColor // ignore: cast_nullable_to_non_nullable
+              as Color,
     ) as $Val);
   }
 }
@@ -159,7 +166,8 @@ abstract class _$$DrawControllerImplCopyWith<$Res>
       PenTool? penTool,
       double? penSize,
       bool mirrorSymmetry,
-      bool showGuidelines});
+      bool showGuidelines,
+      Color canvasBackgroundColor});
 }
 
 /// @nodoc
@@ -187,6 +195,7 @@ class __$$DrawControllerImplCopyWithImpl<$Res>
     Object? penSize = freezed,
     Object? mirrorSymmetry = null,
     Object? showGuidelines = null,
+    Object? canvasBackgroundColor = null,
   }) {
     return _then(_$DrawControllerImpl(
       isPanActive: null == isPanActive
@@ -237,6 +246,10 @@ class __$$DrawControllerImplCopyWithImpl<$Res>
           ? _value.showGuidelines
           : showGuidelines // ignore: cast_nullable_to_non_nullable
               as bool,
+      canvasBackgroundColor: null == canvasBackgroundColor
+          ? _value.canvasBackgroundColor
+          : canvasBackgroundColor // ignore: cast_nullable_to_non_nullable
+              as Color,
     ));
   }
 }
@@ -256,7 +269,8 @@ class _$DrawControllerImpl implements _DrawController {
       this.penTool = PenTool.glowPen,
       this.penSize = 2,
       this.mirrorSymmetry = false,
-      this.showGuidelines = true})
+      this.showGuidelines = true,
+      this.canvasBackgroundColor = const Color(0x12457895)})
       : _points = points,
         _stamp = stamp,
         _stampUndo = stampUndo;
@@ -320,10 +334,13 @@ class _$DrawControllerImpl implements _DrawController {
   @override
   @JsonKey()
   final bool showGuidelines;
+  @override
+  @JsonKey()
+  final Color canvasBackgroundColor;
 
   @override
   String toString() {
-    return 'DrawController(isPanActive: $isPanActive, points: $points, stamp: $stamp, stampUndo: $stampUndo, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines, penTool: $penTool, penSize: $penSize, mirrorSymmetry: $mirrorSymmetry, showGuidelines: $showGuidelines)';
+    return 'DrawController(isPanActive: $isPanActive, points: $points, stamp: $stamp, stampUndo: $stampUndo, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines, penTool: $penTool, penSize: $penSize, mirrorSymmetry: $mirrorSymmetry, showGuidelines: $showGuidelines, canvasBackgroundColor: $canvasBackgroundColor)';
   }
 
   @override
@@ -350,7 +367,9 @@ class _$DrawControllerImpl implements _DrawController {
             (identical(other.mirrorSymmetry, mirrorSymmetry) ||
                 other.mirrorSymmetry == mirrorSymmetry) &&
             (identical(other.showGuidelines, showGuidelines) ||
-                other.showGuidelines == showGuidelines));
+                other.showGuidelines == showGuidelines) &&
+            (identical(other.canvasBackgroundColor, canvasBackgroundColor) ||
+                other.canvasBackgroundColor == canvasBackgroundColor));
   }
 
   @override
@@ -367,7 +386,8 @@ class _$DrawControllerImpl implements _DrawController {
       penTool,
       penSize,
       mirrorSymmetry,
-      showGuidelines);
+      showGuidelines,
+      canvasBackgroundColor);
 
   /// Create a copy of DrawController
   /// with the given fields replaced by the non-null parameter values.
@@ -392,7 +412,8 @@ abstract class _DrawController implements DrawController {
       final PenTool? penTool,
       final double? penSize,
       final bool mirrorSymmetry,
-      final bool showGuidelines}) = _$DrawControllerImpl;
+      final bool showGuidelines,
+      final Color canvasBackgroundColor}) = _$DrawControllerImpl;
 
   @override
   bool get isPanActive;
@@ -418,6 +439,8 @@ abstract class _DrawController implements DrawController {
   bool get mirrorSymmetry;
   @override
   bool get showGuidelines;
+  @override
+  Color get canvasBackgroundColor;
 
   /// Create a copy of DrawController
   /// with the given fields replaced by the non-null parameter values.

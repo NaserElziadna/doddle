@@ -29,5 +29,6 @@ class DrawController with _$DrawController {
     @Default(2) double? penSize,
     @Default(false) bool mirrorSymmetry,
     @Default(true) bool showGuidelines,
+    @Default(Color(0x12457895)) Color canvasBackgroundColor,
   }) = _DrawController;
 }

@@ -37,10 +37,6 @@ class Sketcher extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     canvas.translate(center.dx, center.dy);
 
-    if (showGuidelines) {
-      _drawGuidelines(canvas, size);
-    }
-
     Paint paint = Paint()
       ..color = color
       ..strokeCap = StrokeCap.round
@@ -52,30 +48,12 @@ class Sketcher extends CustomPainter {
     
     for (var i = 0; i < symmetryLines; i++) {
       canvas.save();
-      _drawPathWithEffect(canvas, path, paint);
+      _applyPenEffects(canvas, path, paint);
       canvas.restore();
       canvas.rotate(2 * pi / symmetryLines);
     }
 
     canvas.restore();
-  }
-
-  void _drawGuidelines(Canvas canvas, Size size) {
-    final guidelinePaint = Paint()
-      ..color = Colors.blue.withOpacity(0.3)
-      ..strokeWidth = 1
-      ..style = PaintingStyle.stroke;
-
-    final radius = math.min(size.width, size.height) / 2 - penSize;
-
-    canvas.drawCircle(Offset.zero, radius, guidelinePaint);
-
-    for (int i = 0; i < symmetryLines; i++) {
-      final angle = i * 2 * pi / symmetryLines;
-      final x = math.cos(angle) * radius;
-      final y = math.sin(angle) * radius;
-      canvas.drawLine(Offset.zero, Offset(x, y), guidelinePaint);
-    }
   }
 
   List<Offset> _getSymmetryPoints(Offset point) {
@@ -160,29 +138,38 @@ class Sketcher extends CustomPainter {
   }
 
   void _drawGlowPath(Canvas canvas, Path path, Paint paint) {
-    canvas.drawPath(
-      path,
-      paint
-        ..color = color.withOpacity(0.2)
-        ..strokeWidth = penSize * 3
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10),
-    );
+     canvas.drawPath(
+              path,
+              Paint()
+                ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5.0)
+                ..color = color
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 10.0);
 
-    canvas.drawPath(
-      path,
-      paint
-        ..color = color.withOpacity(0.4)
-        ..strokeWidth = penSize * 2
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5),
-    );
+    canvas.drawPath(path, paint..color = Colors.white);
+    // canvas.drawPath(
+    //   path,
+    //   paint
+    //     ..color = color.withOpacity(0.2)
+    //     ..strokeWidth = penSize * 3
+    //     ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10),
+    // );
 
-    canvas.drawPath(
-      path,
-      paint
-        ..color = color
-        ..strokeWidth = penSize
-        ..maskFilter = null,
-    );
+    // canvas.drawPath(
+    //   path,
+    //   paint
+    //     ..color = color.withOpacity(0.4)
+    //     ..strokeWidth = penSize * 2
+    //     ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5),
+    // );
+
+    // canvas.drawPath(
+    //   path,
+    //   paint
+    //     ..color = color
+    //     ..strokeWidth = penSize
+    //     ..maskFilter = null,
+    // );
   }
 
   void _drawNormalPath(Canvas canvas, Path path) {

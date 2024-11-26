@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:doddle/application/providers/router/router_provider.dart';
+import 'package:doddle/presentation/painting/guidelines_painter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +18,7 @@ import '../../../application/providers/canvas/canvas_provider.dart';
 
 class CanvasScreen extends ConsumerStatefulWidget {
   static GlobalKey? globalKey = GlobalKey();
-  
+
   const CanvasScreen({Key? key}) : super(key: key);
 
   @override
@@ -42,7 +43,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   @override
   Widget build(BuildContext context) {
     final drawController = ref.watch(canvasProvider);
-    
+
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
@@ -60,7 +61,9 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                         color: Colors.white,
                         size: 40,
                       ),
-                      onTap: () => ref.read(canvasProvider.notifier).saveToGallery(CanvasScreen.globalKey!),
+                      onTap: () => ref
+                          .read(canvasProvider.notifier)
+                          .saveToGallery(CanvasScreen.globalKey!),
                     ),
                     GestureDetector(
                       child: const Icon(
@@ -73,17 +76,20 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                     if (!kIsWeb)
                       GestureDetector(
                         child: Assets.svg.share.svg(width: 40),
-                        onTap: () => ref.read(canvasProvider.notifier)
+                        onTap: () => ref
+                            .read(canvasProvider.notifier)
                             .shareImage(CanvasScreen.globalKey!, context),
                       ),
                     const Spacer(),
                     GestureDetector(
                       child: Assets.svg.undo.svg(width: 40),
-                      onTap: () => ref.read(canvasProvider.notifier).undoStamp(),
+                      onTap: () =>
+                          ref.read(canvasProvider.notifier).undoStamp(),
                     ),
                     GestureDetector(
                       child: Assets.svg.redo.svg(width: 40),
-                      onTap: () => ref.read(canvasProvider.notifier).redoStamp(),
+                      onTap: () =>
+                          ref.read(canvasProvider.notifier).redoStamp(),
                     ),
                     const Spacer(),
                     GestureDetector(
@@ -104,7 +110,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
 
   Widget _buildCanvas() {
     final drawController = ref.watch(canvasProvider);
-    
+
     return Container(
       color: Colors.purple[800],
       child: InteractiveViewer(
@@ -168,10 +174,25 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
 
   void _handleGestureEnd(PointerEvent pointerEvent) {
     if (ignorePointer == false && pointerCount == 1) {
-      ref.read(canvasProvider.notifier).addPoint(
-        Point(offset: pointerEvent.localPosition),
-        end: true,
-      );
+      setState(() {
+        kCanvasSize = Size(
+          MediaQuery.of(context).size.width,
+          MediaQuery.of(context).size.height - (AppBar().preferredSize.height),
+        );
+        var pinSpaceX = -20;
+        var pinSpaceY = -160;
+
+        Offset point = pointerEvent.localPosition;
+        point = point.translate(
+          -((kCanvasSize.width / 2) + pinSpaceX),
+          -((kCanvasSize.height / 2) + pinSpaceY),
+        );
+
+        ref.read(canvasProvider.notifier).addPoint(
+              Point(offset: point),
+              end: true,
+            );
+      });
     }
   }
 
@@ -180,7 +201,8 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Clear Canvas'),
-        content: const Text('This will clear the canvas. Are you sure you want to continue?'),
+        content: const Text(
+            'This will clear the canvas. Are you sure you want to continue?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -228,7 +250,8 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
           child: RawGestureDetector(
             behavior: HitTestBehavior.opaque,
             gestures: <Type, GestureRecognizerFactory>{
-              SingleGestureRecognizer: GestureRecognizerFactoryWithHandlers<SingleGestureRecognizer>(
+              SingleGestureRecognizer:
+                  GestureRecognizerFactoryWithHandlers<SingleGestureRecognizer>(
                 () => SingleGestureRecognizer(debugOwner: this),
                 (instance) {
                   instance.onStart = _handleGestureStart;
@@ -237,41 +260,53 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                 },
               ),
             },
-            child: RepaintBoundary(
-              key: CanvasScreen.globalKey,
-              child: ClipRect(
-                child: ScreenRecorder(
-                  background: Colors.black,
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  controller: ScreenRecorderController(),
-                  child: CustomPaint(
-                    foregroundPainter: Sketcher(
-                      drawController.points ?? [],
-                      kCanvasSize,
-                      drawController.symmetryLines ?? 5,
-                      drawController.currentColor ?? Colors.red,
-                      drawController.penTool ?? PenTool.glowPen,
-                      drawController.penSize ?? 1,
-                      mirrorSymmetry: drawController.mirrorSymmetry ?? false,
-                      showGuidelines: drawController.showGuidelines ?? true,
+            //add the guidelines layer in stack under the r
+            child: Stack(children: [
+              RepaintBoundary(
+                key: CanvasScreen.globalKey,
+                child: ClipRect(
+                  child: ScreenRecorder(
+                    background: Colors.black,
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    controller: ScreenRecorderController(),
+                    child: CustomPaint(
+                      foregroundPainter: Sketcher(
+                        drawController.points ?? [],
+                        kCanvasSize,
+                        drawController.symmetryLines ?? 5,
+                        drawController.currentColor ?? Colors.red,
+                        drawController.penTool ?? PenTool.glowPen,
+                        drawController.penSize ?? 1,
+                        mirrorSymmetry: drawController.mirrorSymmetry ?? false,
+                        showGuidelines: drawController.showGuidelines ?? true,
+                      ),
+                      painter: LastImageAsBackground(
+                        image: drawController.stamp?.isEmpty ?? true
+                            ? null
+                            : drawController.stamp?.last?.image,
+                      ),
+                      size: Size(
+                        kCanvasSize.width / 2,
+                        kCanvasSize.height / 2,
+                      ),
+                      willChange: true,
+                      isComplex: true,
+                      child: const SizedBox.expand(),
                     ),
-                    painter: LastImageAsBackground(
-                      image: drawController.stamp?.isEmpty ?? true
-                          ? null
-                          : drawController.stamp?.last?.image,
-                    ),
-                    size: Size(
-                      kCanvasSize.width / 2,
-                      kCanvasSize.height / 2,
-                    ),
-                    willChange: true,
-                    isComplex: true,
-                    child: const SizedBox.expand(),
                   ),
                 ),
               ),
-            ),
+              // Guidelines Layer (always on top)
+              CustomPaint(
+                painter: GuidelinesPainter(
+                  symmetryLines: drawController.symmetryLines ?? 5,
+                  penSize: drawController.penSize ?? 1,
+                  showGuidelines: drawController.showGuidelines ?? true,
+                ),
+                child: Container(),
+              ),
+            ]),
           ),
         );
       },

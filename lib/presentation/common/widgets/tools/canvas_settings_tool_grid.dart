@@ -32,7 +32,7 @@ class CanvasSettingsToolGrid extends ConsumerWidget {
             'Show Guidelines',
             drawController.showGuidelines,
             (value) => ref.read(canvasProvider.notifier).toggleGuidelines(value),
-          ),
+          ),          
         ],
       ),
     );
