@@ -1,56 +1,57 @@
 import 'package:doddle/domain/models/draw_controller.dart';
+import 'package:doddle/domain/models/effects/eraser_effect.dart';
+import 'package:doddle/domain/models/effects/glow_effect.dart';
+import 'package:doddle/domain/models/effects/glow_with_dots_effect.dart';
+import 'package:doddle/domain/models/effects/normal_effect.dart';
+import 'package:doddle/domain/models/effects/normal_with_shader_effect.dart';
+import 'package:doddle/domain/models/effects/pen_effect.dart';
+import 'package:doddle/domain/models/effects/spray_effect.dart';
 import 'package:doddle/domain/models/point.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 const pi = math.pi;
 
 class Sketcher extends CustomPainter {
-  final List<Point?> points;
-  final Size screenSize;
-  final double symmetryLines;
-  final Color color;
-  final PenTool penTool;
-  final double penSize;
-  final bool mirrorSymmetry;
-  final bool showGuidelines;
+   final DrawController controller;
+  final WidgetRef ref;
+  final Map<PenTool, PenEffect> _effects;
 
-  Sketcher(
-    this.points,
-    this.screenSize,
-    this.symmetryLines,
-    this.color,
-    this.penTool,
-    this.penSize, {
-    this.mirrorSymmetry = false,
-    this.showGuidelines = true,
-  });
+  
+  Sketcher(this.controller, this.ref) : _effects = {
+    PenTool.eraserPen: EraserEffect()..initialize(ref),
+    PenTool.sprayPen: SprayEffect()..initialize(ref),
+    PenTool.glowPen: GlowEffect()..initialize(ref),
+    PenTool.normalPen: NormalEffect()..initialize(ref),
+    PenTool.normalWithShaderPen: NormalWithShaderEffect()..initialize(ref),
+    PenTool.glowWithDotsPen: GlowWithDotsEffect()..initialize(ref),
+
+    // Initialize other effects
+  };
 
   @override
   bool shouldRepaint(Sketcher oldDelegate) {
     return true;
   }
 
-  @override
+   @override
   void paint(Canvas canvas, Size size) {
     canvas.save();
     final center = Offset(size.width / 2, size.height / 2);
     canvas.translate(center.dx, center.dy);
 
-    Paint paint = Paint()
-      ..color = color
-      ..strokeCap = StrokeCap.round
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = penSize;
-
-    Path path = Path();
-    _drawPoints(canvas, path, paint);
-
-    for (var i = 0; i < symmetryLines; i++) {
-      canvas.save();
-      _applyPenEffects(canvas, path, paint);
-      canvas.restore();
-      canvas.rotate(2 * pi / symmetryLines);
+    final effect = _effects[controller.penTool];
+    if (effect != null) {
+      Path path = Path();
+      Paint paint = Paint()
+        ..strokeCap = StrokeCap.round
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = controller.penSize ?? 2.0;
+        
+      _drawPoints(canvas, path, paint);
+      effect.paint(canvas, path, paint);
     }
 
     canvas.restore();
@@ -63,13 +64,13 @@ class Sketcher extends CustomPainter {
     final angle = math.atan2(relX, relY);
 
     List<Offset> result = [];
-    for (int i = 0; i < symmetryLines; i++) {
-      final theta = angle + 2 * pi * i / symmetryLines;
+    for (int i = 0; i < controller.symmetryLines!; i++) {
+      final theta = angle + 2 * pi * i / controller.symmetryLines!;
       final x = math.sin(theta) * dist;
       final y = math.cos(theta) * dist;
       result.add(Offset(x, y));
 
-      if (mirrorSymmetry) {
+      if (controller.mirrorSymmetry) {
         result.add(Offset(-x, y));
       }
     }
@@ -77,14 +78,14 @@ class Sketcher extends CustomPainter {
   }
 
   void _drawPoints(Canvas canvas, Path path, Paint paint) {
-    for (var j = 0; j < points.length - 1; j++) {
-      if (points[j + 1] == null) {
+    for (var j = 0; j < controller.points!.length - 1; j++) {
+      if (controller.points![j + 1] == null) {
         j++;
         continue;
       }
 
-      final currentPoint = points[j]?.offset;
-      final nextPoint = points[j + 1]?.offset;
+      final currentPoint = controller.points![j]?.offset;
+      final nextPoint = controller.points![j + 1]?.offset;
 
       if (currentPoint != null && nextPoint != null) {
         // Get all symmetry points for both current and next points
@@ -99,131 +100,4 @@ class Sketcher extends CustomPainter {
       }
     }
   }
-
-  void _applyPenEffects(Canvas canvas, Path path, Paint paint) {
-    if (penTool == PenTool.eraserPen) {
-      canvas.drawPath(
-        path,
-        Paint()
-          ..color = Colors.black
-          ..strokeJoin = StrokeJoin.round
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = penSize,
-      );
-      return;
-    }
-
-    _drawPathWithEffect(canvas, path, paint);
-  }
-
-  void _drawPathWithEffect(Canvas canvas, Path path, Paint paint) {
-    switch (penTool) {
-      case PenTool.glowPen:
-        _drawGlowPath(canvas, path, paint);
-        break;
-      case PenTool.normalPen:
-        _drawNormalPath(canvas, path);
-        break;
-      case PenTool.normalWithShaderPen:
-        _drawShaderPath(canvas, path);
-        break;
-      case PenTool.glowWithDotsPen:
-        _drawGlowDotsPath(canvas, path, paint);
-        break;
-      default:
-        break;
-    }
-  }
-
-  void _drawGlowPath(Canvas canvas, Path path, Paint paint) {
-    canvas.drawPath(
-        path,
-        Paint()
-          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5.0)
-          ..color = color
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 10.0);
-
-    canvas.drawPath(path, paint..color = Colors.white);
-    // canvas.drawPath(
-    //   path,
-    //   paint
-    //     ..color = color.withOpacity(0.2)
-    //     ..strokeWidth = penSize * 3
-    //     ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10),
-    // );
-
-    // canvas.drawPath(
-    //   path,
-    //   paint
-    //     ..color = color.withOpacity(0.4)
-    //     ..strokeWidth = penSize * 2
-    //     ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5),
-    // );
-
-    // canvas.drawPath(
-    //   path,
-    //   paint
-    //     ..color = color
-    //     ..strokeWidth = penSize
-    //     ..maskFilter = null,
-    // );
-  }
-
-  void _drawNormalPath(Canvas canvas, Path path) {
-    canvas.drawPath(
-      path,
-      Paint()
-        ..color = color
-        ..strokeJoin = StrokeJoin.round
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = penSize,
-    );
-  }
-
-  void _drawShaderPath(Canvas canvas, Path path) {
-    canvas.drawPath(
-      path,
-      Paint()
-        ..shader = sweepShader
-        ..strokeJoin = StrokeJoin.round
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = penSize,
-    );
-  }
-
-  void _drawGlowDotsPath(Canvas canvas, Path path, Paint paint) {
-    _drawGlowPath(canvas, path, paint);
-
-    for (var i = 0.0; i <= 1.0; i += 0.1) {
-      final metric = path.computeMetrics().first;
-      final tangent = metric.getTangentForOffset(metric.length * i);
-
-      if (tangent != null) {
-        final position = tangent.position;
-        canvas.drawCircle(
-          position,
-          penSize / 4,
-          Paint()
-            ..color = color
-            ..style = PaintingStyle.fill,
-        );
-      }
-    }
-  }
 }
-
-const SweepGradient colorWheelGradient =
-    SweepGradient(center: Alignment.bottomRight, colors: [
-  Color.fromARGB(255, 255, 0, 0),
-  Color.fromARGB(255, 255, 255, 0),
-  Color.fromARGB(255, 0, 255, 0),
-  Color.fromARGB(255, 0, 255, 255),
-  Color.fromARGB(255, 0, 0, 255),
-  Color.fromARGB(255, 255, 0, 255),
-  Color.fromARGB(255, 255, 0, 0),
-]);
-// If we create a shader from the above SweepGraident, we get
-// a crash on web, but only on web.
-final Shader sweepShader =
-    colorWheelGradient.createShader(const Rect.fromLTWH(0, 0, 100, 10));

@@ -10,6 +10,7 @@ enum PenTool {
   normalWithShaderPen,
   glowPen,
   glowWithDotsPen,
+  sprayPen,
   eraserPen,
   customPen
 }

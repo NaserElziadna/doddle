@@ -15,6 +15,7 @@ class BrushToolGrid extends ConsumerWidget {
       BrushTool(penTool: PenTool.normalPen, picture: Assets.svg.pen2Preview.svg()),
       BrushTool(penTool: PenTool.glowWithDotsPen, picture: Assets.svg.pen5Preview.svg()),
       BrushTool(penTool: PenTool.normalWithShaderPen, picture: Assets.svg.pen6Preview.svg()),
+      BrushTool(penTool: PenTool.sprayPen, picture: Assets.svg.pen3Preview.svg()),
     ];
 
     final selectedPenTool = ref.watch(canvasProvider).penTool;

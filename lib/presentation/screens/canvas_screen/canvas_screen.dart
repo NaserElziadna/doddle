@@ -275,14 +275,8 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                     controller: ref.read(recorderControllerProvider),
                     child: CustomPaint(
                       foregroundPainter: Sketcher(
-                        drawController.points ?? [],
-                        kCanvasSize,
-                        drawController.symmetryLines ?? 5,
-                        drawController.currentColor ?? Colors.red,
-                        drawController.penTool ?? PenTool.glowPen,
-                        drawController.penSize ?? 1,
-                        mirrorSymmetry: drawController.mirrorSymmetry ?? false,
-                        showGuidelines: drawController.showGuidelines ?? true,
+                        drawController,
+                        ref,
                       ),
                       painter: LastImageAsBackground(
                         image: drawController.stamp?.isEmpty ?? true
