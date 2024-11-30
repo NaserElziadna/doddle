@@ -8,7 +8,8 @@ class GlowWithDotsEffect extends PenEffect {
 
     final pathWithDots = dashPath(  
           path,
-          dashArray: CircularIntervalList<double>(<double>[5, 10]), // Changed to create 5px dashes with 10px gaps
+          dashArray: CircularIntervalList<double>(<double>[5
+          , 10]), // Changed to create 5px dashes with 10px gaps
         );
 
     canvas.drawPath(

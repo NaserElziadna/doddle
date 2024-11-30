@@ -1,4 +1,5 @@
 import 'package:doddle/domain/models/draw_controller.dart';
+import 'package:doddle/domain/models/effects/custom_pen_effect.dart';
 import 'package:doddle/domain/models/effects/eraser_effect.dart';
 import 'package:doddle/domain/models/effects/glow_effect.dart';
 import 'package:doddle/domain/models/effects/glow_with_dots_effect.dart';
@@ -21,6 +22,7 @@ class Sketcher extends CustomPainter {
 
   
   Sketcher(this.controller, this.ref) : _effects = {
+    PenTool.customPen: CustomPenEffect()..initialize(ref),
     PenTool.eraserPen: EraserEffect()..initialize(ref),
     PenTool.sprayPen: SprayEffect()..initialize(ref),
     PenTool.glowPen: GlowEffect()..initialize(ref),
