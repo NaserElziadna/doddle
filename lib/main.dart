@@ -9,6 +9,12 @@ import 'application/providers/router/router_provider.dart';
 
 // Create a global variable for SharedPreferences
 late SharedPreferences prefs;
+WidgetRef? _globalRef;
+WidgetRef get globalRef => _globalRef!;
+
+void initializeGlobalRef(WidgetRef ref) {
+  _globalRef = ref;
+}
 
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +39,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    initializeGlobalRef(ref);
     return Sizer(
       builder: (context, orientation, deviceType) {
         return MaterialApp.router(
@@ -50,4 +57,3 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
-

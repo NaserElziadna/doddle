@@ -30,8 +30,8 @@ class ToolsWidget extends ConsumerWidget {
           _buildEraserButton(ref),
           Consumer(
             builder: (context, ref, child) {
-              final selectedSymmetryLines = ref.watch(canvasProvider).symmetryLines ?? 1;
-              final isMirrorSymmetry = ref.watch(canvasProvider).mirrorSymmetry ?? false;
+              final selectedSymmetryLines = ref.watch(canvasNotifierProvider).symmetryLines ?? 1;
+              final isMirrorSymmetry = ref.watch(canvasNotifierProvider).mirrorSymmetry ?? false;
               
               final symmetryLines = ref.watch(configProvider).symmetryLines;
 
@@ -92,7 +92,7 @@ class ToolsWidget extends ConsumerWidget {
   Widget _buildEraserButton(WidgetRef ref) {
     return GestureDetector(
       onTap: () {
-        ref.read(canvasProvider.notifier).changePenTool(PenTool.eraserPen);
+        ref.read(canvasNotifierProvider.notifier).changePenTool(PenTool.eraserPen);
       },
       child: Assets.svg.eraser.svg(width: 60),
     );

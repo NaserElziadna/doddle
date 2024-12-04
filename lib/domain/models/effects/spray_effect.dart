@@ -1,52 +1,75 @@
 import 'dart:ui';
-
+import 'package:doddle/domain/models/point.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:doddle/domain/models/effects/pen_effect.dart';
 import 'dart:math' as math;
 
+class SprayDot {
+  final Offset position;
+  final double opacity;
+  final double size;
+  final Color color;
+
+  SprayDot({
+    required this.position,
+    required this.opacity,
+    required this.size,
+    required this.color,
+  });
+}
+
 class SprayEffect extends PenEffect {
+  final random = math.Random();
+  List<SprayDot> sprayDots = [];
+
   @override
   void paint(Canvas canvas, Path path, Paint paint) {
-    final random = math.Random();
-
-    for (var j = 0; j < drawController.points!.length - 1; j++) {
-      if (drawController.points![j + 1] == null) {
-        j++;
-        continue;
-      }
-
-      final currentPoint = drawController.points![j]?.offset;
-      final nextPoint = drawController.points![j + 1]?.offset;
-
-      if (currentPoint != null && nextPoint != null) {
-        // If points are the same (holding still), create multiple spray iterations
-        final isHolding = currentPoint == nextPoint;
-        final iterations =
-            isHolding ? 3 : 1; // Increase spray density when holding still
-
-        for (var iter = 0; iter < iterations; iter++) {
-          // Create random spray points around the current position
-          final sprayDensity = (drawController.penSize! * 2).round();
-
-          for (var i = 0; i < sprayDensity; i++) {
-            final sprayRadius = drawController.penSize! * 2;
-            final randomRadius = random.nextDouble() * sprayRadius;
-            final randomAngle = random.nextDouble() * 2 * math.pi;
-
-            final sprayX =
-                currentPoint.dx + randomRadius * math.cos(randomAngle);
-            final sprayY =
-                currentPoint.dy + randomRadius * math.sin(randomAngle);
-
-            canvas.drawCircle(
-              Offset(sprayX, sprayY),
-              0.5,
-              Paint()
-                ..color = drawController.currentColor.withOpacity(0.3)
-                ..style = PaintingStyle.fill,
-            );
-          }
-        }
+    for (var dot in sprayDots) {
+      // Get all symmetrical positions for this dot
+      final symmetricalDots = getSymmetricalPositions(dot.position);
+      
+      // Draw a dot at each symmetrical position
+      for (var position in symmetricalDots) {
+        canvas.drawCircle(
+          position,
+          dot.size * (drawController.penSize ?? 2.0),
+          paint
+            ..color = dot.color.withOpacity(dot.opacity)
+        );
       }
     }
+  }
+
+  @override
+  void onPointAdd(Point point) {
+    if (point.offset == null) return;
+    
+    // Create multiple spray dots around the point
+    final numDots = 10; // Adjust this for more/less density
+    for (int i = 0; i < numDots; i++) {
+      final spread = 10.0; // Adjust this for wider/narrower spray
+      final randomOffset = Offset(
+        random.nextDouble() * spread - spread/2,
+        random.nextDouble() * spread - spread/2
+      );
+      
+      addSprayDots([
+        SprayDot(
+          position: point.offset! + randomOffset,
+          opacity: random.nextDouble() * 0.3 + 0.1, // Random opacity between 0.1 and 0.4
+          size: random.nextDouble() * 0.5 + 0.5, // Random size between 0.5 and 1.0
+          color: drawController.isRandomColor ? getRandomColor() : drawController.currentColor,
+        ),
+      ]);
+    }
+  }
+
+  @override
+  void onPointEnd() {
+    sprayDots = [];
+  }
+
+  void addSprayDots(List<SprayDot> dots) {
+    sprayDots = [...sprayDots, ...dots];
   }
 }

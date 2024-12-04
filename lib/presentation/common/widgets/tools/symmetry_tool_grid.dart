@@ -11,8 +11,8 @@ class SymmetryToolGrid extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final symmetryLines = ref.watch(configProvider).symmetryLines;
-    final selectedSymmetryLines = ref.watch(canvasProvider).symmetryLines ?? 1;
-    final isMirrorSymmetry = ref.watch(canvasProvider).mirrorSymmetry ?? false;
+    final selectedSymmetryLines = ref.watch(canvasNotifierProvider).symmetryLines ?? 1;
+    final isMirrorSymmetry = ref.watch(canvasNotifierProvider).mirrorSymmetry ?? false;
 
     return GridView.builder(
       shrinkWrap: true,
@@ -28,8 +28,8 @@ class SymmetryToolGrid extends ConsumerWidget {
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: () {
-              ref.read(canvasProvider.notifier).updateSymmetryLines(line.count);
-              ref.read(canvasProvider.notifier).toggleMirrorSymmetry(line.isMirror);
+              ref.read(canvasNotifierProvider.notifier).updateSymmetryLines(line.count);
+              ref.read(canvasNotifierProvider.notifier).toggleMirrorSymmetry(line.isMirror);
               Navigator.of(context).pop();
             },
             child: Container(

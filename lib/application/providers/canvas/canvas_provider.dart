@@ -1,9 +1,17 @@
 import 'dart:io';
 import 'dart:ui' as ui;
+import 'package:doddle/application/providers/effects/effects_provider.dart';
+import 'package:doddle/domain/models/effects/custom_pen_effect.dart';
+import 'package:doddle/domain/models/effects/eraser_effect.dart';
+import 'package:doddle/domain/models/effects/glow_effect.dart';
+import 'package:doddle/domain/models/effects/glow_with_dots_effect.dart';
+import 'package:doddle/domain/models/effects/normal_effect.dart';
+import 'package:doddle/domain/models/effects/normal_with_shader_effect.dart';
+import 'package:doddle/domain/models/effects/pen_effect.dart';
+import 'package:doddle/domain/models/effects/spray_effect.dart';
 import 'package:doddle/domain/models/stamp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -11,14 +19,22 @@ import 'package:share_plus/share_plus.dart';
 import '../../../../domain/models/draw_controller.dart';
 import '../../../../domain/models/point.dart';
 
-final canvasProvider =
-    StateNotifierProvider<CanvasNotifier, DrawController>((ref) {
-  return CanvasNotifier();
-});
+// final canvasProvider =
+//     StateNotifierProvider<CanvasNotifier, DrawController>((ref) {
+//   return CanvasNotifier(ref);
+// });
 
-class CanvasNotifier extends StateNotifier<DrawController> {
-  CanvasNotifier()
-      : super(const DrawController(
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'canvas_provider.g.dart';
+
+@riverpod
+class CanvasNotifier extends _$CanvasNotifier {
+  @override
+  DrawController build() {
+    final eff = ref.watch(effectsProvider);
+
+    return  DrawController(
           isPanActive: true,
           points: [],
           stamp: [],
@@ -30,10 +46,22 @@ class CanvasNotifier extends StateNotifier<DrawController> {
           penSize: 2,
           mirrorSymmetry: false,
           showGuidelines: true,
-        ));
+          effects: eff,
+        );
+  }
+
+  // void initializeEffects() {
+    
+  //   state = state.copyWith(effects: effects);
+  // }
+
+  PenEffect? getCurrentEffect() {
+    return state.effects[state.penTool];
+  }
 
   void clearPoints() {
     state = state.copyWith(points: []);
+    getCurrentEffect()?.onPointEnd();
   }
 
   void clearStamps() {
@@ -46,7 +74,7 @@ class CanvasNotifier extends StateNotifier<DrawController> {
 
     List<Point?>? newPoints = [...state.points ?? [], point];
     state = state.copyWith(points: newPoints);
-
+    getCurrentEffect()?.onPointAdd(point);
     if (end) {
       await takePageStamp(state.globalKey!);
     }
@@ -166,5 +194,5 @@ class CanvasNotifier extends StateNotifier<DrawController> {
 
   void changeCanvasBackgroundColor(Color color) {
     state = state.copyWith(canvasBackgroundColor: color);
-  } 
+  }
 }

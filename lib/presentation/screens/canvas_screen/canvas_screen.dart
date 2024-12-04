@@ -38,13 +38,14 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
     ignorePointer = false;
     pointerCount = 1;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(canvasProvider.notifier).setGlobalKey(CanvasScreen.globalKey!);
+      // ref.read(canvasNotifierProvider.notifier).initializeEffects();
+      ref.read(canvasNotifierProvider.notifier).setGlobalKey(CanvasScreen.globalKey!);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final drawController = ref.watch(canvasProvider);
+    final drawController = ref.watch(canvasNotifierProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -64,7 +65,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                         size: 40,
                       ),
                       onTap: () => ref
-                          .read(canvasProvider.notifier)
+                          .read(canvasNotifierProvider.notifier)
                           .saveToGallery(CanvasScreen.globalKey!),
                     ),
                     GestureDetector(
@@ -79,19 +80,19 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                       GestureDetector(
                         child: Assets.svg.share.svg(width: 40),
                         onTap: () => ref
-                            .read(canvasProvider.notifier)
+                            .read(canvasNotifierProvider.notifier)
                             .shareImage(CanvasScreen.globalKey!, context),
                       ),
                     const Spacer(),
                     GestureDetector(
                       child: Assets.svg.undo.svg(width: 40),
                       onTap: () =>
-                          ref.read(canvasProvider.notifier).undoStamp(),
+                          ref.read(canvasNotifierProvider.notifier).undoStamp(),
                     ),
                     GestureDetector(
                       child: Assets.svg.redo.svg(width: 40),
                       onTap: () =>
-                          ref.read(canvasProvider.notifier).redoStamp(),
+                          ref.read(canvasNotifierProvider.notifier).redoStamp(),
                     ),
                     const Spacer(),
                     GestureDetector(
@@ -112,7 +113,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   }
 
   Widget _buildCanvas() {
-    final drawController = ref.watch(canvasProvider);
+    final drawController = ref.watch(canvasNotifierProvider);
 
     return Container(
       color: Colors.purple[800],
@@ -141,7 +142,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
 
   void _handleGestureStart(PointerEvent pointerEvent) {
     if (ignorePointer == false && pointerCount == 1) {
-      if (ref.read(canvasProvider).isRandomColor) {
+      if (ref.read(canvasNotifierProvider).isRandomColor) {
         final random = Random();
         final color = Color.fromRGBO(
           random.nextInt(256),
@@ -149,7 +150,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
           random.nextInt(256),
           1,
         );
-        ref.read(canvasProvider.notifier).changeColor(color, true);
+        ref.read(canvasNotifierProvider.notifier).changeColor(color, true);
       }
     }
   }
@@ -170,7 +171,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
           -((kCanvasSize.height / 2) + pinSpaceY),
         );
 
-        ref.read(canvasProvider.notifier).addPoint(Point(offset: point));
+        ref.read(canvasNotifierProvider.notifier).addPoint(Point(offset: point));
       });
     }
   }
@@ -191,7 +192,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
           -((kCanvasSize.height / 2) + pinSpaceY),
         );
 
-        ref.read(canvasProvider.notifier).addPoint(
+        ref.read(canvasNotifierProvider.notifier).addPoint(
               Point(offset: point),
               end: true,
             );
@@ -213,7 +214,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
           ),
           TextButton(
             onPressed: () {
-              ref.read(canvasProvider.notifier).clearStamps();
+              ref.read(canvasNotifierProvider.notifier).clearStamps();
               Navigator.pop(context);
             },
             child: const Text('Clear'),
@@ -247,7 +248,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   Widget _buildGestureDetector(DrawController drawController) {
     return Consumer(
       builder: (context, ref, child) {
-        final drawController = ref.watch(canvasProvider);
+        final drawController = ref.watch(canvasNotifierProvider);
         return IgnorePointer(
           ignoring: false,
           child: RawGestureDetector(

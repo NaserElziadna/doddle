@@ -1,3 +1,4 @@
+import 'package:doddle/domain/models/effects/pen_effect.dart';
 import 'package:doddle/domain/models/point.dart';
 import 'package:doddle/domain/models/stamp.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -31,5 +32,6 @@ class DrawController with _$DrawController {
     @Default(false) bool mirrorSymmetry,
     @Default(true) bool showGuidelines,
     @Default(Color(0x12457895)) Color canvasBackgroundColor,
+    @Default({}) Map<PenTool, PenEffect> effects,
   }) = _DrawController;
 }

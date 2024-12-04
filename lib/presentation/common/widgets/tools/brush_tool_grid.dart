@@ -19,7 +19,7 @@ class BrushToolGrid extends ConsumerWidget {
       BrushTool(penTool: PenTool.customPen, picture: Assets.svg.pen4Preview.svg()),
     ];
 
-    final selectedPenTool = ref.watch(canvasProvider).penTool;
+    final selectedPenTool = ref.watch(canvasNotifierProvider).penTool;
 
     return GridView.builder(
       shrinkWrap: true,
@@ -34,7 +34,7 @@ class BrushToolGrid extends ConsumerWidget {
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: () {
-              ref.read(canvasProvider.notifier).changePenTool(brush.penTool);
+              ref.read(canvasNotifierProvider.notifier).changePenTool(brush.penTool);
               Navigator.of(context).pop();
             },
             child: Container(

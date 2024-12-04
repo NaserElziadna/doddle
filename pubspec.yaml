@@ -35,6 +35,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   riverpod: ^2.6.1
   flutter_riverpod: ^2.6.1
+
   bloc: ^8.1.4
   flutter_bloc: ^8.1.6
   flutter_colorpicker: ^1.0.3
@@ -77,6 +78,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_launcher_icons: ^0.14.1
   flutter_gen_runner: ^5.8.0
+  riverpod_generator: ^2.6.1
 
 
 flutter_gen:

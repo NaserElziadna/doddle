@@ -30,6 +30,7 @@ mixin _$DrawController {
   bool get mirrorSymmetry => throw _privateConstructorUsedError;
   bool get showGuidelines => throw _privateConstructorUsedError;
   Color get canvasBackgroundColor => throw _privateConstructorUsedError;
+  Map<PenTool, PenEffect> get effects => throw _privateConstructorUsedError;
 
   /// Create a copy of DrawController
   /// with the given fields replaced by the non-null parameter values.
@@ -57,7 +58,8 @@ abstract class $DrawControllerCopyWith<$Res> {
       double? penSize,
       bool mirrorSymmetry,
       bool showGuidelines,
-      Color canvasBackgroundColor});
+      Color canvasBackgroundColor,
+      Map<PenTool, PenEffect> effects});
 }
 
 /// @nodoc
@@ -79,7 +81,7 @@ class _$DrawControllerCopyWithImpl<$Res, $Val extends DrawController>
     Object? points = freezed,
     Object? stamp = freezed,
     Object? stampUndo = freezed,
-    Object? currentColor = null,
+    Object? currentColor = freezed,
     Object? isRandomColor = null,
     Object? globalKey = freezed,
     Object? symmetryLines = freezed,
@@ -87,7 +89,8 @@ class _$DrawControllerCopyWithImpl<$Res, $Val extends DrawController>
     Object? penSize = freezed,
     Object? mirrorSymmetry = null,
     Object? showGuidelines = null,
-    Object? canvasBackgroundColor = null,
+    Object? canvasBackgroundColor = freezed,
+    Object? effects = null,
   }) {
     return _then(_value.copyWith(
       isPanActive: null == isPanActive
@@ -106,7 +109,7 @@ class _$DrawControllerCopyWithImpl<$Res, $Val extends DrawController>
           ? _value.stampUndo
           : stampUndo // ignore: cast_nullable_to_non_nullable
               as List<Stamp?>?,
-      currentColor: null == currentColor
+      currentColor: freezed == currentColor
           ? _value.currentColor
           : currentColor // ignore: cast_nullable_to_non_nullable
               as Color,
@@ -138,10 +141,14 @@ class _$DrawControllerCopyWithImpl<$Res, $Val extends DrawController>
           ? _value.showGuidelines
           : showGuidelines // ignore: cast_nullable_to_non_nullable
               as bool,
-      canvasBackgroundColor: null == canvasBackgroundColor
+      canvasBackgroundColor: freezed == canvasBackgroundColor
           ? _value.canvasBackgroundColor
           : canvasBackgroundColor // ignore: cast_nullable_to_non_nullable
               as Color,
+      effects: null == effects
+          ? _value.effects
+          : effects // ignore: cast_nullable_to_non_nullable
+              as Map<PenTool, PenEffect>,
     ) as $Val);
   }
 }
@@ -167,7 +174,8 @@ abstract class _$$DrawControllerImplCopyWith<$Res>
       double? penSize,
       bool mirrorSymmetry,
       bool showGuidelines,
-      Color canvasBackgroundColor});
+      Color canvasBackgroundColor,
+      Map<PenTool, PenEffect> effects});
 }
 
 /// @nodoc
@@ -187,7 +195,7 @@ class __$$DrawControllerImplCopyWithImpl<$Res>
     Object? points = freezed,
     Object? stamp = freezed,
     Object? stampUndo = freezed,
-    Object? currentColor = null,
+    Object? currentColor = freezed,
     Object? isRandomColor = null,
     Object? globalKey = freezed,
     Object? symmetryLines = freezed,
@@ -195,7 +203,8 @@ class __$$DrawControllerImplCopyWithImpl<$Res>
     Object? penSize = freezed,
     Object? mirrorSymmetry = null,
     Object? showGuidelines = null,
-    Object? canvasBackgroundColor = null,
+    Object? canvasBackgroundColor = freezed,
+    Object? effects = null,
   }) {
     return _then(_$DrawControllerImpl(
       isPanActive: null == isPanActive
@@ -214,7 +223,7 @@ class __$$DrawControllerImplCopyWithImpl<$Res>
           ? _value._stampUndo
           : stampUndo // ignore: cast_nullable_to_non_nullable
               as List<Stamp?>?,
-      currentColor: null == currentColor
+      currentColor: freezed == currentColor
           ? _value.currentColor
           : currentColor // ignore: cast_nullable_to_non_nullable
               as Color,
@@ -246,10 +255,14 @@ class __$$DrawControllerImplCopyWithImpl<$Res>
           ? _value.showGuidelines
           : showGuidelines // ignore: cast_nullable_to_non_nullable
               as bool,
-      canvasBackgroundColor: null == canvasBackgroundColor
+      canvasBackgroundColor: freezed == canvasBackgroundColor
           ? _value.canvasBackgroundColor
           : canvasBackgroundColor // ignore: cast_nullable_to_non_nullable
               as Color,
+      effects: null == effects
+          ? _value._effects
+          : effects // ignore: cast_nullable_to_non_nullable
+              as Map<PenTool, PenEffect>,
     ));
   }
 }
@@ -270,10 +283,12 @@ class _$DrawControllerImpl implements _DrawController {
       this.penSize = 2,
       this.mirrorSymmetry = false,
       this.showGuidelines = true,
-      this.canvasBackgroundColor = const Color(0x12457895)})
+      this.canvasBackgroundColor = const Color(0x12457895),
+      final Map<PenTool, PenEffect> effects = const {}})
       : _points = points,
         _stamp = stamp,
-        _stampUndo = stampUndo;
+        _stampUndo = stampUndo,
+        _effects = effects;
 
   @override
   @JsonKey()
@@ -337,10 +352,18 @@ class _$DrawControllerImpl implements _DrawController {
   @override
   @JsonKey()
   final Color canvasBackgroundColor;
+  final Map<PenTool, PenEffect> _effects;
+  @override
+  @JsonKey()
+  Map<PenTool, PenEffect> get effects {
+    if (_effects is EqualUnmodifiableMapView) return _effects;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_effects);
+  }
 
   @override
   String toString() {
-    return 'DrawController(isPanActive: $isPanActive, points: $points, stamp: $stamp, stampUndo: $stampUndo, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines, penTool: $penTool, penSize: $penSize, mirrorSymmetry: $mirrorSymmetry, showGuidelines: $showGuidelines, canvasBackgroundColor: $canvasBackgroundColor)';
+    return 'DrawController(isPanActive: $isPanActive, points: $points, stamp: $stamp, stampUndo: $stampUndo, currentColor: $currentColor, isRandomColor: $isRandomColor, globalKey: $globalKey, symmetryLines: $symmetryLines, penTool: $penTool, penSize: $penSize, mirrorSymmetry: $mirrorSymmetry, showGuidelines: $showGuidelines, canvasBackgroundColor: $canvasBackgroundColor, effects: $effects)';
   }
 
   @override
@@ -354,8 +377,8 @@ class _$DrawControllerImpl implements _DrawController {
             const DeepCollectionEquality().equals(other._stamp, _stamp) &&
             const DeepCollectionEquality()
                 .equals(other._stampUndo, _stampUndo) &&
-            (identical(other.currentColor, currentColor) ||
-                other.currentColor == currentColor) &&
+            const DeepCollectionEquality()
+                .equals(other.currentColor, currentColor) &&
             (identical(other.isRandomColor, isRandomColor) ||
                 other.isRandomColor == isRandomColor) &&
             (identical(other.globalKey, globalKey) ||
@@ -368,8 +391,9 @@ class _$DrawControllerImpl implements _DrawController {
                 other.mirrorSymmetry == mirrorSymmetry) &&
             (identical(other.showGuidelines, showGuidelines) ||
                 other.showGuidelines == showGuidelines) &&
-            (identical(other.canvasBackgroundColor, canvasBackgroundColor) ||
-                other.canvasBackgroundColor == canvasBackgroundColor));
+            const DeepCollectionEquality()
+                .equals(other.canvasBackgroundColor, canvasBackgroundColor) &&
+            const DeepCollectionEquality().equals(other._effects, _effects));
   }
 
   @override
@@ -379,7 +403,7 @@ class _$DrawControllerImpl implements _DrawController {
       const DeepCollectionEquality().hash(_points),
       const DeepCollectionEquality().hash(_stamp),
       const DeepCollectionEquality().hash(_stampUndo),
-      currentColor,
+      const DeepCollectionEquality().hash(currentColor),
       isRandomColor,
       globalKey,
       symmetryLines,
@@ -387,7 +411,8 @@ class _$DrawControllerImpl implements _DrawController {
       penSize,
       mirrorSymmetry,
       showGuidelines,
-      canvasBackgroundColor);
+      const DeepCollectionEquality().hash(canvasBackgroundColor),
+      const DeepCollectionEquality().hash(_effects));
 
   /// Create a copy of DrawController
   /// with the given fields replaced by the non-null parameter values.
@@ -413,7 +438,8 @@ abstract class _DrawController implements DrawController {
       final double? penSize,
       final bool mirrorSymmetry,
       final bool showGuidelines,
-      final Color canvasBackgroundColor}) = _$DrawControllerImpl;
+      final Color canvasBackgroundColor,
+      final Map<PenTool, PenEffect> effects}) = _$DrawControllerImpl;
 
   @override
   bool get isPanActive;
@@ -441,6 +467,8 @@ abstract class _DrawController implements DrawController {
   bool get showGuidelines;
   @override
   Color get canvasBackgroundColor;
+  @override
+  Map<PenTool, PenEffect> get effects;
 
   /// Create a copy of DrawController
   /// with the given fields replaced by the non-null parameter values.

@@ -76,7 +76,7 @@ class _ColorToolGridState extends ConsumerState<ColorToolGrid> {
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: () {
-          ref.read(canvasProvider.notifier).changeColor(color, false);
+          ref.read(canvasNotifierProvider.notifier).changeColor(color, false);
           Navigator.of(context).pop();
         },
         child: Container(
@@ -93,7 +93,7 @@ class _ColorToolGridState extends ConsumerState<ColorToolGrid> {
   Widget _buildRandomColorButton() {
     return GestureDetector(
       onTap: () {
-        ref.read(canvasProvider.notifier).changeColor(Colors.green, true);
+        ref.read(canvasNotifierProvider.notifier).changeColor(Colors.green, true);
         Navigator.of(context).pop();
       },
       child: Stack(
@@ -133,7 +133,7 @@ class _ColorToolGridState extends ConsumerState<ColorToolGrid> {
             ElevatedButton(
               child: const Text('Got it'),
               onPressed: () {
-                ref.read(canvasProvider.notifier).changeColor(pickerColor, false);
+                ref.read(canvasNotifierProvider.notifier).changeColor(pickerColor, false);
                 Navigator.of(context).pop(); // Close dialog
                 Navigator.of(context).pop(); // Close bottom sheet
               },

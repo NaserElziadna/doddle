@@ -7,7 +7,7 @@ class CanvasSettingsToolGrid extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final drawController = ref.watch(canvasProvider);
+    final drawController = ref.watch(canvasNotifierProvider);
 
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -19,19 +19,19 @@ class CanvasSettingsToolGrid extends ConsumerWidget {
             drawController.penSize ?? 2.0,
             1.0,
             50.0,
-            (value) => ref.read(canvasProvider.notifier).changePenSize(value),
+            (value) => ref.read(canvasNotifierProvider.notifier).changePenSize(value),
           ),
           const SizedBox(height: 16),
           _buildSwitchRow(
             'Mirror Symmetry',
             drawController.mirrorSymmetry,
-            (value) => ref.read(canvasProvider.notifier).toggleMirrorSymmetry(value),
+            (value) => ref.read(canvasNotifierProvider.notifier).toggleMirrorSymmetry(value),
           ),
           const SizedBox(height: 8),
           _buildSwitchRow(
             'Show Guidelines',
             drawController.showGuidelines,
-            (value) => ref.read(canvasProvider.notifier).toggleGuidelines(value),
+            (value) => ref.read(canvasNotifierProvider.notifier).toggleGuidelines(value),
           ),          
         ],
       ),
