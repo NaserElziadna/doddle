@@ -29,14 +29,14 @@ class CanvasScreen extends ConsumerStatefulWidget {
 
 class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   static Size kCanvasSize = Size.zero;
-  late bool ignorePointer;
-  late int pointerCount;
+  // late bool ignorePointer;
+  // late int pointerCount;
 
   @override
   void initState() {
     super.initState();
-    ignorePointer = false;
-    pointerCount = 1;
+    // ignorePointer = false;
+    // pointerCount = 1;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // ref.read(canvasNotifierProvider.notifier).initializeEffects();
       ref.read(canvasNotifierProvider.notifier).setGlobalKey(CanvasScreen.globalKey!);
@@ -141,7 +141,8 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   }
 
   void _handleGestureStart(PointerEvent pointerEvent) {
-    if (ignorePointer == false && pointerCount == 1) {
+    if (ref.read(canvasNotifierProvider).isPanActive) return;
+    // if (ignorePointer == false && pointerCount == 1) {
       if (ref.read(canvasNotifierProvider).isRandomColor) {
         final random = Random();
         final color = Color.fromRGBO(
@@ -151,12 +152,13 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
           1,
         );
         ref.read(canvasNotifierProvider.notifier).changeColor(color, true);
-      }
     }
+    // }
   }
 
   void _handleGestureUpdate(PointerEvent pointerEvent) {
-    if (ignorePointer == false && pointerCount == 1) {
+    if (ref.read(canvasNotifierProvider).isPanActive) return;
+    // if (ignorePointer == false && pointerCount == 1) {
       setState(() {
         kCanvasSize = Size(
           MediaQuery.of(context).size.width,
@@ -173,11 +175,12 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
 
         ref.read(canvasNotifierProvider.notifier).addPoint(Point(offset: point));
       });
-    }
+    // }
   }
 
   void _handleGestureEnd(PointerEvent pointerEvent) {
-    if (ignorePointer == false && pointerCount == 1) {
+    // if (ref.read(canvasNotifierProvider).isPanActive) return;
+    // if (ignorePointer == false && pointerCount == 1) {
       setState(() {
         kCanvasSize = Size(
           MediaQuery.of(context).size.width,
@@ -197,7 +200,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
               end: true,
             );
       });
-    }
+    // }
   }
 
   void _showClearConfirmation(BuildContext context) {
@@ -225,24 +228,37 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   }
 
   void _handleInteractionEnd(ScaleEndDetails details) {
-    setState(() {
-      ignorePointer = details.pointerCount > 1;
-      pointerCount = 1;
-    });
+    print('pan end ${details.pointerCount}');
+    ref.read(canvasNotifierProvider.notifier).setPanActive(false);
+    // setState(() {
+    //   ignorePointer = details.pointerCount > 1;
+    //   pointerCount = 1;
+    // });
   }
 
   void _handleInteractionUpdate(ScaleUpdateDetails details) {
-    setState(() {
-      ignorePointer = details.pointerCount > 1;
-      pointerCount = details.pointerCount;
-    });
+    print('pan update ${details.pointerCount}');
+    if(details.pointerCount > 1) {
+      //clear last point
+      ref.read(canvasNotifierProvider.notifier).clearPoints();
+    }
+    // setState(() {
+    //   ignorePointer = details.pointerCount > 1;
+    //   pointerCount = details.pointerCount;
+    // });
   }
 
   void _handleInteractionStart(ScaleStartDetails details) {
-    setState(() {
-      ignorePointer = details.pointerCount > 1;
-      pointerCount = details.pointerCount;
-    });
+    if(details.pointerCount > 1) {
+      print('pan active ${details.pointerCount}');
+      ref.read(canvasNotifierProvider.notifier).setPanActive(true);
+      //clear last point
+      ref.read(canvasNotifierProvider.notifier).clearPoints();
+    }
+    // setState(() {
+    //   ignorePointer = details.pointerCount > 1;
+    //   pointerCount = details.pointerCount;
+    // });
   }
 
   Widget _buildGestureDetector(DrawController drawController) {
@@ -250,7 +266,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
       builder: (context, ref, child) {
         final drawController = ref.watch(canvasNotifierProvider);
         return IgnorePointer(
-          ignoring: false,
+          ignoring: drawController.isPanActive,
           child: RawGestureDetector(
             behavior: HitTestBehavior.opaque,
             gestures: <Type, GestureRecognizerFactory>{

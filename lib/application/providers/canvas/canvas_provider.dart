@@ -35,7 +35,7 @@ class CanvasNotifier extends _$CanvasNotifier {
     final eff = ref.watch(effectsProvider);
 
     return  DrawController(
-          isPanActive: true,
+          isPanActive: false,
           points: [],
           stamp: [],
           stampUndo: [],
@@ -70,7 +70,7 @@ class CanvasNotifier extends _$CanvasNotifier {
   }
 
   void addPoint(Point point, {bool end = false}) async {
-    if (!state.isPanActive) return;
+    if (state.isPanActive) return;
 
     List<Point?>? newPoints = [...state.points ?? [], point];
     state = state.copyWith(points: newPoints);
@@ -194,5 +194,14 @@ class CanvasNotifier extends _$CanvasNotifier {
 
   void changeCanvasBackgroundColor(Color color) {
     state = state.copyWith(canvasBackgroundColor: color);
+  }
+
+  void setPanActive(bool value) {
+    state = state.copyWith(isPanActive: value);
+  }
+
+  void  clearLastPoint() {
+    if (state.points?.isEmpty ?? true) return;
+    state = state.copyWith(points: state.points?.sublist(0, state.points!.length - 1));
   }
 }
