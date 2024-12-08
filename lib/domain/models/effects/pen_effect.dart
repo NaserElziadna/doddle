@@ -11,12 +11,8 @@ import 'package:doddle/application/providers/canvas/canvas_provider.dart';
 
 abstract class PenEffect {
   DrawController get drawController => globalRef.read(canvasNotifierProvider);
-
-
-  // void initialize(Ref ref) {
-  //   drawController = ref.read(canvasNotifierProvider);
-  // }
   
+
   void paint(Canvas canvas, Path path, Paint paint);
   
   // New method to handle point additions

@@ -35,7 +35,7 @@ class BrushToolGrid extends ConsumerWidget {
           child: GestureDetector(
             onTap: () {
               ref.read(canvasNotifierProvider.notifier).changePenTool(brush.penTool);
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
             },
             child: Container(
               decoration: BoxDecoration(

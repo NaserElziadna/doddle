@@ -10,6 +10,7 @@ import 'brush_tool_grid.dart';
 import 'color_tool_grid.dart';
 import 'symmetry_tool_grid.dart';
 import 'canvas_settings_tool_grid.dart';
+import 'package:doddle/presentation/common/widgets/brush_settings/brush_settings_panel.dart';
 
 class ToolsWidget extends ConsumerWidget {
   const ToolsWidget({Key? key}) : super(key: key);
@@ -84,7 +85,13 @@ class ToolsWidget extends ConsumerWidget {
     required ToolType toolType,
   }) {
     return GestureDetector(
-      onTap: () => _showToolSettings(context, toolType),
+      onTap: () {
+        if (toolType == ToolType.brushs) {
+          _showBrushSettings(context);
+        } else {
+          _showToolSettings(context, toolType);
+        }
+      },
       child: icon,
     );
   }
@@ -105,6 +112,24 @@ class ToolsWidget extends ConsumerWidget {
       builder: (context) {
         return Popover(
           child: _buildToolContent(toolType),
+        );
+      },
+    );
+  }
+
+  void _showBrushSettings(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return const SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BrushToolGrid(),
+              Divider(),
+              BrushSettingsPanel(),
+            ],
+          ),
         );
       },
     );
