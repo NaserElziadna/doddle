@@ -8,6 +8,7 @@ class Point with _$Point {
   const factory Point({
     Offset? offset,
     Paint? paint,
+    double? pressure,
     @Default([]) List<Offset>? randomOffset,
   }) = _Point;
 }

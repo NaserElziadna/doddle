@@ -13,7 +13,8 @@ enum PenTool {
   glowWithDotsPen,
   sprayPen,
   eraserPen,
-  customPen
+  customPen,
+  textPen
 }
 
 @freezed

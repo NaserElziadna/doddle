@@ -5,6 +5,7 @@ enum SettingType {
   slider,
   toggle,
   color,
+  text,
   // Add more types as needed
 }
 
@@ -149,6 +150,40 @@ class BrushConfigs {
           type: SettingType.toggle,
           defaultValue: false,
           icon: Icons.color_lens,
+        ),
+      },
+    ),
+    PenTool.textPen: BrushConfig(
+      name: 'Text Brush',
+      description: 'Draw with text characters',
+      settings: {
+        'text': BrushSettingConfig(
+          label: 'Text',
+          type: SettingType.text,
+          defaultValue: 'Hello',
+          icon: Icons.text_fields,
+        ),
+        'fontSize': BrushSettingConfig(
+          label: 'Font Size',
+          type: SettingType.slider,
+          defaultValue: 20.0,
+          minValue: 8.0,
+          maxValue: 72.0,
+          icon: Icons.format_size,
+        ),
+        'spacing': BrushSettingConfig(
+          label: 'Spacing',
+          type: SettingType.slider,
+          defaultValue: 50.0,
+          minValue: 10.0,
+          maxValue: 200.0,
+          icon: Icons.space_bar,
+        ),
+        'randomRotation': BrushSettingConfig(
+          label: 'Random Rotation',
+          type: SettingType.toggle,
+          defaultValue: false,
+          icon: Icons.rotate_right,
         ),
       },
     ),

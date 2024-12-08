@@ -116,6 +116,36 @@ class BrushSettingsPanel extends ConsumerWidget {
             ],
           ),
         );
+      case SettingType.text:
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  if (config.icon != null) ...[
+                    Icon(config.icon, size: 20),
+                    const SizedBox(width: 8),
+                  ],
+                  Text(config.label),
+                ],
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: TextEditingController(text: currentValue),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                ),
+                onChanged: (value) {
+                  ref.read(brushSettingsProvider(penTool).notifier)
+                    .updateSetting(key, value);
+                },
+              ),
+            ],
+          ),
+        );
       default:
         return const SizedBox.shrink();
     }

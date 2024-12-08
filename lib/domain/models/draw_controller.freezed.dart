@@ -81,7 +81,7 @@ class _$DrawControllerCopyWithImpl<$Res, $Val extends DrawController>
     Object? points = freezed,
     Object? stamp = freezed,
     Object? stampUndo = freezed,
-    Object? currentColor = freezed,
+    Object? currentColor = null,
     Object? isRandomColor = null,
     Object? globalKey = freezed,
     Object? symmetryLines = freezed,
@@ -89,7 +89,7 @@ class _$DrawControllerCopyWithImpl<$Res, $Val extends DrawController>
     Object? penSize = freezed,
     Object? mirrorSymmetry = null,
     Object? showGuidelines = null,
-    Object? canvasBackgroundColor = freezed,
+    Object? canvasBackgroundColor = null,
     Object? effects = null,
   }) {
     return _then(_value.copyWith(
@@ -109,7 +109,7 @@ class _$DrawControllerCopyWithImpl<$Res, $Val extends DrawController>
           ? _value.stampUndo
           : stampUndo // ignore: cast_nullable_to_non_nullable
               as List<Stamp?>?,
-      currentColor: freezed == currentColor
+      currentColor: null == currentColor
           ? _value.currentColor
           : currentColor // ignore: cast_nullable_to_non_nullable
               as Color,
@@ -141,7 +141,7 @@ class _$DrawControllerCopyWithImpl<$Res, $Val extends DrawController>
           ? _value.showGuidelines
           : showGuidelines // ignore: cast_nullable_to_non_nullable
               as bool,
-      canvasBackgroundColor: freezed == canvasBackgroundColor
+      canvasBackgroundColor: null == canvasBackgroundColor
           ? _value.canvasBackgroundColor
           : canvasBackgroundColor // ignore: cast_nullable_to_non_nullable
               as Color,
@@ -195,7 +195,7 @@ class __$$DrawControllerImplCopyWithImpl<$Res>
     Object? points = freezed,
     Object? stamp = freezed,
     Object? stampUndo = freezed,
-    Object? currentColor = freezed,
+    Object? currentColor = null,
     Object? isRandomColor = null,
     Object? globalKey = freezed,
     Object? symmetryLines = freezed,
@@ -203,7 +203,7 @@ class __$$DrawControllerImplCopyWithImpl<$Res>
     Object? penSize = freezed,
     Object? mirrorSymmetry = null,
     Object? showGuidelines = null,
-    Object? canvasBackgroundColor = freezed,
+    Object? canvasBackgroundColor = null,
     Object? effects = null,
   }) {
     return _then(_$DrawControllerImpl(
@@ -223,7 +223,7 @@ class __$$DrawControllerImplCopyWithImpl<$Res>
           ? _value._stampUndo
           : stampUndo // ignore: cast_nullable_to_non_nullable
               as List<Stamp?>?,
-      currentColor: freezed == currentColor
+      currentColor: null == currentColor
           ? _value.currentColor
           : currentColor // ignore: cast_nullable_to_non_nullable
               as Color,
@@ -255,7 +255,7 @@ class __$$DrawControllerImplCopyWithImpl<$Res>
           ? _value.showGuidelines
           : showGuidelines // ignore: cast_nullable_to_non_nullable
               as bool,
-      canvasBackgroundColor: freezed == canvasBackgroundColor
+      canvasBackgroundColor: null == canvasBackgroundColor
           ? _value.canvasBackgroundColor
           : canvasBackgroundColor // ignore: cast_nullable_to_non_nullable
               as Color,
@@ -377,8 +377,8 @@ class _$DrawControllerImpl implements _DrawController {
             const DeepCollectionEquality().equals(other._stamp, _stamp) &&
             const DeepCollectionEquality()
                 .equals(other._stampUndo, _stampUndo) &&
-            const DeepCollectionEquality()
-                .equals(other.currentColor, currentColor) &&
+            (identical(other.currentColor, currentColor) ||
+                other.currentColor == currentColor) &&
             (identical(other.isRandomColor, isRandomColor) ||
                 other.isRandomColor == isRandomColor) &&
             (identical(other.globalKey, globalKey) ||
@@ -391,8 +391,8 @@ class _$DrawControllerImpl implements _DrawController {
                 other.mirrorSymmetry == mirrorSymmetry) &&
             (identical(other.showGuidelines, showGuidelines) ||
                 other.showGuidelines == showGuidelines) &&
-            const DeepCollectionEquality()
-                .equals(other.canvasBackgroundColor, canvasBackgroundColor) &&
+            (identical(other.canvasBackgroundColor, canvasBackgroundColor) ||
+                other.canvasBackgroundColor == canvasBackgroundColor) &&
             const DeepCollectionEquality().equals(other._effects, _effects));
   }
 
@@ -403,7 +403,7 @@ class _$DrawControllerImpl implements _DrawController {
       const DeepCollectionEquality().hash(_points),
       const DeepCollectionEquality().hash(_stamp),
       const DeepCollectionEquality().hash(_stampUndo),
-      const DeepCollectionEquality().hash(currentColor),
+      currentColor,
       isRandomColor,
       globalKey,
       symmetryLines,
@@ -411,7 +411,7 @@ class _$DrawControllerImpl implements _DrawController {
       penSize,
       mirrorSymmetry,
       showGuidelines,
-      const DeepCollectionEquality().hash(canvasBackgroundColor),
+      canvasBackgroundColor,
       const DeepCollectionEquality().hash(_effects));
 
   /// Create a copy of DrawController

@@ -8,6 +8,7 @@ import 'package:doddle/domain/models/effects/normal_effect.dart';
 import 'package:doddle/domain/models/effects/normal_with_shader_effect.dart';
 import 'package:doddle/domain/models/effects/pen_effect.dart';
 import 'package:doddle/domain/models/effects/spray_effect.dart';
+import 'package:doddle/domain/models/effects/text_effect.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
@@ -21,5 +22,6 @@ final effectsProvider = Provider<Map<PenTool, PenEffect>>((ref) {
     PenTool.normalPen: NormalEffect(),
     PenTool.normalWithShaderPen: NormalWithShaderEffect(),
     PenTool.glowWithDotsPen: GlowWithDotsEffect(),
+    PenTool.textPen: TextEffect(),
   };
 }); 

@@ -9,7 +9,7 @@ class BrushPreview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      height: 150.h,
+      height: 20.h,
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(

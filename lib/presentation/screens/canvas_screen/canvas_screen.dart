@@ -173,7 +173,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
           -((kCanvasSize.height / 2) + pinSpaceY),
         );
 
-        ref.read(canvasNotifierProvider.notifier).addPoint(Point(offset: point));
+        ref.read(canvasNotifierProvider.notifier).addPoint(Point(offset: point, pressure: pointerEvent.pressure));
       });
     // }
   }

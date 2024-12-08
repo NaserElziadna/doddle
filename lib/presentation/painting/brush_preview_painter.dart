@@ -1,4 +1,5 @@
 import 'package:doddle/application/providers/canvas/canvas_provider.dart';
+import 'package:doddle/domain/models/effects/pen_effect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:doddle/domain/models/draw_controller.dart';
@@ -53,7 +54,7 @@ class BrushPreviewPainter extends CustomPainter {
     return points;
   }
 
-  void _drawPreviewPoints(Canvas canvas, Path path, Paint paint, dynamic effect, List<Point?> points) {
+  void _drawPreviewPoints(Canvas canvas, Path path, Paint paint, PenEffect effect, List<Point?> points) {
     for (var j = 0; j < points.length - 1; j++) {
       final currentPoint = points[j]?.offset;
       final nextPoint = points[j + 1]?.offset;
