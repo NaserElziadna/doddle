@@ -13,7 +13,8 @@ class TextEffect extends PenEffect {
   String get text => settings.getValue('text') ?? 'Hello';
   double get fontSize => settings.getValue('fontSize') ?? 20.0;
   bool get randomRotation => settings.getValue('randomRotation') ?? false;
-  double get spacing => settings.getValue('spacing') ?? 50.0;
+  double get wordSpacing => settings.getValue('wordSpacing') ?? 0.0;
+  double get letterSpacing => settings.getValue('letterSpacing') ?? 0.0;
 
   @override
   void paint(Canvas canvas, Path path, Paint paint) {
@@ -25,6 +26,8 @@ class TextEffect extends PenEffect {
         style: TextStyle(
           color: drawController.currentColor,
           fontSize: fontSize,
+          wordSpacing: wordSpacing,
+          letterSpacing: letterSpacing,
         ),
       ),
       textDirection: TextDirection.ltr,

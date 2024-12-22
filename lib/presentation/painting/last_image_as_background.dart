@@ -9,11 +9,14 @@ class LastImageAsBackground extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (image != null) {
-      canvas.drawImage(image!, Offset.zero, ui.Paint()
-          ..blendMode = BlendMode.srcIn
-          ..filterQuality = ui.FilterQuality.high
-          // ..isAntiAlias = true,
-          );
+      paintImage(
+        canvas: canvas,
+        rect: Offset.zero & size,
+        image: image!,
+        fit: BoxFit.cover,
+        filterQuality: FilterQuality.high,
+        isAntiAlias: true,
+      );
     }
   }
 

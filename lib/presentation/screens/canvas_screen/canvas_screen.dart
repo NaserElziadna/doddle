@@ -300,10 +300,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                             ? null
                             : drawController.stamp?.last?.image,
                       ),
-                      size: Size(
-                        kCanvasSize.width / 2,
-                        kCanvasSize.height / 2,
-                      ),
+                      size: kCanvasSize,
                       willChange: true,
                       isComplex: true,
                       child: const SizedBox.expand(),

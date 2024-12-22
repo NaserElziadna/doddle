@@ -171,12 +171,20 @@ class BrushConfigs {
           maxValue: 72.0,
           icon: Icons.format_size,
         ),
-        'spacing': BrushSettingConfig(
-          label: 'Spacing',
+        'wordSpacing': BrushSettingConfig(
+          label: 'Word Spacing',
           type: SettingType.slider,
           defaultValue: 50.0,
           minValue: 10.0,
           maxValue: 200.0,
+          icon: Icons.space_bar,
+        ),
+        'letterSpacing': BrushSettingConfig(
+          label: 'Letter Spacing',
+          type: SettingType.slider,
+          defaultValue: 0.0,
+          minValue: -50.0,
+          maxValue: 50.0,
           icon: Icons.space_bar,
         ),
         'randomRotation': BrushSettingConfig(

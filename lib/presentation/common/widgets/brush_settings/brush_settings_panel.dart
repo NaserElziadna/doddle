@@ -117,6 +117,13 @@ class BrushSettingsPanel extends ConsumerWidget {
           ),
         );
       case SettingType.text:
+        // Create a persistent TextEditingController to maintain state
+        final controller = TextEditingController(text: currentValue);
+        // Maintain cursor position
+        controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: controller.text.length)
+        );
+        
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Column(
@@ -133,7 +140,7 @@ class BrushSettingsPanel extends ConsumerWidget {
               ),
               const SizedBox(height: 8),
               TextField(
-                controller: TextEditingController(text: currentValue),
+                controller: controller,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -155,7 +162,7 @@ class BrushSettingsPanel extends ConsumerWidget {
     return Center(
       child: TextButton.icon(
         icon: const Icon(Icons.restart_alt),
-        label: const Text('Reset to Default'),
+        label: const Text('Reset Brush Settings to Default'),
         onPressed: () {
           ref.read(brushSettingsProvider(penTool).notifier).resetToDefault();
         },

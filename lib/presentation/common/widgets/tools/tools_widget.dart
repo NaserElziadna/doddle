@@ -19,9 +19,9 @@ class ToolsWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       height: MediaQuery.of(context).size.height * .1,
-      color: Colors.purple[800],
+      color: Colors.purple[600],
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildToolButton(
             context,
@@ -41,16 +41,20 @@ class ToolsWidget extends ConsumerWidget {
                 orElse: () => symmetryLines.first,
               );
 
-              return _buildToolButton(
-                context,
-                icon: Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: [
-                    Assets.svg.symmetricalLineBg.svg(width: 80),
-                    selectedLine.picture,
-                  ],
+              return SizedBox(
+                width: 80,
+                height: 80,
+                child: _buildToolButton(
+                  context,
+                  icon: Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: [
+                      Assets.svg.symmetricalLineBg.svg(width: 80),
+                      selectedLine.picture,
+                    ],
+                  ),
+                  toolType: ToolType.symmyrticllLine,
                 ),
-                toolType: ToolType.symmyrticllLine,
               );
             }
           ),
@@ -69,7 +73,7 @@ class ToolsWidget extends ConsumerWidget {
             context,
             icon: const Icon(
               Icons.settings,
-              size: 30,
+              size: 80,
               color: Colors.white,
             ),
             toolType: ToolType.canvasSettings,
@@ -86,11 +90,7 @@ class ToolsWidget extends ConsumerWidget {
   }) {
     return GestureDetector(
       onTap: () {
-        if (toolType == ToolType.brushs) {
-          _showBrushSettings(context);
-        } else {
-          _showToolSettings(context, toolType);
-        }
+        _showToolSettings(context, toolType);
       },
       child: icon,
     );
@@ -107,29 +107,12 @@ class ToolsWidget extends ConsumerWidget {
 
   void _showToolSettings(BuildContext context, ToolType toolType) {
     showModalBottomSheet<void>(
-      backgroundColor: Colors.transparent,
       context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
       builder: (context) {
         return Popover(
           child: _buildToolContent(toolType),
-        );
-      },
-    );
-  }
-
-  void _showBrushSettings(BuildContext context) {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return const SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BrushToolGrid(),
-              Divider(),
-              BrushSettingsPanel(),
-            ],
-          ),
         );
       },
     );
@@ -144,7 +127,15 @@ class ToolsWidget extends ConsumerWidget {
       case ToolType.symmyrticllLine:
         return const SymmetryToolGrid();
       case ToolType.canvasSettings:
-        return const CanvasSettingsToolGrid();
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              CanvasSettingsToolGrid(),
+              Divider(),
+              BrushSettingsPanel(),
+            ],
+          ),
+        );
     }
   }
 } 
