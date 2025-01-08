@@ -19,21 +19,25 @@ class RecordingControls extends ConsumerWidget {
         if (!recordingState.isRecording)
           IconButton(
             icon: const Icon(Icons.fiber_manual_record, color: Colors.red),
-            onPressed: () => ref.read(recordingStateProvider.notifier).startRecording(),
+            onPressed: () =>
+                ref.read(recordingStateProvider.notifier).startRecording(),
           )
         else
           IconButton(
             icon: const Icon(Icons.stop, color: Colors.white),
-            onPressed: () => ref.read(recordingStateProvider.notifier).stopRecording(),
+            onPressed: () =>
+                ref.read(recordingStateProvider.notifier).stopRecording(),
           ),
         if (recordingState.hasFrames) ...[
           IconButton(
             icon: const Icon(Icons.gif, color: Colors.white),
-            onPressed: () => ref.read(recordingStateProvider.notifier).exportAsGif(context),
+            onPressed: () =>
+                ref.read(recordingStateProvider.notifier).exportAsGif(context),
           ),
           IconButton(
             icon: const Icon(Icons.delete, color: Colors.white),
-            onPressed: () => ref.read(recordingStateProvider.notifier).clearRecording(),
+            onPressed: () =>
+                ref.read(recordingStateProvider.notifier).clearRecording(),
           ),
         ],
       ],

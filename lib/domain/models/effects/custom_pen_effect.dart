@@ -27,20 +27,19 @@ class CustomPenEffect extends PenEffect {
   void paint(Canvas canvas, Path path, Paint paint) {
     for (var dot in chalkDots) {
       final symmetricalDots = getSymmetricalPositions(dot.position);
-      
+
       for (var position in symmetricalDots) {
         canvas.save();
         canvas.translate(position.dx, position.dy);
         canvas.rotate(dot.angle);
-        
+
         canvas.drawCircle(
-          Offset.zero,
-          dot.size * (drawController.penSize ?? 2.0),
-          paint
-            ..color = dot.color
-            ..style = PaintingStyle.fill
-        );
-        
+            Offset.zero,
+            dot.size * (drawController.penSize ?? 2.0),
+            paint
+              ..color = dot.color
+              ..style = PaintingStyle.fill);
+
         canvas.restore();
       }
     }
@@ -49,22 +48,24 @@ class CustomPenEffect extends PenEffect {
   @override
   void onPointAdd(Point point) {
     if (point.offset == null) return;
-    
+
     final numDots = 12; // Higher density for more chalk-like appearance
     for (int i = 0; i < numDots; i++) {
       final spread = 8.0; // Wider spread for chalk texture
-      final randomOffset = Offset(
-        random.nextDouble() * spread - spread/2,
-        random.nextDouble() * spread - spread/2
-      );
-      
+      final randomOffset = Offset(random.nextDouble() * spread - spread / 2,
+          random.nextDouble() * spread - spread / 2);
+
       addChalkDots([
         ChalkDot(
           position: point.offset! + randomOffset,
-          opacity: random.nextDouble() * 0.3 + 0.3, // Random opacity between 0.3 and 0.6
-          size: random.nextDouble() * 0.6 + 0.6, // Random size between 0.6 and 1.2
+          opacity: random.nextDouble() * 0.3 +
+              0.3, // Random opacity between 0.3 and 0.6
+          size: random.nextDouble() * 0.6 +
+              0.6, // Random size between 0.6 and 1.2
           angle: random.nextDouble() * math.pi * 2, // Full rotation possible,
-          color: drawController.isRandomColor ? getRandomColor() : drawController.currentColor,
+          color: drawController.isRandomColor
+              ? getRandomColor()
+              : drawController.currentColor,
         ),
       ]);
     }

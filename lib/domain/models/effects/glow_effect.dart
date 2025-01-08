@@ -1,10 +1,8 @@
-import 'dart:ui';
 
 import 'package:doddle/domain/models/effects/pen_effect.dart';
 import 'package:flutter/material.dart';
 
 class GlowEffect extends PenEffect {
-
   @override
   void paint(Canvas canvas, Path path, Paint paint) {
     canvas.drawPath(

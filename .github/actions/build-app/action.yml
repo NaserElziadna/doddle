@@ -1,0 +1,66 @@
+name: "Build App"
+description: "An action that cleans, analyzes, and builds the project"
+inputs:
+  app-extension:
+    description: "The extension of the app (apk or aab)"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: "temurin"
+        java-version: "17"
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version: 3.27.0
+        cache: true
+        cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
+        cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
+
+    - name: Clean project
+      shell: bash
+      run: flutter clean
+
+    - name: Get dependencies
+      shell: bash
+
+      run: flutter pub get
+
+
+
+    - name: Analyze project
+      shell: bash
+
+      run: flutter analyze
+
+    - name: Build APK
+      shell: bash
+
+      if: ${{ inputs.app-extension == 'apk' }}
+      run: flutter build apk --release
+
+    - name: Build App Bundle
+      shell: bash
+
+      if: ${{ inputs.app-extension == 'aab' }}
+      run: flutter build appbundle --release
+
+    - name: Upload APK Artifact
+      if: ${{ inputs.app-extension == 'apk' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: apk
+        path: build/app/outputs/flutter-apk/app-*.apk
+
+    - name: Upload AAB Artifact
+      if: ${{ inputs.app-extension == 'aab' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: aab
+        path: build/app/outputs/bundle/release/app-*.aab

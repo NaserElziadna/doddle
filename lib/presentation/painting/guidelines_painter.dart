@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math' as math;
+
+import 'package:flutter/material.dart';
 
 class GuidelinesPainter extends CustomPainter {
   final double symmetryLines;
@@ -22,7 +23,7 @@ class GuidelinesPainter extends CustomPainter {
     final halfHeight = size.height / 2;
 
     final guidelinePaint = Paint()
-      ..color = Colors.blue.withOpacity(0.3)
+      ..color = Colors.blue.withValues(alpha: 0.3)
       ..strokeWidth = 1
       ..style = PaintingStyle.stroke;
 
@@ -35,7 +36,7 @@ class GuidelinesPainter extends CustomPainter {
     double theta = isMirror ? 0 : -math.pi / symmetryLines;
     double x = halfWidth + math.sin(theta) * radius;
     double y = halfHeight - math.cos(theta) * radius;
-    
+
     canvas.drawLine(
       Offset(halfWidth, halfHeight),
       Offset(x, y),

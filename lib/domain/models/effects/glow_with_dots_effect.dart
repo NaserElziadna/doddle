@@ -5,12 +5,11 @@ import 'package:path_drawing/path_drawing.dart';
 class GlowWithDotsEffect extends PenEffect {
   @override
   void paint(Canvas canvas, Path path, Paint paint) {
-
-    final pathWithDots = dashPath(  
-          path,
-          dashArray: CircularIntervalList<double>(<double>[5
-          , 10]), // Changed to create 5px dashes with 10px gaps
-        );
+    final pathWithDots = dashPath(
+      path,
+      dashArray: CircularIntervalList<double>(
+          <double>[5, 10]), // Changed to create 5px dashes with 10px gaps
+    );
 
     canvas.drawPath(
         pathWithDots,
@@ -20,8 +19,6 @@ class GlowWithDotsEffect extends PenEffect {
           ..style = PaintingStyle.stroke
           ..strokeWidth = 5.0);
 
-    canvas.drawPath(
-        pathWithDots,
-        paint..strokeWidth = drawController.penSize!);
+    canvas.drawPath(pathWithDots, paint..strokeWidth = drawController.penSize!);
   }
 }

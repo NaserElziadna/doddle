@@ -56,7 +56,7 @@ class _ColorToolGridState extends ConsumerState<ColorToolGrid> {
         ),
         itemBuilder: (context, index) {
           final color = colors[index];
-          
+
           if (color is Color) {
             return _buildColorCircle(color);
           } else if (color == "Random Color") {
@@ -64,7 +64,7 @@ class _ColorToolGridState extends ConsumerState<ColorToolGrid> {
           } else if (color == "Color Picker") {
             return _buildColorPickerButton();
           }
-          
+
           return const SizedBox();
         },
       ),
@@ -93,7 +93,9 @@ class _ColorToolGridState extends ConsumerState<ColorToolGrid> {
   Widget _buildRandomColorButton() {
     return GestureDetector(
       onTap: () {
-        ref.read(canvasNotifierProvider.notifier).changeColor(Colors.green, true);
+        ref
+            .read(canvasNotifierProvider.notifier)
+            .changeColor(Colors.green, true);
         Navigator.of(context).pop();
       },
       child: Stack(
@@ -133,7 +135,9 @@ class _ColorToolGridState extends ConsumerState<ColorToolGrid> {
             ElevatedButton(
               child: const Text('Got it'),
               onPressed: () {
-                ref.read(canvasNotifierProvider.notifier).changeColor(pickerColor, false);
+                ref
+                    .read(canvasNotifierProvider.notifier)
+                    .changeColor(pickerColor, false);
                 Navigator.of(context).pop(); // Close dialog
                 Navigator.of(context).pop(); // Close bottom sheet
               },

@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui' as ui;
 import 'package:doddle/application/providers/router/router_provider.dart';
 import 'package:doddle/presentation/painting/guidelines_painter.dart';
 import 'package:flutter/foundation.dart';
@@ -39,13 +38,14 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
     // pointerCount = 1;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // ref.read(canvasNotifierProvider.notifier).initializeEffects();
-      ref.read(canvasNotifierProvider.notifier).setGlobalKey(CanvasScreen.globalKey!);
+      ref
+          .read(canvasNotifierProvider.notifier)
+          .setGlobalKey(CanvasScreen.globalKey!);
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    final drawController = ref.watch(canvasNotifierProvider);
+  Widget build(BuildContext context) { 
 
     return SafeArea(
       child: Scaffold(
@@ -143,15 +143,15 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   void _handleGestureStart(PointerEvent pointerEvent) {
     if (ref.read(canvasNotifierProvider).isPanActive) return;
     // if (ignorePointer == false && pointerCount == 1) {
-      if (ref.read(canvasNotifierProvider).isRandomColor) {
-        final random = Random();
-        final color = Color.fromRGBO(
-          random.nextInt(256),
-          random.nextInt(256),
-          random.nextInt(256),
-          1,
-        );
-        ref.read(canvasNotifierProvider.notifier).changeColor(color, true);
+    if (ref.read(canvasNotifierProvider).isRandomColor) {
+      final random = Random();
+      final color = Color.fromRGBO(
+        random.nextInt(256),
+        random.nextInt(256),
+        random.nextInt(256),
+        1,
+      );
+      ref.read(canvasNotifierProvider.notifier).changeColor(color, true);
     }
     // }
   }
@@ -159,47 +159,47 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   void _handleGestureUpdate(PointerEvent pointerEvent) {
     if (ref.read(canvasNotifierProvider).isPanActive) return;
     // if (ignorePointer == false && pointerCount == 1) {
-      setState(() {
-        kCanvasSize = Size(
-          MediaQuery.of(context).size.width,
-          MediaQuery.of(context).size.height - (AppBar().preferredSize.height),
-        );
-        var pinSpaceX = -20;
-        var pinSpaceY = -160;
+    setState(() {
+      kCanvasSize = Size(
+        MediaQuery.of(context).size.width,
+        MediaQuery.of(context).size.height - (AppBar().preferredSize.height),
+      );
+      var pinSpaceX = -20;
+      var pinSpaceY = -160;
 
-        Offset point = pointerEvent.localPosition;
-        point = point.translate(
-          -((kCanvasSize.width / 2) + pinSpaceX),
-          -((kCanvasSize.height / 2) + pinSpaceY),
-        );
+      Offset point = pointerEvent.localPosition;
+      point = point.translate(
+        -((kCanvasSize.width / 2) + pinSpaceX),
+        -((kCanvasSize.height / 2) + pinSpaceY),
+      );
 
-        ref.read(canvasNotifierProvider.notifier).addPoint(Point(offset: point));
-      });
+      ref.read(canvasNotifierProvider.notifier).addPoint(Point(offset: point));
+    });
     // }
   }
 
   void _handleGestureEnd(PointerEvent pointerEvent) {
     // if (ref.read(canvasNotifierProvider).isPanActive) return;
     // if (ignorePointer == false && pointerCount == 1) {
-      setState(() {
-        kCanvasSize = Size(
-          MediaQuery.of(context).size.width,
-          MediaQuery.of(context).size.height - (AppBar().preferredSize.height),
-        );
-        var pinSpaceX = -20;
-        var pinSpaceY = -160;
+    setState(() {
+      kCanvasSize = Size(
+        MediaQuery.of(context).size.width,
+        MediaQuery.of(context).size.height - (AppBar().preferredSize.height),
+      );
+      var pinSpaceX = -20;
+      var pinSpaceY = -160;
 
-        Offset point = pointerEvent.localPosition;
-        point = point.translate(
-          -((kCanvasSize.width / 2) + pinSpaceX),
-          -((kCanvasSize.height / 2) + pinSpaceY),
-        );
+      Offset point = pointerEvent.localPosition;
+      point = point.translate(
+        -((kCanvasSize.width / 2) + pinSpaceX),
+        -((kCanvasSize.height / 2) + pinSpaceY),
+      );
 
-        ref.read(canvasNotifierProvider.notifier).addPoint(
-              Point(offset: point),
-              end: true,
-            );
-      });
+      ref.read(canvasNotifierProvider.notifier).addPoint(
+            Point(offset: point),
+            end: true,
+          );
+    });
     // }
   }
 
@@ -238,7 +238,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
 
   void _handleInteractionUpdate(ScaleUpdateDetails details) {
     print('pan update ${details.pointerCount}');
-    if(details.pointerCount > 1) {
+    if (details.pointerCount > 1) {
       //clear last point
       ref.read(canvasNotifierProvider.notifier).clearPoints();
     }
@@ -249,7 +249,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   }
 
   void _handleInteractionStart(ScaleStartDetails details) {
-    if(details.pointerCount > 1) {
+    if (details.pointerCount > 1) {
       print('pan active ${details.pointerCount}');
       ref.read(canvasNotifierProvider.notifier).setPanActive(true);
       //clear last point
@@ -316,8 +316,8 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                 painter: GuidelinesPainter(
                   symmetryLines: drawController.symmetryLines ?? 5,
                   penSize: 10,
-                  showGuidelines: drawController.showGuidelines ?? true,
-                  isMirror: drawController.mirrorSymmetry ?? false,
+                  showGuidelines: drawController.showGuidelines ,
+                  isMirror: drawController.mirrorSymmetry ,
                 ),
                 child: Container(),
               ),

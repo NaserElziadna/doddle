@@ -60,6 +60,7 @@ dependencies:
   go_router: ^14.6.1
   freezed: ^2.5.7
   freezed_annotation: ^2.4.4
+  riverpod_annotation: ^2.6.1
 
 flutter_native_splash:
   color: "#000000"

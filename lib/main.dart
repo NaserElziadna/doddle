@@ -23,7 +23,7 @@ Future<void> initializeApp() async {
 
 void main() async {
   await initializeApp();
-  
+
   runApp(
     const ProviderScope(
       child: MyApp(),

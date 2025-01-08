@@ -28,31 +28,33 @@ class ToolsWidget extends ConsumerWidget {
             toolType: ToolType.brushs,
           ),
           _buildEraserButton(ref),
-          Consumer(
-            builder: (context, ref, child) {
-              final selectedSymmetryLines = ref.watch(canvasNotifierProvider).symmetryLines ?? 1;
-              final isMirrorSymmetry = ref.watch(canvasNotifierProvider).mirrorSymmetry ?? false;
-              
-              final symmetryLines = ref.watch(configProvider).symmetryLines;
+          Consumer(builder: (context, ref, child) {
+            final selectedSymmetryLines =
+                ref.watch(canvasNotifierProvider).symmetryLines ?? 1;
+            final isMirrorSymmetry =
+                ref.watch(canvasNotifierProvider).mirrorSymmetry ;
 
-              final selectedLine = symmetryLines.firstWhere(
-                (line) => line.count == selectedSymmetryLines && line.isMirror == isMirrorSymmetry,
-                orElse: () => symmetryLines.first,
-              );
+            final symmetryLines = ref.watch(configProvider).symmetryLines;
 
-              return _buildToolButton(
-                context,
-                icon: Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: [
-                    Assets.svg.symmetricalLineBg.svg(width: 80),
-                    selectedLine.picture,
-                  ],
-                ),
-                toolType: ToolType.symmyrticllLine,
-              );
-            }
-          ),
+            final selectedLine = symmetryLines.firstWhere(
+              (line) =>
+                  line.count == selectedSymmetryLines &&
+                  line.isMirror == isMirrorSymmetry,
+              orElse: () => symmetryLines.first,
+            );
+
+            return _buildToolButton(
+              context,
+              icon: Stack(
+                alignment: AlignmentDirectional.center,
+                children: [
+                  Assets.svg.symmetricalLineBg.svg(width: 80),
+                  selectedLine.picture,
+                ],
+              ),
+              toolType: ToolType.symmyrticllLine,
+            );
+          }),
           _buildToolButton(
             context,
             icon: Stack(
@@ -92,7 +94,9 @@ class ToolsWidget extends ConsumerWidget {
   Widget _buildEraserButton(WidgetRef ref) {
     return GestureDetector(
       onTap: () {
-        ref.read(canvasNotifierProvider.notifier).changePenTool(PenTool.eraserPen);
+        ref
+            .read(canvasNotifierProvider.notifier)
+            .changePenTool(PenTool.eraserPen);
       },
       child: Assets.svg.eraser.svg(width: 60),
     );
@@ -122,4 +126,4 @@ class ToolsWidget extends ConsumerWidget {
         return const CanvasSettingsToolGrid();
     }
   }
-} 
+}

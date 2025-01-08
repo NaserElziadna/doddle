@@ -83,9 +83,14 @@ class Shapes {
 
   void drawCustom() {
     rotate(() {
-      int a=20;
+      int a = 20;
       for (var i = 0; i < a; i++) {
-        canvas!.drawRect(center+ Offset(center.dx+Random().nextInt(a)*1.0 ,center.dy-Random().nextInt(a)*1.0) & const Size(1.0, 1.0), paint!);
+        canvas!.drawRect(
+            center +
+                    Offset(center.dx + Random().nextInt(a) * 1.0,
+                        center.dy - Random().nextInt(a) * 1.0) &
+                const Size(1.0, 1.0),
+            paint!);
       }
     });
   }

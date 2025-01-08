@@ -6,7 +6,6 @@ final themeModeProvider = StateProvider<ThemeMode>((ref) {
   return ThemeMode.system;
 });
 
-
 //theme service
 
 class ThemeService {

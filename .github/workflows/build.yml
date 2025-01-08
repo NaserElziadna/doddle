@@ -1,0 +1,17 @@
+name: Build Android apk
+
+
+
+on :
+  push
+jobs:
+  buildAndroid:
+    name: Build Android
+    # runs-on: macos-latest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build apk and check lints
+        uses: ./.github/actions/build-app
+        with:
+            app-extension: 'apk'
