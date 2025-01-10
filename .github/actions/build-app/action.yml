@@ -18,7 +18,7 @@ runs:
       uses: subosito/flutter-action@v2
       with:
         channel: stable
-        flutter-version: 3.27.0
+        flutter-version: 3.27.1
         cache: true
         cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
         cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
@@ -32,12 +32,21 @@ runs:
 
       run: flutter pub get
 
+    # - name: Run code generator
+    #   shell: bash
 
+    #   run: dart run build_runner build --delete-conflicting-outputs
 
     - name: Analyze project
       shell: bash
 
       run: flutter analyze
+
+    # - name: Update App version code
+    #   shell: bash
+    #   run: |
+    #     perl -i -pe 's/^(version:\s+\d+\.\d+\.\d+\+)(\d+)$/$1.($2+1)/e' pubspec.yaml
+    #     cat pubspec.yaml
 
     - name: Build APK
       shell: bash
