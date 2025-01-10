@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:doddle/application/providers/router/router_provider.dart';
 import 'package:doddle/presentation/painting/guidelines_painter.dart';
 import 'package:flutter/foundation.dart';
@@ -7,16 +8,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:screen_recorder/screen_recorder.dart';
 import 'package:sizer/sizer.dart';
-import '../../../generated/assets.gen.dart';
-import '../../../domain/models/draw_controller.dart';
-import '../../../domain/models/point.dart';
-import '../../painting/last_image_as_background.dart';
-import '../../painting/sketcher.dart';
-import '../../common/utils/single_gesture_recognizer.dart';
-import '../../common/widgets/tools/tools_widget.dart';
+
 import '../../../application/providers/canvas/canvas_provider.dart';
 import '../../../application/providers/recorder/recorder_provider.dart';
+import '../../../domain/models/draw_controller.dart';
+import '../../../domain/models/point.dart';
+import '../../../generated/assets.gen.dart';
 import '../../../presentation/common/widgets/recording/recording_controls.dart';
+import '../../common/utils/single_gesture_recognizer.dart';
+import '../../common/widgets/tools/tools_widget.dart';
+import '../../painting/last_image_as_background.dart';
+import '../../painting/sketcher.dart';
 
 class CanvasScreen extends ConsumerStatefulWidget {
   static GlobalKey? globalKey = GlobalKey();
@@ -45,7 +47,6 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
@@ -159,9 +160,9 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
     _transformationController.value = Matrix4.identity()
       ..scale(1.0)
       ..translate(1.w, -1.h);
-      setState(() {
-        showResetScaleTranslateToCanvas = false;
-      });
+    setState(() {
+      showResetScaleTranslateToCanvas = false;
+    });
   }
 
   void _handleGestureStart(PointerEvent pointerEvent) {
@@ -254,7 +255,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   }
 
   void _handleInteractionEnd(ScaleEndDetails details) {
-    print('pan end ${details.pointerCount}');
+    debugPrint('pan end ${details.pointerCount}');
     ref.read(canvasNotifierProvider.notifier).setPanActive(false);
     // setState(() {
     //   ignorePointer = details.pointerCount > 1;
@@ -263,7 +264,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   }
 
   void _handleInteractionUpdate(ScaleUpdateDetails details) {
-    print('pan update ${details.pointerCount}');
+    debugPrint('pan update ${details.pointerCount}');
     if (details.pointerCount > 1) {
       //clear last point
       ref.read(canvasNotifierProvider.notifier).clearPoints();
@@ -276,7 +277,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
 
   void _handleInteractionStart(ScaleStartDetails details) {
     if (details.pointerCount > 1) {
-      print('pan active ${details.pointerCount}');
+      debugPrint('pan active ${details.pointerCount}');
       ref.read(canvasNotifierProvider.notifier).setPanActive(true);
       //clear last point
       ref.read(canvasNotifierProvider.notifier).clearPoints();
@@ -344,8 +345,8 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                 painter: GuidelinesPainter(
                   symmetryLines: drawController.symmetryLines ?? 5,
                   penSize: 10,
-                  showGuidelines: drawController.showGuidelines ,
-                  isMirror: drawController.mirrorSymmetry ,
+                  showGuidelines: drawController.showGuidelines,
+                  isMirror: drawController.mirrorSymmetry,
                 ),
                 child: Container(),
               ),

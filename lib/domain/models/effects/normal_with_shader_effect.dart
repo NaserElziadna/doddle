@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:doddle/domain/models/effects/pen_effect.dart';
 import 'package:doddle/domain/models/point.dart';
-import 'package:flutter/material.dart';
 
 class RainbowStroke {
   final Offset position;
@@ -34,13 +33,14 @@ class NormalWithShaderEffect extends PenEffect {
   void paint(Canvas canvas, Path path, Paint paint) {
     for (var stroke in strokes) {
       final positions = getSymmetricalPositions(stroke.position);
-      canvas.drawPoints(PointMode.lines, positions,
+      canvas.drawPoints(
+          PointMode.lines,
+          positions,
           Paint()
             ..color = stroke.color
             ..style = PaintingStyle.stroke
             ..strokeWidth = stroke.size
-            ..strokeCap = StrokeCap.round
-        );
+            ..strokeCap = StrokeCap.round);
     }
   }
 

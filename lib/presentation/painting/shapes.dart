@@ -6,18 +6,11 @@ double radians(double degree) {
 }
 
 class Shapes {
-  Shapes(
-      {this.canvas,
-      this.paint,
-      this.radius = 1,
-      this.center = Offset.zero,
-      this.angle = 0}) {
+  Shapes({this.canvas, this.paint, this.radius = 1, this.center = Offset.zero, this.angle = 0}) {
     paint ??= Paint();
   }
 
-  static List<String> types = ShapeType.values
-      .map((ShapeType type) => type.toString().split('.')[1])
-      .toList();
+  static List<String> types = ShapeType.values.map((ShapeType type) => type.toString().split('.')[1]).toList();
 
   Canvas? canvas;
   Paint? paint;
@@ -41,10 +34,7 @@ class Shapes {
 
   void drawRRect({double? cornerRadius}) {
     rotate(() {
-      canvas!.drawRRect(
-          RRect.fromRectAndRadius(
-              rect(), Radius.circular(cornerRadius ?? radius * 0.2)),
-          paint!);
+      canvas!.drawRRect(RRect.fromRectAndRadius(rect(), Radius.circular(cornerRadius ?? radius * 0.2)), paint!);
     });
   }
 
@@ -72,10 +62,8 @@ class Shapes {
 
       path.moveTo(0, radius);
 
-      path.cubicTo(-radius * 2, -radius * 0.5, -radius * 0.5, -radius * 1.5, 0,
-          -radius * 0.5);
-      path.cubicTo(
-          radius * 0.5, -radius * 1.5, radius * 2, -radius * 0.5, 0, radius);
+      path.cubicTo(-radius * 2, -radius * 0.5, -radius * 0.5, -radius * 1.5, 0, -radius * 0.5);
+      path.cubicTo(radius * 0.5, -radius * 1.5, radius * 2, -radius * 0.5, 0, radius);
 
       canvas!.drawPath(path, paint!);
     });
@@ -86,9 +74,7 @@ class Shapes {
       int a = 20;
       for (var i = 0; i < a; i++) {
         canvas!.drawRect(
-            center +
-                    Offset(center.dx + Random().nextInt(a) * 1.0,
-                        center.dy - Random().nextInt(a) * 1.0) &
+            center + Offset(center.dx + Random().nextInt(a) * 1.0, center.dy - Random().nextInt(a) * 1.0) &
                 const Size(1.0, 1.0),
             paint!);
       }
@@ -115,61 +101,60 @@ class Shapes {
 
   void drawType(ShapeType type) {
     switch (type) {
-      case ShapeType.Circle:
+      case ShapeType.circle:
         drawCircle();
         break;
-      case ShapeType.Rect:
+      case ShapeType.rect:
         drawRect();
         break;
-      case ShapeType.RoundedRect:
+      case ShapeType.roundedRect:
         drawRRect();
         break;
-      case ShapeType.Triangle:
+      case ShapeType.triangle:
         drawPolygon(3, initialAngle: 30);
         break;
-      case ShapeType.Diamond:
+      case ShapeType.diamond:
         drawPolygon(4, initialAngle: 0);
         break;
-      case ShapeType.Pentagon:
+      case ShapeType.pentagon:
         drawPolygon(5, initialAngle: -18);
         break;
-      case ShapeType.Hexagon:
+      case ShapeType.hexagon:
         drawPolygon(6, initialAngle: 0);
         break;
-      case ShapeType.Octagon:
+      case ShapeType.octagon:
         drawPolygon(8, initialAngle: 0);
         break;
-      case ShapeType.Decagon:
+      case ShapeType.decagon:
         drawPolygon(10, initialAngle: 0);
         break;
-      case ShapeType.Dodecagon:
+      case ShapeType.dodecagon:
         drawPolygon(12, initialAngle: 0);
         break;
-      case ShapeType.Heart:
+      case ShapeType.heart:
         drawHeart();
         break;
-      case ShapeType.Star5:
+      case ShapeType.star5:
         drawStar(10, initialAngle: 15);
         break;
-      case ShapeType.Star6:
+      case ShapeType.star6:
         drawStar(12, initialAngle: 0);
         break;
-      case ShapeType.Star7:
+      case ShapeType.star7:
         drawStar(14, initialAngle: 0);
         break;
-      case ShapeType.Star8:
+      case ShapeType.star8:
         drawStar(16, initialAngle: 0);
         break;
-      case ShapeType.Custom:
+      case ShapeType.custom:
         drawCustom();
         break;
     }
   }
 
   void draw(String typeString) {
-    final ShapeType type = ShapeType.values.firstWhere(
-        (ShapeType t) => t.toString() == 'ShapeType.$typeString',
-        orElse: () => ShapeType.Circle);
+    final ShapeType type = ShapeType.values
+        .firstWhere((ShapeType t) => t.toString() == 'ShapeType.$typeString', orElse: () => ShapeType.circle);
     drawType(type);
   }
 
@@ -183,20 +168,20 @@ class Shapes {
 }
 
 enum ShapeType {
-  Circle,
-  Rect,
-  Custom,
-  RoundedRect,
-  Triangle,
-  Diamond,
-  Pentagon,
-  Hexagon,
-  Octagon,
-  Decagon,
-  Dodecagon,
-  Heart,
-  Star5,
-  Star6,
-  Star7,
-  Star8,
+  circle,
+  rect,
+  custom,
+  roundedRect,
+  triangle,
+  diamond,
+  pentagon,
+  hexagon,
+  octagon,
+  decagon,
+  dodecagon,
+  heart,
+  star5,
+  star6,
+  star7,
+  star8,
 }

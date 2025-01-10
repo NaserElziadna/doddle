@@ -1,16 +1,17 @@
+import 'package:doddle/application/providers/canvas/canvas_provider.dart';
 import 'package:doddle/application/providers/config/config_provider.dart';
 import 'package:doddle/domain/models/draw_controller.dart';
 import 'package:doddle/domain/value_objects/tool_types.dart';
+import 'package:doddle/generated/assets.gen.dart';
+import 'package:doddle/presentation/common/widgets/brush_settings/brush_settings_panel.dart';
+import 'package:doddle/presentation/common/widgets/popover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:doddle/generated/assets.gen.dart';
-import 'package:doddle/application/providers/canvas/canvas_provider.dart';
-import 'package:doddle/presentation/common/widgets/popover.dart';
+
 import 'brush_tool_grid.dart';
+import 'canvas_settings_tool_grid.dart';
 import 'color_tool_grid.dart';
 import 'symmetry_tool_grid.dart';
-import 'canvas_settings_tool_grid.dart';
-import 'package:doddle/presentation/common/widgets/brush_settings/brush_settings_panel.dart';
 
 class ToolsWidget extends ConsumerWidget {
   const ToolsWidget({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class ToolsWidget extends ConsumerWidget {
             final selectedSymmetryLines =
                 ref.watch(canvasNotifierProvider).symmetryLines ?? 1;
             final isMirrorSymmetry =
-                ref.watch(canvasNotifierProvider).mirrorSymmetry ;
+                ref.watch(canvasNotifierProvider).mirrorSymmetry;
 
             final symmetryLines = ref.watch(configProvider).symmetryLines;
 
@@ -44,23 +45,22 @@ class ToolsWidget extends ConsumerWidget {
               orElse: () => symmetryLines.first,
             );
 
-              return SizedBox(
-                width: 80,
-                height: 80,
-                child: _buildToolButton(
-                  context,
-                  icon: Stack(
-                    alignment: AlignmentDirectional.center,
-                    children: [
-                      Assets.svg.symmetricalLineBg.svg(width: 80),
-                      selectedLine.picture,
-                    ],
-                  ),
-                  toolType: ToolType.symmyrticllLine,
+            return SizedBox(
+              width: 80,
+              height: 80,
+              child: _buildToolButton(
+                context,
+                icon: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    Assets.svg.symmetricalLineBg.svg(width: 80),
+                    selectedLine.picture,
+                  ],
                 ),
-              );
-            }
-          ),
+                toolType: ToolType.symmyrticllLine,
+              ),
+            );
+          }),
           _buildToolButton(
             context,
             icon: Stack(
@@ -102,7 +102,9 @@ class ToolsWidget extends ConsumerWidget {
   Widget _buildEraserButton(WidgetRef ref) {
     return GestureDetector(
       onTap: () {
-        ref.read(canvasNotifierProvider.notifier).changePenTool(PenTool.eraserPen);
+        ref
+            .read(canvasNotifierProvider.notifier)
+            .changePenTool(PenTool.eraserPen);
       },
       child: Assets.svg.eraser.svg(width: 60),
     );

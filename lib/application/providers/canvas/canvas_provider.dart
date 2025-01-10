@@ -12,7 +12,6 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:share_plus/share_plus.dart';
- 
 
 part 'canvas_provider.g.dart';
 
@@ -114,8 +113,7 @@ class CanvasNotifier extends _$CanvasNotifier {
   Future<void> takePageStamp(GlobalKey globalKey) async {
     try {
       ui.Image image = await canvasToImage(globalKey);
-      final stamps = List<Stamp?>.from(state.stamp ?? [])
-        ..add(Stamp(image: image));
+      final stamps = List<Stamp?>.from(state.stamp ?? [])..add(Stamp(image: image));
       state = state.copyWith(stamp: stamps);
       clearPoints();
     } catch (e) {
@@ -124,15 +122,13 @@ class CanvasNotifier extends _$CanvasNotifier {
   }
 
   Future<ui.Image> canvasToImage(GlobalKey globalKey) async {
-    final boundary =
-        globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-    return await boundary.toImage(pixelRatio:5);
+    final boundary = globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+    return await boundary.toImage(pixelRatio: 5);
   }
 
   Future<void> saveToGallery(GlobalKey globalKey) async {
     try {
-      final boundary =
-          globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      final boundary = globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       final image = await boundary.toImage();
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       final pngBytes = byteData!.buffer.asUint8List();
@@ -150,8 +146,7 @@ class CanvasNotifier extends _$CanvasNotifier {
 
   Future<void> shareImage(GlobalKey globalKey, BuildContext context) async {
     try {
-      final boundary =
-          globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      final boundary = globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       final image = await boundary.toImage();
       final directory = (await getExternalStorageDirectory())?.path;
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -160,7 +155,8 @@ class CanvasNotifier extends _$CanvasNotifier {
       final imgFile = File('$directory/screenshot.png');
       await imgFile.writeAsBytes(pngBytes);
 
-      final box = context.findRenderObject() as RenderBox;
+      final box = context.mounted? context.findRenderObject() as RenderBox?:null;
+      if(box == null) return;
       await Share.shareXFiles(
         [XFile(imgFile.path)],
         subject: 'Doddle App',
@@ -190,7 +186,6 @@ class CanvasNotifier extends _$CanvasNotifier {
 
   void clearLastPoint() {
     if (state.points?.isEmpty ?? true) return;
-    state = state.copyWith(
-        points: state.points?.sublist(0, state.points!.length - 1));
+    state = state.copyWith(points: state.points?.sublist(0, state.points!.length - 1));
   }
 }

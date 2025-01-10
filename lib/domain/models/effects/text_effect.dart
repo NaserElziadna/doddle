@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:doddle/application/providers/brush_settings_provider.dart';
 import 'package:doddle/domain/models/draw_controller.dart';
 import 'package:doddle/domain/models/effects/pen_effect.dart';
@@ -8,8 +6,7 @@ import 'package:doddle/main.dart';
 import 'package:flutter/material.dart';
 
 class TextEffect extends PenEffect {
-  BrushSettingsState get settings =>
-      globalRef.read(brushSettingsProvider(PenTool.textPen));
+  BrushSettingsState get settings => globalRef.read(brushSettingsProvider(PenTool.textPen));
 
   String get text => settings.getValue('text') ?? 'Hello';
   double get fontSize => settings.getValue('fontSize') ?? 20.0;
@@ -19,8 +16,7 @@ class TextEffect extends PenEffect {
   TextDirection? get textDirection {
     final text = settings.getValue('text') ?? '';
     // Check if text contains RTL characters
-    final rtlPattern =
-        RegExp(r'[\u0591-\u07FF\u200F\u202B\u202E\uFB1D-\uFDFD\uFE70-\uFEFC]');
+    final rtlPattern = RegExp(r'[\u0591-\u07FF\u200F\u202B\u202E\uFB1D-\uFDFD\uFE70-\uFEFC]');
     return rtlPattern.hasMatch(text) ? TextDirection.rtl : TextDirection.ltr;
   }
 
@@ -48,7 +44,7 @@ class TextEffect extends PenEffect {
       final positions = getSymmetricalPositions(point!.offset!);
 
       for (var position in positions) {
-    textPainter.layout();
+        textPainter.layout();
 
         textPainter.paint(canvas, position);
       }

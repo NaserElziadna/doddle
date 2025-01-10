@@ -1,11 +1,12 @@
-import 'dart:ui';
+import 'dart:math' as math;
+
 import 'package:doddle/application/providers/brush_settings_provider.dart';
 import 'package:doddle/domain/models/draw_controller.dart';
+import 'package:doddle/domain/models/effects/pen_effect.dart';
 import 'package:doddle/domain/models/effects/settings/brush_settings_state.dart';
 import 'package:doddle/domain/models/point.dart';
 import 'package:doddle/main.dart';
-import 'package:doddle/domain/models/effects/pen_effect.dart';
-import 'dart:math' as math;
+import 'package:flutter/material.dart';
 
 class SprayDot {
   final Offset position;
@@ -34,17 +35,16 @@ class SprayEffect extends PenEffect {
 
   @override
   void paint(Canvas canvas, Path path, Paint paint) {
-    print('density: $density, spread: $spread, opacity: $opacity');
+    debugPrint('density: $density, spread: $spread, opacity: $opacity');
 
     for (var dot in sprayDots) {
       // Get all symmetrical positions for this dot
       final symmetricalDots = getSymmetricalPositions(dot.position);
 
-
       // Draw a dot at each symmetrical position
       for (var position in symmetricalDots) {
         canvas.drawCircle(position, dot.size * (drawController.penSize ?? 2.0),
-            paint..color = dot.color.withValues(alpha:dot.opacity));
+            paint..color = dot.color.withValues(alpha: dot.opacity));
       }
     }
   }
@@ -53,17 +53,13 @@ class SprayEffect extends PenEffect {
   void onPointAdd(Point point) {
     if (point.offset == null) return;
 
-
     final numDots = density.toInt();
     for (int i = 0; i < numDots; i++) {
-      final randomOffset = Offset(random.nextDouble() * spread - spread / 2,
-          random.nextDouble() * spread - spread / 2);
+      final randomOffset = Offset(random.nextDouble() * spread - spread / 2, random.nextDouble() * spread - spread / 2);
 
       final color = randomizeEachDot
           ? getRandomColor()
-          : (drawController.isRandomColor
-              ? getRandomColor()
-              : drawController.currentColor);
+          : (drawController.isRandomColor ? getRandomColor() : drawController.currentColor);
 
       addSprayDots([
         SprayDot(

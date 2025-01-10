@@ -1,6 +1,6 @@
-import 'package:doddle/domain/models/effects/pen_effect.dart';
 import 'package:doddle/application/providers/brush_settings_provider.dart';
 import 'package:doddle/domain/models/draw_controller.dart';
+import 'package:doddle/domain/models/effects/pen_effect.dart';
 import 'package:doddle/domain/models/effects/settings/brush_settings_state.dart';
 import 'package:doddle/main.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class GlowEffect extends PenEffect {
         path,
         Paint()
           ..maskFilter = MaskFilter.blur(BlurStyle.normal, blur)
-          ..color = rainbow ? _getRainbowColor() : drawController.currentColor.withOpacity(intensity)
+          ..color = rainbow ? _getRainbowColor() : drawController.currentColor.withValues(alpha: intensity)
           ..style = PaintingStyle.stroke
           ..strokeWidth = drawController.penSize! + outerGlow,
       );
@@ -33,7 +33,7 @@ class GlowEffect extends PenEffect {
         path,
         Paint()
           ..maskFilter = MaskFilter.blur(BlurStyle.inner, blur * 0.5)
-          ..color = rainbow ? _getRainbowColor() : drawController.currentColor.withOpacity(intensity * 0.7)
+          ..color = rainbow ? _getRainbowColor() : drawController.currentColor.withValues(alpha: intensity * 0.7)
           ..style = PaintingStyle.stroke
           ..strokeWidth = drawController.penSize!,
       );
