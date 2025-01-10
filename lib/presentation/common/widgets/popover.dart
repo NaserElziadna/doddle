@@ -5,7 +5,7 @@ class Popover extends StatefulWidget {
   const Popover({
     Key? key,
     this.child,
-  }): super(key: key);
+  }) : super(key: key);
 
   final Widget? child;
 
@@ -49,10 +49,7 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
     return Container(
       margin: const EdgeInsets.all(16.0),
       clipBehavior: Clip.antiAlias,
-      constraints: BoxConstraints(
-        maxWidth: 90.w,
-        maxHeight: 93.h
-      ),
+      constraints: BoxConstraints(maxWidth: 90.w, maxHeight: 93.h),
       decoration: BoxDecoration(
         color: theme.cardColor,
         borderRadius: const BorderRadius.all(Radius.circular(16.0)),

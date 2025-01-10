@@ -6,7 +6,7 @@ part 'recorder_state.freezed.dart';
 class RecordingState with _$RecordingState {
   const factory RecordingState({
     @Default(false) bool isRecording,
-    @Default(false) bool isExporting, 
+    @Default(false) bool isExporting,
     @Default(false) bool hasFrames,
   }) = _RecordingState;
 }

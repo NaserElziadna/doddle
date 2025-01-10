@@ -1,30 +1,17 @@
 import 'dart:io';
 import 'dart:ui' as ui;
+
 import 'package:doddle/application/providers/effects/effects_provider.dart';
-import 'package:doddle/domain/models/effects/custom_pen_effect.dart';
-import 'package:doddle/domain/models/effects/eraser_effect.dart';
-import 'package:doddle/domain/models/effects/glow_effect.dart';
-import 'package:doddle/domain/models/effects/glow_with_dots_effect.dart';
-import 'package:doddle/domain/models/effects/normal_effect.dart';
-import 'package:doddle/domain/models/effects/normal_with_shader_effect.dart';
+import 'package:doddle/domain/models/draw_controller.dart';
 import 'package:doddle/domain/models/effects/pen_effect.dart';
-import 'package:doddle/domain/models/effects/spray_effect.dart';
+import 'package:doddle/domain/models/point.dart';
 import 'package:doddle/domain/models/stamp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
-
-import '../../../../domain/models/draw_controller.dart';
-import '../../../../domain/models/point.dart';
-
-// final canvasProvider =
-//     StateNotifierProvider<CanvasNotifier, DrawController>((ref) {
-//   return CanvasNotifier(ref);
-// });
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:share_plus/share_plus.dart';
 
 part 'canvas_provider.g.dart';
 
@@ -34,24 +21,24 @@ class CanvasNotifier extends _$CanvasNotifier {
   DrawController build() {
     final eff = ref.watch(effectsProvider);
 
-    return  DrawController(
-          isPanActive: false,
-          points: [],
-          stamp: [],
-          stampUndo: [],
-          currentColor: Colors.white,
-          isRandomColor: false,
-          symmetryLines: 6,
-          penTool: PenTool.glowPen,
-          penSize: 2,
-          mirrorSymmetry: false,
-          showGuidelines: true,
-          effects: eff,
-        );
+    return DrawController(
+      isPanActive: false,
+      points: [],
+      stamp: [],
+      stampUndo: [],
+      currentColor: Colors.white,
+      isRandomColor: false,
+      symmetryLines: 6,
+      penTool: PenTool.glowPen,
+      penSize: 2,
+      mirrorSymmetry: false,
+      showGuidelines: true,
+      effects: eff,
+    );
   }
 
   // void initializeEffects() {
-    
+
   //   state = state.copyWith(effects: effects);
   // }
 
@@ -138,7 +125,7 @@ class CanvasNotifier extends _$CanvasNotifier {
   Future<ui.Image> canvasToImage(GlobalKey globalKey) async {
     final boundary =
         globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-    return await boundary.toImage(pixelRatio:5);
+    return await boundary.toImage(pixelRatio: 5);
   }
 
   Future<void> saveToGallery(GlobalKey globalKey) async {
@@ -172,7 +159,9 @@ class CanvasNotifier extends _$CanvasNotifier {
       final imgFile = File('$directory/screenshot.png');
       await imgFile.writeAsBytes(pngBytes);
 
-      final box = context.findRenderObject() as RenderBox;
+      final box =
+          context.mounted ? context.findRenderObject() as RenderBox? : null;
+      if (box == null) return;
       await Share.shareXFiles(
         [XFile(imgFile.path)],
         subject: 'Doddle App',
@@ -200,8 +189,9 @@ class CanvasNotifier extends _$CanvasNotifier {
     state = state.copyWith(isPanActive: value);
   }
 
-  void  clearLastPoint() {
+  void clearLastPoint() {
     if (state.points?.isEmpty ?? true) return;
-    state = state.copyWith(points: state.points?.sublist(0, state.points!.length - 1));
+    state = state.copyWith(
+        points: state.points?.sublist(0, state.points!.length - 1));
   }
 }

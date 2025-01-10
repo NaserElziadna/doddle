@@ -87,4 +87,4 @@ class CanvasSizeDialog extends StatelessWidget {
       ),
     );
   }
-} 
+}

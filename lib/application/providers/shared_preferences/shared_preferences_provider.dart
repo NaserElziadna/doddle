@@ -7,7 +7,8 @@ final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
 });
 
 // Provider for SharedPreferences service
-final sharedPreferencesServiceProvider = Provider<SharedPreferencesService>((ref) {
+final sharedPreferencesServiceProvider =
+    Provider<SharedPreferencesService>((ref) {
   final sharedPrefs = ref.watch(sharedPreferencesProvider);
   return SharedPreferencesService(sharedPrefs);
 });
@@ -19,7 +20,7 @@ class SharedPreferencesService {
 
   // Theme related
   static const String _themeKey = 'theme_mode';
-  
+
   // Get theme mode
   String? getThemeMode() {
     return _prefs.getString(_themeKey);
@@ -54,4 +55,4 @@ class SharedPreferencesService {
   Future<bool> clearAll() async {
     return await _prefs.clear();
   }
-} 
+}

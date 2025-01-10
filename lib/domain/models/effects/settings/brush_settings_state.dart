@@ -13,7 +13,7 @@ class BrushSettingsState {
   static Map<String, dynamic> _getDefaultValues(PenTool penTool) {
     final config = BrushConfigs.configs[penTool];
     if (config == null) return {};
-    
+
     return Map.fromEntries(
       config.settings.entries.map(
         (e) => MapEntry(e.key, e.value.defaultValue),
@@ -31,4 +31,4 @@ class BrushSettingsState {
   }
 
   dynamic getValue(String key) => values[key];
-} 
+}

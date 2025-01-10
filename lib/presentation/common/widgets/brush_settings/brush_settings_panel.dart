@@ -88,8 +88,9 @@ class BrushSettingsPanel extends ConsumerWidget {
                 max: config.maxValue,
                 divisions: config.divisions,
                 onChanged: (value) {
-                  ref.read(brushSettingsProvider(penTool).notifier)
-                    .updateSetting(key, value);
+                  ref
+                      .read(brushSettingsProvider(penTool).notifier)
+                      .updateSetting(key, value);
                 },
               ),
             ],
@@ -109,8 +110,9 @@ class BrushSettingsPanel extends ConsumerWidget {
               Switch.adaptive(
                 value: currentValue ?? false,
                 onChanged: (value) {
-                  ref.read(brushSettingsProvider(penTool).notifier)
-                    .updateSetting(key, value);
+                  ref
+                      .read(brushSettingsProvider(penTool).notifier)
+                      .updateSetting(key, value);
                 },
               ),
             ],
@@ -121,9 +123,8 @@ class BrushSettingsPanel extends ConsumerWidget {
         final controller = TextEditingController(text: currentValue);
         // Maintain cursor position
         controller.selection = TextSelection.fromPosition(
-          TextPosition(offset: controller.text.length)
-        );
-        
+            TextPosition(offset: controller.text.length));
+
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Column(
@@ -143,11 +144,13 @@ class BrushSettingsPanel extends ConsumerWidget {
                 controller: controller,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 ),
                 onChanged: (value) {
-                  ref.read(brushSettingsProvider(penTool).notifier)
-                    .updateSetting(key, value);
+                  ref
+                      .read(brushSettingsProvider(penTool).notifier)
+                      .updateSetting(key, value);
                 },
               ),
             ],
@@ -158,7 +161,8 @@ class BrushSettingsPanel extends ConsumerWidget {
     }
   }
 
-  Widget _buildResetButton(BuildContext context, WidgetRef ref, PenTool penTool) {
+  Widget _buildResetButton(
+      BuildContext context, WidgetRef ref, PenTool penTool) {
     return Center(
       child: TextButton.icon(
         icon: const Icon(Icons.restart_alt),
@@ -169,4 +173,4 @@ class BrushSettingsPanel extends ConsumerWidget {
       ),
     );
   }
-} 
+}

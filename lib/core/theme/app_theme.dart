@@ -5,4 +5,3 @@ final appTheme = ThemeData(
   primaryColor: Colors.purple,
   scaffoldBackgroundColor: Colors.purple,
 );
-

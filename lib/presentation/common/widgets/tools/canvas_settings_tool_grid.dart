@@ -19,20 +19,25 @@ class CanvasSettingsToolGrid extends ConsumerWidget {
             drawController.penSize ?? 2.0,
             1.0,
             50.0,
-            (value) => ref.read(canvasNotifierProvider.notifier).changePenSize(value),
+            (value) =>
+                ref.read(canvasNotifierProvider.notifier).changePenSize(value),
           ),
           const SizedBox(height: 16),
           _buildSwitchRow(
             'Mirror Symmetry',
             drawController.mirrorSymmetry,
-            (value) => ref.read(canvasNotifierProvider.notifier).toggleMirrorSymmetry(value),
+            (value) => ref
+                .read(canvasNotifierProvider.notifier)
+                .toggleMirrorSymmetry(value),
           ),
           const SizedBox(height: 8),
           _buildSwitchRow(
             'Show Guidelines',
             drawController.showGuidelines,
-            (value) => ref.read(canvasNotifierProvider.notifier).toggleGuidelines(value),
-          ),          
+            (value) => ref
+                .read(canvasNotifierProvider.notifier)
+                .toggleGuidelines(value),
+          ),
         ],
       ),
     );
@@ -69,7 +74,9 @@ class CanvasSettingsToolGrid extends ConsumerWidget {
               ),
             ),
             Text(
-              showDivisions ? value.toInt().toString() : value.toStringAsFixed(1),
+              showDivisions
+                  ? value.toInt().toString()
+                  : value.toStringAsFixed(1),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:doddle/application/providers/brush_settings_provider.dart';
 import 'package:doddle/domain/models/draw_controller.dart';
 import 'package:doddle/domain/models/effects/pen_effect.dart';
@@ -48,7 +46,7 @@ class TextEffect extends PenEffect {
       final positions = getSymmetricalPositions(point!.offset!);
 
       for (var position in positions) {
-    textPainter.layout();
+        textPainter.layout();
 
         textPainter.paint(canvas, position);
       }

@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screen_recorder/screen_recorder.dart';
 
-final recorderControllerProvider = Provider((ref) => ScreenRecorderController());
+final recorderControllerProvider =
+    Provider((ref) => ScreenRecorderController());
 
-final recordingStateProvider = StateNotifierProvider<RecordingStateNotifier, RecordingState>((ref) {
+final recordingStateProvider =
+    StateNotifierProvider<RecordingStateNotifier, RecordingState>((ref) {
   return RecordingStateNotifier(ref.watch(recorderControllerProvider));
 });
 
@@ -30,7 +32,7 @@ class RecordingStateNotifier extends StateNotifier<RecordingState> {
 
   Future<void> exportAsGif(BuildContext context) async {
     state = state.copyWith(isExporting: true);
-    
+
     try {
       final gif = await controller.exporter.exportGif();
       if (gif != null) {
