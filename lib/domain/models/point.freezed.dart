@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Point {
   Offset? get offset => throw _privateConstructorUsedError;
   Paint? get paint => throw _privateConstructorUsedError;
+  double? get pressure => throw _privateConstructorUsedError;
   List<Offset>? get randomOffset => throw _privateConstructorUsedError;
 
   /// Create a copy of Point
@@ -31,7 +32,11 @@ abstract class $PointCopyWith<$Res> {
   factory $PointCopyWith(Point value, $Res Function(Point) then) =
       _$PointCopyWithImpl<$Res, Point>;
   @useResult
-  $Res call({Offset? offset, Paint? paint, List<Offset>? randomOffset});
+  $Res call(
+      {Offset? offset,
+      Paint? paint,
+      double? pressure,
+      List<Offset>? randomOffset});
 }
 
 /// @nodoc
@@ -51,6 +56,7 @@ class _$PointCopyWithImpl<$Res, $Val extends Point>
   $Res call({
     Object? offset = freezed,
     Object? paint = freezed,
+    Object? pressure = freezed,
     Object? randomOffset = freezed,
   }) {
     return _then(_value.copyWith(
@@ -62,6 +68,10 @@ class _$PointCopyWithImpl<$Res, $Val extends Point>
           ? _value.paint
           : paint // ignore: cast_nullable_to_non_nullable
               as Paint?,
+      pressure: freezed == pressure
+          ? _value.pressure
+          : pressure // ignore: cast_nullable_to_non_nullable
+              as double?,
       randomOffset: freezed == randomOffset
           ? _value.randomOffset
           : randomOffset // ignore: cast_nullable_to_non_nullable
@@ -77,7 +87,11 @@ abstract class _$$PointImplCopyWith<$Res> implements $PointCopyWith<$Res> {
       __$$PointImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Offset? offset, Paint? paint, List<Offset>? randomOffset});
+  $Res call(
+      {Offset? offset,
+      Paint? paint,
+      double? pressure,
+      List<Offset>? randomOffset});
 }
 
 /// @nodoc
@@ -95,6 +109,7 @@ class __$$PointImplCopyWithImpl<$Res>
   $Res call({
     Object? offset = freezed,
     Object? paint = freezed,
+    Object? pressure = freezed,
     Object? randomOffset = freezed,
   }) {
     return _then(_$PointImpl(
@@ -106,6 +121,10 @@ class __$$PointImplCopyWithImpl<$Res>
           ? _value.paint
           : paint // ignore: cast_nullable_to_non_nullable
               as Paint?,
+      pressure: freezed == pressure
+          ? _value.pressure
+          : pressure // ignore: cast_nullable_to_non_nullable
+              as double?,
       randomOffset: freezed == randomOffset
           ? _value._randomOffset
           : randomOffset // ignore: cast_nullable_to_non_nullable
@@ -118,13 +137,18 @@ class __$$PointImplCopyWithImpl<$Res>
 
 class _$PointImpl implements _Point {
   const _$PointImpl(
-      {this.offset, this.paint, final List<Offset>? randomOffset = const []})
+      {this.offset,
+      this.paint,
+      this.pressure,
+      final List<Offset>? randomOffset = const []})
       : _randomOffset = randomOffset;
 
   @override
   final Offset? offset;
   @override
   final Paint? paint;
+  @override
+  final double? pressure;
   final List<Offset>? _randomOffset;
   @override
   @JsonKey()
@@ -138,7 +162,7 @@ class _$PointImpl implements _Point {
 
   @override
   String toString() {
-    return 'Point(offset: $offset, paint: $paint, randomOffset: $randomOffset)';
+    return 'Point(offset: $offset, paint: $paint, pressure: $pressure, randomOffset: $randomOffset)';
   }
 
   @override
@@ -148,12 +172,14 @@ class _$PointImpl implements _Point {
             other is _$PointImpl &&
             (identical(other.offset, offset) || other.offset == offset) &&
             (identical(other.paint, paint) || other.paint == paint) &&
+            (identical(other.pressure, pressure) ||
+                other.pressure == pressure) &&
             const DeepCollectionEquality()
                 .equals(other._randomOffset, _randomOffset));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, offset, paint,
+  int get hashCode => Object.hash(runtimeType, offset, paint, pressure,
       const DeepCollectionEquality().hash(_randomOffset));
 
   /// Create a copy of Point
@@ -169,12 +195,15 @@ abstract class _Point implements Point {
   const factory _Point(
       {final Offset? offset,
       final Paint? paint,
+      final double? pressure,
       final List<Offset>? randomOffset}) = _$PointImpl;
 
   @override
   Offset? get offset;
   @override
   Paint? get paint;
+  @override
+  double? get pressure;
   @override
   List<Offset>? get randomOffset;
 

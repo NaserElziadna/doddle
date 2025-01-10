@@ -15,6 +15,8 @@ abstract class PenEffect {
   //   drawController = ref.read(canvasNotifierProvider);
   // }
 
+
+
   void paint(Canvas canvas, Path path, Paint paint);
 
   // New method to handle point additions

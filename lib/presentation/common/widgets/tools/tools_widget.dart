@@ -10,6 +10,7 @@ import 'brush_tool_grid.dart';
 import 'color_tool_grid.dart';
 import 'symmetry_tool_grid.dart';
 import 'canvas_settings_tool_grid.dart';
+import 'package:doddle/presentation/common/widgets/brush_settings/brush_settings_panel.dart';
 
 class ToolsWidget extends ConsumerWidget {
   const ToolsWidget({Key? key}) : super(key: key);
@@ -18,9 +19,9 @@ class ToolsWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       height: MediaQuery.of(context).size.height * .1,
-      color: Colors.purple[800],
+      color: Colors.purple[600],
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildToolButton(
             context,
@@ -43,18 +44,23 @@ class ToolsWidget extends ConsumerWidget {
               orElse: () => symmetryLines.first,
             );
 
-            return _buildToolButton(
-              context,
-              icon: Stack(
-                alignment: AlignmentDirectional.center,
-                children: [
-                  Assets.svg.symmetricalLineBg.svg(width: 80),
-                  selectedLine.picture,
-                ],
-              ),
-              toolType: ToolType.symmyrticllLine,
-            );
-          }),
+              return SizedBox(
+                width: 80,
+                height: 80,
+                child: _buildToolButton(
+                  context,
+                  icon: Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: [
+                      Assets.svg.symmetricalLineBg.svg(width: 80),
+                      selectedLine.picture,
+                    ],
+                  ),
+                  toolType: ToolType.symmyrticllLine,
+                ),
+              );
+            }
+          ),
           _buildToolButton(
             context,
             icon: Stack(
@@ -70,7 +76,7 @@ class ToolsWidget extends ConsumerWidget {
             context,
             icon: const Icon(
               Icons.settings,
-              size: 30,
+              size: 80,
               color: Colors.white,
             ),
             toolType: ToolType.canvasSettings,
@@ -86,7 +92,9 @@ class ToolsWidget extends ConsumerWidget {
     required ToolType toolType,
   }) {
     return GestureDetector(
-      onTap: () => _showToolSettings(context, toolType),
+      onTap: () {
+        _showToolSettings(context, toolType);
+      },
       child: icon,
     );
   }
@@ -94,9 +102,7 @@ class ToolsWidget extends ConsumerWidget {
   Widget _buildEraserButton(WidgetRef ref) {
     return GestureDetector(
       onTap: () {
-        ref
-            .read(canvasNotifierProvider.notifier)
-            .changePenTool(PenTool.eraserPen);
+        ref.read(canvasNotifierProvider.notifier).changePenTool(PenTool.eraserPen);
       },
       child: Assets.svg.eraser.svg(width: 60),
     );
@@ -104,8 +110,9 @@ class ToolsWidget extends ConsumerWidget {
 
   void _showToolSettings(BuildContext context, ToolType toolType) {
     showModalBottomSheet<void>(
-      backgroundColor: Colors.transparent,
       context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
       builder: (context) {
         return Popover(
           child: _buildToolContent(toolType),
@@ -123,7 +130,15 @@ class ToolsWidget extends ConsumerWidget {
       case ToolType.symmyrticllLine:
         return const SymmetryToolGrid();
       case ToolType.canvasSettings:
-        return const CanvasSettingsToolGrid();
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              CanvasSettingsToolGrid(),
+              Divider(),
+              BrushSettingsPanel(),
+            ],
+          ),
+        );
     }
   }
 }

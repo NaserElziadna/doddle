@@ -1,11 +1,13 @@
 import 'package:doddle/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sizer/sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sizer/sizer.dart';
+
 import 'application/providers/config/config_provider.dart';
-import 'application/providers/theme/theme_providers.dart';
 import 'application/providers/router/router_provider.dart';
+import 'application/providers/theme/theme_providers.dart';
 
 // Create a global variable for SharedPreferences
 late SharedPreferences prefs;
@@ -24,6 +26,8 @@ Future<void> initializeApp() async {
 void main() async {
   await initializeApp();
 
+  //dont allow rotation
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(
     const ProviderScope(
       child: MyApp(),

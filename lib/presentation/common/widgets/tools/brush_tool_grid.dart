@@ -11,20 +11,16 @@ class BrushToolGrid extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final brushes = [
+      BrushTool(penTool: PenTool.glowPen, picture: Assets.svg.pen1Preview.svg()),
+      BrushTool(penTool: PenTool.normalPen, picture: Assets.svg.pen2Preview.svg()),
+      BrushTool(penTool: PenTool.glowWithDotsPen, picture: Assets.svg.pen5Preview.svg()),
+      BrushTool(penTool: PenTool.normalWithShaderPen, picture: Assets.svg.pen6Preview.svg()),
+      BrushTool(penTool: PenTool.sprayPen, picture: Assets.svg.pen3Preview.svg()),
+      BrushTool(penTool: PenTool.customPen, picture: Assets.svg.pen4Preview.svg()),
       BrushTool(
-          penTool: PenTool.glowPen, picture: Assets.svg.pen1Preview.svg()),
-      BrushTool(
-          penTool: PenTool.normalPen, picture: Assets.svg.pen2Preview.svg()),
-      BrushTool(
-          penTool: PenTool.glowWithDotsPen,
-          picture: Assets.svg.pen5Preview.svg()),
-      BrushTool(
-          penTool: PenTool.normalWithShaderPen,
-          picture: Assets.svg.pen6Preview.svg()),
-      BrushTool(
-          penTool: PenTool.sprayPen, picture: Assets.svg.pen3Preview.svg()),
-      BrushTool(
-          penTool: PenTool.customPen, picture: Assets.svg.pen4Preview.svg()),
+        penTool: PenTool.textPen,
+        picture: Assets.svg.colorBorder.svg()
+      ),
     ];
 
     final selectedPenTool = ref.watch(canvasNotifierProvider).penTool;
@@ -42,10 +38,8 @@ class BrushToolGrid extends ConsumerWidget {
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: () {
-              ref
-                  .read(canvasNotifierProvider.notifier)
-                  .changePenTool(brush.penTool);
-              Navigator.of(context).pop();
+              ref.read(canvasNotifierProvider.notifier).changePenTool(brush.penTool);
+              // Navigator.of(context).pop();
             },
             child: Container(
               decoration: BoxDecoration(

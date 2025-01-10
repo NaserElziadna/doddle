@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:screen_recorder/screen_recorder.dart';
+import 'package:sizer/sizer.dart';
 import '../../../generated/assets.gen.dart';
 import '../../../domain/models/draw_controller.dart';
 import '../../../domain/models/point.dart';
@@ -28,16 +29,14 @@ class CanvasScreen extends ConsumerStatefulWidget {
 
 class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   static Size kCanvasSize = Size.zero;
-  // late bool ignorePointer;
-  // late int pointerCount;
+  final TransformationController _transformationController =
+      TransformationController();
+  bool showResetScaleTranslateToCanvas = false;
 
   @override
   void initState() {
     super.initState();
-    // ignorePointer = false;
-    // pointerCount = 1;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // ref.read(canvasNotifierProvider.notifier).initializeEffects();
       ref
           .read(canvasNotifierProvider.notifier)
           .setGlobalKey(CanvasScreen.globalKey!);
@@ -45,7 +44,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   }
 
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
 
     return SafeArea(
       child: Scaffold(
@@ -106,7 +105,22 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
             ),
           ),
         ),
-        body: _buildCanvas(),
+        body: Stack(
+          children: [
+            _buildCanvas(),
+            Positioned(
+              right: 16,
+              bottom: 80,
+              child: Visibility(
+                visible: showResetScaleTranslateToCanvas,
+                child: FloatingActionButton(
+                  onPressed: _resetCanvas,
+                  child: const Icon(Icons.center_focus_strong),
+                ),
+              ),
+            ),
+          ],
+        ),
         bottomSheet: const ToolsWidget(),
       ),
     );
@@ -118,6 +132,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
     return Container(
       color: Colors.purple[800],
       child: InteractiveViewer(
+        transformationController: _transformationController,
         panEnabled: false,
         scaleEnabled: true,
         minScale: 0.1,
@@ -138,6 +153,15 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
         ),
       ),
     );
+  }
+
+  void _resetCanvas() {
+    _transformationController.value = Matrix4.identity()
+      ..scale(1.0)
+      ..translate(1.w, -1.h);
+      setState(() {
+        showResetScaleTranslateToCanvas = false;
+      });
   }
 
   void _handleGestureStart(PointerEvent pointerEvent) {
@@ -173,7 +197,9 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
         -((kCanvasSize.height / 2) + pinSpaceY),
       );
 
-      ref.read(canvasNotifierProvider.notifier).addPoint(Point(offset: point));
+      ref
+          .read(canvasNotifierProvider.notifier)
+          .addPoint(Point(offset: point, pressure: pointerEvent.pressure));
     });
     // }
   }
@@ -254,7 +280,12 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
       ref.read(canvasNotifierProvider.notifier).setPanActive(true);
       //clear last point
       ref.read(canvasNotifierProvider.notifier).clearPoints();
+      setState(() {
+        showResetScaleTranslateToCanvas = true;
+      });
     }
+    // _previousScale = _transformationController.value.getMaxScaleOnAxis();
+    // _previousOffset = _transformationController.toScene(Offset.zero);
     // setState(() {
     //   ignorePointer = details.pointerCount > 1;
     //   pointerCount = details.pointerCount;
@@ -300,10 +331,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                             ? null
                             : drawController.stamp?.last?.image,
                       ),
-                      size: Size(
-                        kCanvasSize.width / 2,
-                        kCanvasSize.height / 2,
-                      ),
+                      size: kCanvasSize,
                       willChange: true,
                       isComplex: true,
                       child: const SizedBox.expand(),

@@ -126,7 +126,7 @@ class CanvasNotifier extends _$CanvasNotifier {
   Future<ui.Image> canvasToImage(GlobalKey globalKey) async {
     final boundary =
         globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-    return await boundary.toImage();
+    return await boundary.toImage(pixelRatio:5);
   }
 
   Future<void> saveToGallery(GlobalKey globalKey) async {
