@@ -11,8 +11,7 @@ class SymmetryToolGrid extends ConsumerWidget {
     final symmetryLines = ref.watch(configProvider).symmetryLines;
     final selectedSymmetryLines =
         ref.watch(canvasNotifierProvider).symmetryLines ?? 1;
-    final isMirrorSymmetry =
-        ref.watch(canvasNotifierProvider).mirrorSymmetry ;
+    final isMirrorSymmetry = ref.watch(canvasNotifierProvider).mirrorSymmetry;
 
     return GridView.builder(
       shrinkWrap: true,

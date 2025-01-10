@@ -60,7 +60,7 @@ class BrushConfigs {
           icon: Icons.horizontal_rule,
         ),
         'gapLength': BrushSettingConfig(
-          label: 'Gap Length', 
+          label: 'Gap Length',
           type: SettingType.slider,
           defaultValue: 10.0,
           minValue: 1.0,

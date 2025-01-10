@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart';
 
 class GlowWithDotsEffect extends PenEffect {
-  BrushSettingsState get settings => globalRef.read(brushSettingsProvider(PenTool.glowWithDotsPen));
+  BrushSettingsState get settings =>
+      globalRef.read(brushSettingsProvider(PenTool.glowWithDotsPen));
   double get dashLength => settings.getValue('dashLength') ?? 5.0;
   double get gapLength => settings.getValue('gapLength') ?? 10.0;
   double get glowRadius => settings.getValue('glowRadius') ?? 5.0;
@@ -16,7 +17,8 @@ class GlowWithDotsEffect extends PenEffect {
   void paint(Canvas canvas, Path path, Paint paint) {
     final pathWithDots = dashPath(
       path,
-      dashArray: CircularIntervalList<double>(<double>[5, 10]), // Changed to create 5px dashes with 10px gaps
+      dashArray: CircularIntervalList<double>(
+          <double>[5, 10]), // Changed to create 5px dashes with 10px gaps
     );
 
     canvas.drawPath(

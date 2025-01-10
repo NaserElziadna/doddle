@@ -6,11 +6,18 @@ double radians(double degree) {
 }
 
 class Shapes {
-  Shapes({this.canvas, this.paint, this.radius = 1, this.center = Offset.zero, this.angle = 0}) {
+  Shapes(
+      {this.canvas,
+      this.paint,
+      this.radius = 1,
+      this.center = Offset.zero,
+      this.angle = 0}) {
     paint ??= Paint();
   }
 
-  static List<String> types = ShapeType.values.map((ShapeType type) => type.toString().split('.')[1]).toList();
+  static List<String> types = ShapeType.values
+      .map((ShapeType type) => type.toString().split('.')[1])
+      .toList();
 
   Canvas? canvas;
   Paint? paint;
@@ -34,7 +41,10 @@ class Shapes {
 
   void drawRRect({double? cornerRadius}) {
     rotate(() {
-      canvas!.drawRRect(RRect.fromRectAndRadius(rect(), Radius.circular(cornerRadius ?? radius * 0.2)), paint!);
+      canvas!.drawRRect(
+          RRect.fromRectAndRadius(
+              rect(), Radius.circular(cornerRadius ?? radius * 0.2)),
+          paint!);
     });
   }
 
@@ -62,8 +72,10 @@ class Shapes {
 
       path.moveTo(0, radius);
 
-      path.cubicTo(-radius * 2, -radius * 0.5, -radius * 0.5, -radius * 1.5, 0, -radius * 0.5);
-      path.cubicTo(radius * 0.5, -radius * 1.5, radius * 2, -radius * 0.5, 0, radius);
+      path.cubicTo(-radius * 2, -radius * 0.5, -radius * 0.5, -radius * 1.5, 0,
+          -radius * 0.5);
+      path.cubicTo(
+          radius * 0.5, -radius * 1.5, radius * 2, -radius * 0.5, 0, radius);
 
       canvas!.drawPath(path, paint!);
     });
@@ -74,7 +86,9 @@ class Shapes {
       int a = 20;
       for (var i = 0; i < a; i++) {
         canvas!.drawRect(
-            center + Offset(center.dx + Random().nextInt(a) * 1.0, center.dy - Random().nextInt(a) * 1.0) &
+            center +
+                    Offset(center.dx + Random().nextInt(a) * 1.0,
+                        center.dy - Random().nextInt(a) * 1.0) &
                 const Size(1.0, 1.0),
             paint!);
       }
@@ -153,8 +167,9 @@ class Shapes {
   }
 
   void draw(String typeString) {
-    final ShapeType type = ShapeType.values
-        .firstWhere((ShapeType t) => t.toString() == 'ShapeType.$typeString', orElse: () => ShapeType.circle);
+    final ShapeType type = ShapeType.values.firstWhere(
+        (ShapeType t) => t.toString() == 'ShapeType.$typeString',
+        orElse: () => ShapeType.circle);
     drawType(type);
   }
 

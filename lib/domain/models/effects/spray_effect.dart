@@ -26,7 +26,8 @@ class SprayEffect extends PenEffect {
   final random = math.Random();
   List<SprayDot> sprayDots = [];
 
-  BrushSettingsState get settings => globalRef.read(brushSettingsProvider(PenTool.sprayPen));
+  BrushSettingsState get settings =>
+      globalRef.read(brushSettingsProvider(PenTool.sprayPen));
 
   double get density => settings.getValue('density') ?? 10;
   double get spread => settings.getValue('spread') ?? 10;
@@ -55,11 +56,14 @@ class SprayEffect extends PenEffect {
 
     final numDots = density.toInt();
     for (int i = 0; i < numDots; i++) {
-      final randomOffset = Offset(random.nextDouble() * spread - spread / 2, random.nextDouble() * spread - spread / 2);
+      final randomOffset = Offset(random.nextDouble() * spread - spread / 2,
+          random.nextDouble() * spread - spread / 2);
 
       final color = randomizeEachDot
           ? getRandomColor()
-          : (drawController.isRandomColor ? getRandomColor() : drawController.currentColor);
+          : (drawController.isRandomColor
+              ? getRandomColor()
+              : drawController.currentColor);
 
       addSprayDots([
         SprayDot(

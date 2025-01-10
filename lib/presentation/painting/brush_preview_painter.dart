@@ -99,7 +99,8 @@ class BrushPreviewPainter extends CustomPainter {
     return points;
   }
 
-  void _drawPreviewPoints(Canvas canvas, Path path, Paint paint, PenEffect effect, List<Point?> points) {
+  void _drawPreviewPoints(Canvas canvas, Path path, Paint paint,
+      PenEffect effect, List<Point?> points) {
     for (var j = 0; j < points.length - 1; j++) {
       final currentPoint = points[j]?.offset;
       final nextPoint = points[j + 1]?.offset;
