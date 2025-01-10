@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:screen_recorder/screen_recorder.dart';
+import 'package:sizer/sizer.dart';
 import '../../../generated/assets.gen.dart';
 import '../../../domain/models/draw_controller.dart';
 import '../../../domain/models/point.dart';
@@ -29,17 +30,17 @@ class CanvasScreen extends ConsumerStatefulWidget {
 
 class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   static Size kCanvasSize = Size.zero;
-  // late bool ignorePointer;
-  // late int pointerCount;
+  final TransformationController _transformationController =
+      TransformationController();
+  bool showResetScaleTranslateToCanvas = false;
 
   @override
   void initState() {
     super.initState();
-    // ignorePointer = false;
-    // pointerCount = 1;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // ref.read(canvasNotifierProvider.notifier).initializeEffects();
-      ref.read(canvasNotifierProvider.notifier).setGlobalKey(CanvasScreen.globalKey!);
+      ref
+          .read(canvasNotifierProvider.notifier)
+          .setGlobalKey(CanvasScreen.globalKey!);
     });
   }
 
@@ -106,7 +107,22 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
             ),
           ),
         ),
-        body: _buildCanvas(),
+        body: Stack(
+          children: [
+            _buildCanvas(),
+            Positioned(
+              right: 16,
+              bottom: 80,
+              child: Visibility(
+                visible: showResetScaleTranslateToCanvas,
+                child: FloatingActionButton(
+                  onPressed: _resetCanvas,
+                  child: const Icon(Icons.center_focus_strong),
+                ),
+              ),
+            ),
+          ],
+        ),
         bottomSheet: const ToolsWidget(),
       ),
     );
@@ -118,6 +134,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
     return Container(
       color: Colors.purple[800],
       child: InteractiveViewer(
+        transformationController: _transformationController,
         panEnabled: false,
         scaleEnabled: true,
         minScale: 0.1,
@@ -140,18 +157,27 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
     );
   }
 
+  void _resetCanvas() {
+    _transformationController.value = Matrix4.identity()
+      ..scale(1.0)
+      ..translate(1.w, -1.h);
+      setState(() {
+        showResetScaleTranslateToCanvas = false;
+      });
+  }
+
   void _handleGestureStart(PointerEvent pointerEvent) {
     if (ref.read(canvasNotifierProvider).isPanActive) return;
     // if (ignorePointer == false && pointerCount == 1) {
-      if (ref.read(canvasNotifierProvider).isRandomColor) {
-        final random = Random();
-        final color = Color.fromRGBO(
-          random.nextInt(256),
-          random.nextInt(256),
-          random.nextInt(256),
-          1,
-        );
-        ref.read(canvasNotifierProvider.notifier).changeColor(color, true);
+    if (ref.read(canvasNotifierProvider).isRandomColor) {
+      final random = Random();
+      final color = Color.fromRGBO(
+        random.nextInt(256),
+        random.nextInt(256),
+        random.nextInt(256),
+        1,
+      );
+      ref.read(canvasNotifierProvider.notifier).changeColor(color, true);
     }
     // }
   }
@@ -159,47 +185,49 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   void _handleGestureUpdate(PointerEvent pointerEvent) {
     if (ref.read(canvasNotifierProvider).isPanActive) return;
     // if (ignorePointer == false && pointerCount == 1) {
-      setState(() {
-        kCanvasSize = Size(
-          MediaQuery.of(context).size.width,
-          MediaQuery.of(context).size.height - (AppBar().preferredSize.height),
-        );
-        var pinSpaceX = -20;
-        var pinSpaceY = -160;
+    setState(() {
+      kCanvasSize = Size(
+        MediaQuery.of(context).size.width,
+        MediaQuery.of(context).size.height - (AppBar().preferredSize.height),
+      );
+      var pinSpaceX = -20;
+      var pinSpaceY = -160;
 
-        Offset point = pointerEvent.localPosition;
-        point = point.translate(
-          -((kCanvasSize.width / 2) + pinSpaceX),
-          -((kCanvasSize.height / 2) + pinSpaceY),
-        );
+      Offset point = pointerEvent.localPosition;
+      point = point.translate(
+        -((kCanvasSize.width / 2) + pinSpaceX),
+        -((kCanvasSize.height / 2) + pinSpaceY),
+      );
 
-        ref.read(canvasNotifierProvider.notifier).addPoint(Point(offset: point, pressure: pointerEvent.pressure));
-      });
+      ref
+          .read(canvasNotifierProvider.notifier)
+          .addPoint(Point(offset: point, pressure: pointerEvent.pressure));
+    });
     // }
   }
 
   void _handleGestureEnd(PointerEvent pointerEvent) {
     // if (ref.read(canvasNotifierProvider).isPanActive) return;
     // if (ignorePointer == false && pointerCount == 1) {
-      setState(() {
-        kCanvasSize = Size(
-          MediaQuery.of(context).size.width,
-          MediaQuery.of(context).size.height - (AppBar().preferredSize.height),
-        );
-        var pinSpaceX = -20;
-        var pinSpaceY = -160;
+    setState(() {
+      kCanvasSize = Size(
+        MediaQuery.of(context).size.width,
+        MediaQuery.of(context).size.height - (AppBar().preferredSize.height),
+      );
+      var pinSpaceX = -20;
+      var pinSpaceY = -160;
 
-        Offset point = pointerEvent.localPosition;
-        point = point.translate(
-          -((kCanvasSize.width / 2) + pinSpaceX),
-          -((kCanvasSize.height / 2) + pinSpaceY),
-        );
+      Offset point = pointerEvent.localPosition;
+      point = point.translate(
+        -((kCanvasSize.width / 2) + pinSpaceX),
+        -((kCanvasSize.height / 2) + pinSpaceY),
+      );
 
-        ref.read(canvasNotifierProvider.notifier).addPoint(
-              Point(offset: point),
-              end: true,
-            );
-      });
+      ref.read(canvasNotifierProvider.notifier).addPoint(
+            Point(offset: point),
+            end: true,
+          );
+    });
     // }
   }
 
@@ -238,7 +266,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
 
   void _handleInteractionUpdate(ScaleUpdateDetails details) {
     print('pan update ${details.pointerCount}');
-    if(details.pointerCount > 1) {
+    if (details.pointerCount > 1) {
       //clear last point
       ref.read(canvasNotifierProvider.notifier).clearPoints();
     }
@@ -249,12 +277,17 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   }
 
   void _handleInteractionStart(ScaleStartDetails details) {
-    if(details.pointerCount > 1) {
+    if (details.pointerCount > 1) {
       print('pan active ${details.pointerCount}');
       ref.read(canvasNotifierProvider.notifier).setPanActive(true);
       //clear last point
       ref.read(canvasNotifierProvider.notifier).clearPoints();
+      setState(() {
+        showResetScaleTranslateToCanvas = true;
+      });
     }
+    // _previousScale = _transformationController.value.getMaxScaleOnAxis();
+    // _previousOffset = _transformationController.toScene(Offset.zero);
     // setState(() {
     //   ignorePointer = details.pointerCount > 1;
     //   pointerCount = details.pointerCount;

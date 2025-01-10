@@ -21,9 +21,9 @@ class BrushPreviewPainter extends CustomPainter {
     final currentPenTool = ref.read(canvasNotifierProvider).penTool;
     
     // Special handling for text brush preview
-    if (currentPenTool == PenTool.textPen) {
-      _drawTextPreview(canvas, size);
-    } else {
+    // if (currentPenTool == PenTool.textPen) {
+    //   _drawTextPreview(canvas, size);
+    // } else {
       // Original wave preview for other brushes
       final points = _generatePreviewPoints(size);
       final controller = DrawController(
@@ -46,7 +46,7 @@ class BrushPreviewPainter extends CustomPainter {
         _drawPreviewPoints(canvas, path, paint, effect, points);
         effect.paint(canvas, path, paint);
       }
-    }
+    // }
 
     canvas.restore();
   }

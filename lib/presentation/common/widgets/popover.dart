@@ -51,6 +51,7 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
       clipBehavior: Clip.antiAlias,
       constraints: BoxConstraints(
         maxWidth: 90.w,
+        maxHeight: 93.h
       ),
       decoration: BoxDecoration(
         color: theme.cardColor,

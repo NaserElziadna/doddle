@@ -8,13 +8,21 @@ import 'package:doddle/main.dart';
 import 'package:flutter/material.dart';
 
 class TextEffect extends PenEffect {
-  BrushSettingsState get settings => globalRef.read(brushSettingsProvider(PenTool.textPen));
-  
+  BrushSettingsState get settings =>
+      globalRef.read(brushSettingsProvider(PenTool.textPen));
+
   String get text => settings.getValue('text') ?? 'Hello';
   double get fontSize => settings.getValue('fontSize') ?? 20.0;
   bool get randomRotation => settings.getValue('randomRotation') ?? false;
   double get wordSpacing => settings.getValue('wordSpacing') ?? 0.0;
   double get letterSpacing => settings.getValue('letterSpacing') ?? 0.0;
+  TextDirection? get textDirection {
+    final text = settings.getValue('text') ?? '';
+    // Check if text contains RTL characters
+    final rtlPattern =
+        RegExp(r'[\u0591-\u07FF\u200F\u202B\u202E\uFB1D-\uFDFD\uFE70-\uFEFC]');
+    return rtlPattern.hasMatch(text) ? TextDirection.rtl : TextDirection.ltr;
+  }
 
   @override
   void paint(Canvas canvas, Path path, Paint paint) {
@@ -30,32 +38,20 @@ class TextEffect extends PenEffect {
           letterSpacing: letterSpacing,
         ),
       ),
-      textDirection: TextDirection.ltr,
+      textDirection: textDirection ?? TextDirection.rtl,
     );
     textPainter.layout();
 
     for (var point in drawController.points!) {
       if (point?.offset == null) continue;
-      
+
       final positions = getSymmetricalPositions(point!.offset!);
-      
+
       for (var position in positions) {
-        canvas.save();
-        canvas.translate(position.dx, position.dy);
-        
-        if (randomRotation) {
-          
-          final rotation = (point.pressure ?? 0) * 2 * pi;
-          canvas.rotate(rotation);
-        }
-        
-        textPainter.paint(
-          canvas,
-          Offset(-textPainter.width / 2, -textPainter.height / 2),
-        );
-        
-        canvas.restore();
+    textPainter.layout();
+
+        textPainter.paint(canvas, position);
       }
     }
   }
-} 
+}
